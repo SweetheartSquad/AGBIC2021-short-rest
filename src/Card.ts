@@ -28,9 +28,12 @@ export class Card extends GameObject {
 		this.textBody = new Text(body, font);
 		this.display.container.addChild(this.textName);
 		this.display.container.addChild(this.textBody);
-		this.textName.y -= 50;
-		this.textName.x -= 50;
+		this.textName.y -= this.sprCard.height / 2 - 10;
+		this.textName.x -= this.sprCard.width / 2 - 10;
+		this.textBody.style.wordWrap = true;
+		this.textBody.style.wordWrapWidth = this.sprCard.width - 10;
 		this.textBody.y += 50;
+		this.textBody.x -= this.sprCard.width / 2 - 5;
 	}
 
 	update() {

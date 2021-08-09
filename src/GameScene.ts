@@ -1,4 +1,4 @@
-import { Container, Graphics, NineSlicePlane, Texture } from 'pixi.js';
+import { Container, Graphics, NineSlicePlane, Text, Texture } from 'pixi.js';
 import { Camera } from './Camera';
 import { Card } from './Card';
 import { game, resources } from './Game';
@@ -75,11 +75,13 @@ export class GameScene {
 		];
 
 		const input = getInput();
-		const cardGap = 100;
-		const handX = 400;
+		const cardSize = (resources.card.texture as Texture).width;
+		const cardOverlap = cardSize * 0.3;
+		const cardGap = cardSize - cardOverlap;
+		const handX = size.x / 2;
 		const inspectingHand = input.mouse.y > size.y * 0.8;
 		this.hand.forEach((i, idx) => {
-			const offset = idx - this.hand.length / 2;
+			const offset = idx - (this.hand.length - 1) / 2;
 			const hovered =
 				Math.abs(input.mouse.x - (handX + offset * cardGap)) < cardGap / 2;
 			i.transform.x = lerp(i.transform.x, handX + offset * cardGap, 0.1);
