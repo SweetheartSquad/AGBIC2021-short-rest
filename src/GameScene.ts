@@ -1,6 +1,7 @@
 import { Container, Graphics, NineSlicePlane, Text, Texture } from 'pixi.js';
 import { Camera } from './Camera';
 import { Card } from './Card';
+import { fontTitle } from './font';
 import { game, resources } from './Game';
 import { GameObject } from './GameObject';
 import { getInput } from './main';
@@ -27,7 +28,7 @@ export class GameScene {
 		this.container.addChildAt(this.graphics, 0);
 
 		this.screenFilter = new ScreenFilter();
-		game.app.stage.filters = [this.screenFilter];
+		this.camera.display.container.filters = [this.screenFilter];
 
 		this.camera.display.container.x -= size.x / 2;
 		this.camera.display.container.y -= size.y / 2;
@@ -57,6 +58,11 @@ export class GameScene {
 		border.width = size.x - padding * 2;
 		border.height = size.y - padding * 2;
 		this.camera.display.container.addChild(border);
+
+		const textTitle = new Text('SHORT REST', fontTitle);
+		textTitle.y = size.y - 70;
+		textTitle.x = 30;
+		game.app.stage.addChild(textTitle);
 	}
 
 	destroy(): void {

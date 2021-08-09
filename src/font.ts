@@ -10,3 +10,14 @@ export const font: Partial<ITextStyle> = {
 	lineHeight: 24,
 	letterSpacing: 1,
 };
+
+export const fontTitle: Partial<ITextStyle> = {
+	fontFamily: 'font',
+	fontSize: 48,
+	fill: 'transparent',
+	stroke: 0xffffff,
+	strokeThickness: 1,
+	align: 'left',
+	letterSpacing: 1,
+	padding: 10,
+};
