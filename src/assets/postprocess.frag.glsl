@@ -9,9 +9,8 @@ uniform float curTime;
 uniform vec2 camPos;
 uniform vec2 size;
 uniform sampler2D ditherGridMap;
-const vec2 ditherSize = vec2(8.0);
-const float scale = 1.0;
-const float posterize = 1.0;
+const vec2 ditherSize = vec2(4.0);
+const float posterize = 32.0;
 const float brightness = 1.0;
 const float contrast = 1.0;
 const float PI = 3.14159;
@@ -53,33 +52,24 @@ float vignette(vec2 uv, float amount){
 	return clamp((1.0-uv.y*uv.y)*(1.0-uv.x*uv.x)/amount, 0.0, 1.0);
 }
 
+vec3 dither(vec3 rgbPreDither) {
+	// dither
+	vec2 uvDither = fract(((gl_FragCoord.xy - mod(gl_FragCoord.xy, 1.0)) + vec2(0.5)) / (ditherSize.xy));
+	vec3 limit = texture2D(ditherGridMap, uvDither).rgb;
+	// posterization
+	vec3 posterized = rgbPreDither - mod(rgbPreDither, 1.0/posterize);
+	// dithering
+	vec3 dither = step(limit, (rgbPreDither-posterized)*posterize)/posterize;
+	// output
+	return posterized + dither;
+}
+
 void main(void) {
 	// get pixels
 	vec2 uv = vTextureCoord;
 	float t = mod(curTime/1000.0,1000.0);
-	
-	vec2 coord = gl_FragCoord.xy;
-	coord -= mod(coord, scale);
 
 	vec3 orig = texture2D(uSampler, uv).rgb;
-
-	// dither
-	// vec2 uvDither = fract((coord + vec2(0.5)) / (ditherSize.xy * scale));
-	// vec2 uvPreview = uv;
-	// float orig = texture2D(uSampler, uvPreview).r;
-	// float col = (orig - 0.5 + (brightness - 1.0)) * contrast + 0.5;
-	// float limit = texture2D(ditherGridMap, uvDither).r;
-	// // posterization
-	// float raw = col;
-	// float posterized = raw - mod(raw, 1.0/posterize);
-	// // dithering
-	// float dither = step(limit, (raw-posterized)*posterize)/posterize;
-	// // output
-	// col = posterized + dither;
-
-	// fx
-	// col = mix(col, 1.0, whiteout);
-	// col = mix(col, 1.0 - col, invert);
 
 	vec3 rgb = chrAbb(uv, abs(uv.x-0.5)*2.0, 0.0);
 	// soft vignette
@@ -90,6 +80,14 @@ void main(void) {
 	rgb += ((noise((uv+noiseT)*size.xy*vec2(1.0, 0.05)) * noise((uv+noiseT)*size.xy)) - 0.5)*0.1;
 	// hard edge vignette
 	rgb *= vignette(uv, 0.05);
+
+	// 
+	// rgbPreDither = (rgbPreDither - 0.5 + (brightness - 1.0)) * contrast + 0.5;
+	rgb = dither(rgb);
+
+	// fx
+	// col = mix(col, 1.0, whiteout);
+	// col = mix(col, 1.0 - col, invert);
 
 	gl_FragColor = vec4(rgb, 1.0);
 	// gl_FragColor = vec4(texture2D(uSampler, uvPreview).rgb, 1.0);
