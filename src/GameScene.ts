@@ -1,0 +1,101 @@
+import { Container, Graphics, NineSlicePlane, Texture } from 'pixi.js';
+import { Camera } from './Camera';
+import { Card } from './Card';
+import { game, resources } from './Game';
+import { GameObject } from './GameObject';
+import { getInput } from './main';
+import { ScreenFilter } from './ScreenFilter';
+import { size } from './size';
+import { TweenManager } from './Tweens';
+import { lerp } from './utils';
+
+export class GameScene {
+	container = new Container();
+
+	graphics = new Graphics();
+
+	camera = new Camera();
+
+	screenFilter: ScreenFilter;
+
+	hand: Card[] = [];
+
+	constructor() {
+		this.graphics.beginFill(0x123456);
+		this.graphics.drawRect(0, 0, size.x, size.y);
+		this.graphics.endFill();
+		this.container.addChildAt(this.graphics, 0);
+
+		this.screenFilter = new ScreenFilter();
+		game.app.stage.filters = [this.screenFilter];
+
+		this.camera.display.container.x -= size.x / 2;
+		this.camera.display.container.y -= size.y / 2;
+		this.camera.display.container.addChild(this.container);
+
+		this.hand.push(new Card({ name: 'test1', body: 'test 1 description' }));
+		this.hand.push(new Card({ name: 'test2', body: 'test 2 description' }));
+		this.hand.push(new Card({ name: 'test3', body: 'test 3 description' }));
+		this.hand.push(new Card({ name: 'test4', body: 'test 4 description' }));
+		this.hand.push(new Card({ name: 'test5', body: 'test 5 description' }));
+		this.hand.forEach((i) => {
+			this.container.addChild(i.display.container);
+		});
+		// this.camera.setTarget(player.camPoint);
+
+		const padding = 0;
+		const texBorder = resources.border.texture as Texture;
+		const border = new NineSlicePlane(
+			texBorder,
+			texBorder.width / 2,
+			texBorder.height / 2,
+			texBorder.width / 2,
+			texBorder.height / 2
+		);
+		border.x = padding;
+		border.y = padding;
+		border.width = size.x - padding * 2;
+		border.height = size.y - padding * 2;
+		this.camera.display.container.addChild(border);
+	}
+
+	destroy(): void {
+		this.container.destroy({
+			children: true,
+		});
+		this.camera.destroy();
+	}
+
+	update(): void {
+		const curTime = game.app.ticker.lastTime;
+		this.screenFilter.uniforms.curTime = curTime;
+		this.screenFilter.uniforms.camPos = [
+			this.camera.display.container.pivot.x,
+			-this.camera.display.container.pivot.y,
+		];
+
+		const input = getInput();
+		const cardGap = 100;
+		const handX = 400;
+		const inspectingHand = input.mouse.y > size.y * 0.8;
+		this.hand.forEach((i, idx) => {
+			const offset = idx - this.hand.length / 2;
+			const hovered =
+				Math.abs(input.mouse.x - (handX + offset * cardGap)) < cardGap / 2;
+			i.transform.x = lerp(i.transform.x, handX + offset * cardGap, 0.1);
+			i.transform.y = lerp(
+				i.transform.y,
+				inspectingHand ? size.y - 100 - (hovered ? 100 : 0) : size.y - 10,
+				0.1
+			);
+			if (inspectingHand && hovered) {
+				this.container.addChild(i.display.container);
+			}
+		});
+
+		this.screenFilter.update();
+
+		GameObject.update();
+		TweenManager.update();
+	}
+}
