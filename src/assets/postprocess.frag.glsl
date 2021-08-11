@@ -77,7 +77,7 @@ void main(void) {
 	rgb *= (vignette(uv + noise(uv*5.0+t)*haze, 1.0)*0.75+0.25);
 	// noise
 	vec2 noiseT = vec2(rand(vec2(0.0, t - mod(t, 0.4))), rand(vec2(t - mod(t, 0.4), 0.0)));
-	rgb += ((noise((uv+noiseT)*size.xy*vec2(1.0, 0.05)) * noise((uv+noiseT)*size.xy)) - 0.5)*0.1;
+	rgb += ((noise((uv+noiseT)*size.xy*vec2(1.0, 0.05)) * noise((uv+noiseT)*size.xy)) - 0.5)*(1.0-vignette(uv,1.0)*0.5)*0.1;
 	// hard edge vignette
 	rgb *= vignette(uv, 0.05);
 
