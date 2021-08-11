@@ -1,3 +1,8 @@
 textures/border.png
 textures/card.png
 textures/ditherGrid.png
+textures/onion_rough.png
+textures/frog_rough.png
+textures/cat_rough.png
+textures/apple_rough.png
+textures/bg.png

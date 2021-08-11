@@ -1,6 +1,14 @@
-import { Container, Graphics, NineSlicePlane, Text, Texture } from 'pixi.js';
+import {
+	Container,
+	Graphics,
+	NineSlicePlane,
+	Sprite,
+	Text,
+	Texture,
+} from 'pixi.js';
 import { Camera } from './Camera';
 import { Card } from './Card';
+import { Character } from './Character';
 import { fontTitle } from './font';
 import { game, resources } from './Game';
 import { GameObject } from './GameObject';
@@ -26,6 +34,9 @@ export class GameScene {
 		this.graphics.drawRect(0, 0, size.x, size.y);
 		this.graphics.endFill();
 		this.container.addChildAt(this.graphics, 0);
+
+		const bg = new Sprite(resources.bg.texture as Texture);
+		this.container.addChild(bg);
 
 		this.screenFilter = new ScreenFilter();
 		this.camera.display.container.filters = [this.screenFilter];
@@ -63,6 +74,26 @@ export class GameScene {
 		textTitle.y = size.y - 70;
 		textTitle.x = 30;
 		game.app.stage.addChild(textTitle);
+
+		const party = new Container();
+		this.container.addChild(party);
+		party.y += 120;
+		const c1 = new Character('frog_rough');
+		c1.init();
+		c1.transform.x += 75 * 1;
+		party.addChild(c1.display.container);
+		const c2 = new Character('cat_rough');
+		c2.init();
+		c2.transform.x += 75 * 2;
+		party.addChild(c2.display.container);
+		const c3 = new Character('apple_rough');
+		c3.init();
+		c3.transform.x += 75 * 3;
+		party.addChild(c3.display.container);
+		const c4 = new Character('onion_rough');
+		c4.init();
+		c4.transform.x += 75 * 4;
+		party.addChild(c4.display.container);
 	}
 
 	destroy(): void {

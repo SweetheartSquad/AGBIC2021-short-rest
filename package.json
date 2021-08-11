@@ -38,6 +38,7 @@
 		"input-gamepads.js": "^3.0.4",
 		"matter-js": "^0.17.1",
 		"path-browserify": "^1.0.1",
+		"pixi-filters": "^4.1.4",
 		"pixi.js": "^6.1.1",
 		"postcss-clean": "1.2.0",
 		"postcss-loader": "^6.1.1",
