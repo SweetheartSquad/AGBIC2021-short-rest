@@ -95,6 +95,14 @@ export class GameScene {
 		});
 		party[3].setHealth(2);
 
+		const containerEnemies = new Container();
+		containerEnemies.y += 320;
+		containerEnemies.x = size.x - 150;
+		this.container.addChild(containerEnemies);
+		const enemy = new Character({ spr: 'skeleton_rough', maxHealth: 2 });
+		enemy.init();
+		containerEnemies.addChild(enemy.display.container);
+
 		const map = new UIMap();
 		this.container.addChild(map.display.container);
 	}

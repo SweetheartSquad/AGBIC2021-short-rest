@@ -14,3 +14,4 @@ textures/icon_treasure.png
 textures/icon_unknown.png
 textures/icon_heart.png
 textures/icon_heart_empty.png
+textures/skeleton_rough.png
