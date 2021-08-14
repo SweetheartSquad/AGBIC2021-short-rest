@@ -30,6 +30,10 @@ export class GameScene {
 
 	hand: Card[] = [];
 
+	map: UIMap = new UIMap();
+
+	position = 0;
+
 	constructor() {
 		this.graphics.beginFill(0x123456);
 		this.graphics.drawRect(0, 0, size.x, size.y);
@@ -103,8 +107,20 @@ export class GameScene {
 		enemy.init();
 		containerEnemies.addChild(enemy.display.container);
 
-		const map = new UIMap();
-		this.container.addChild(map.display.container);
+		this.container.addChild(this.map.display.container);
+
+		this.map.setAreas([
+			'camp',
+			'enemy',
+			'enemy',
+			'treasure',
+			'unknown',
+			'attention',
+			'enemy',
+			'treasure',
+			'door',
+		]);
+		this.map.setPosition(0);
 	}
 
 	destroy(): void {
@@ -147,5 +163,10 @@ export class GameScene {
 
 		GameObject.update();
 		TweenManager.update();
+	}
+
+	advance() {
+		this.position += 1;
+		this.map.setPosition(this.position);
 	}
 }
