@@ -15,7 +15,7 @@ import { GameObject } from './GameObject';
 import { getInput } from './main';
 import { ScreenFilter } from './ScreenFilter';
 import { size } from './size';
-import { TweenManager } from './Tweens';
+import { Tween, TweenManager } from './Tweens';
 import { UIMap } from './UIMap';
 import { lerp } from './utils';
 
@@ -121,6 +121,28 @@ export class GameScene {
 			'door',
 		]);
 		this.map.setPosition(0);
+
+		const sprAdvance = new Sprite(resources.advance.texture as Texture);
+		sprAdvance.interactive = true;
+		sprAdvance.buttonMode = true;
+		sprAdvance.tabIndex = 0;
+		sprAdvance.accessibleTitle = 'advance';
+		sprAdvance.on('click', () => {
+			this.advance();
+		});
+		let tweenAdvance: Tween;
+		sprAdvance.on('pointerover', () => {
+			if (tweenAdvance) TweenManager.finish(tweenAdvance);
+			tweenAdvance = TweenManager.tween(sprAdvance, 'alpha', 0.8, 100);
+		});
+		sprAdvance.on('pointerout', () => {
+			if (tweenAdvance) TweenManager.finish(tweenAdvance);
+			tweenAdvance = TweenManager.tween(sprAdvance, 'alpha', 1.0, 100);
+		});
+		sprAdvance.anchor.x = sprAdvance.anchor.y = 0.5;
+		sprAdvance.x = size.x / 2;
+		sprAdvance.y = 80;
+		this.container.addChild(sprAdvance);
 	}
 
 	destroy(): void {
