@@ -132,11 +132,11 @@ export class GameScene {
 		});
 		let tweenAdvance: Tween;
 		sprAdvance.on('pointerover', () => {
-			if (tweenAdvance) TweenManager.finish(tweenAdvance);
+			if (tweenAdvance) TweenManager.abort(tweenAdvance);
 			tweenAdvance = TweenManager.tween(sprAdvance, 'alpha', 0.8, 100);
 		});
 		sprAdvance.on('pointerout', () => {
-			if (tweenAdvance) TweenManager.finish(tweenAdvance);
+			if (tweenAdvance) TweenManager.abort(tweenAdvance);
 			tweenAdvance = TweenManager.tween(sprAdvance, 'alpha', 1.0, 100);
 		});
 		sprAdvance.anchor.x = sprAdvance.anchor.y = 0.5;

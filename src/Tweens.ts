@@ -41,6 +41,10 @@ export class TweenManager {
 		return t;
 	}
 
+	static abort(tween: Tween) {
+		removeFromArray(this.tweens, tween);
+	}
+
 	static finish(tween: Tween) {
 		tween.t[tween.p] = tween.b;
 		removeFromArray(this.tweens, tween);
