@@ -1,7 +1,7 @@
 import { game } from './Game';
 import { lerp, removeFromArray } from './utils';
 
-type Tween = {
+export type Tween = {
 	/** target */
 	t: any;
 	/** property */
@@ -28,7 +28,7 @@ export class TweenManager {
 		from?: V,
 		ease: (t: number) => number = (t) => t
 	) {
-		this.tweens.push({
+		const t = {
 			t: target,
 			p: property,
 			a: from ?? (target[property] as V),
@@ -36,7 +36,14 @@ export class TweenManager {
 			d: duration,
 			s: game.app.ticker.lastTime,
 			e: ease,
-		});
+		};
+		this.tweens.push(t);
+		return t;
+	}
+
+	static finish(tween: Tween) {
+		tween.t[tween.p] = tween.b;
+		removeFromArray(this.tweens, tween);
 	}
 
 	static update() {
