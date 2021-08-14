@@ -16,6 +16,7 @@ export class Camera extends GameObject {
 	constructor() {
 		super();
 		this.scripts.push((this.display = new Display(this)));
+		this.display.container.interactiveChildren = true;
 		this.display.container.position.set(
 			Math.floor(size.x / 2),
 			Math.floor(size.y / 2)
