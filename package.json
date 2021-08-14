@@ -15,7 +15,6 @@
 		"start:prod": "npm run build && npm run serve"
 	},
 	"devDependencies": {
-		"@pixi/interaction": "^6.1.1",
 		"@squoosh/cli": "^0.7.2",
 		"@types/eases": "^1.0.1",
 		"@types/howler": "^2.2.3",
