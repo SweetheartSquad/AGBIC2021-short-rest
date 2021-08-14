@@ -22,6 +22,8 @@ import { lerp } from './utils';
 export class GameScene {
 	container = new Container();
 
+	containerUI = new Container();
+
 	graphics = new Graphics();
 
 	camera = new Camera();
@@ -102,7 +104,7 @@ export class GameScene {
 		enemy.init();
 		containerEnemies.addChild(enemy.display.container);
 
-		this.container.addChild(this.map.display.container);
+		this.containerUI.addChild(this.map.display.container);
 
 		this.map.setAreas([
 			'camp',
@@ -137,7 +139,8 @@ export class GameScene {
 		sprAdvance.anchor.x = sprAdvance.anchor.y = 0.5;
 		sprAdvance.x = size.x / 2;
 		sprAdvance.y = 80;
-		this.container.addChild(sprAdvance);
+		this.containerUI.addChild(sprAdvance);
+		this.container.addChild(this.containerUI);
 	}
 
 	destroy(): void {
@@ -180,6 +183,7 @@ export class GameScene {
 
 		GameObject.update();
 		TweenManager.update();
+		this.containerUI.x = this.camera.display.container.pivot.x;
 	}
 
 	advance() {

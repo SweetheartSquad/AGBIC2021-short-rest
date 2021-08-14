@@ -11,7 +11,7 @@ export class Camera extends GameObject {
 
 	private target?: DisplayObject;
 
-	private targetPivot: VMath.V = { x: 0, y: 0 };
+	targetPivot: VMath.V = { x: 0, y: 0 };
 
 	constructor() {
 		super();
