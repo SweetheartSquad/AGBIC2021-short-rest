@@ -16,6 +16,7 @@ import { getInput } from './main';
 import { ScreenFilter } from './ScreenFilter';
 import { size } from './size';
 import { TweenManager } from './Tweens';
+import { UIMap } from './UIMap';
 import { lerp } from './utils';
 
 export class GameScene {
@@ -93,6 +94,9 @@ export class GameScene {
 			return character;
 		});
 		party[3].setHealth(2);
+
+		const map = new UIMap();
+		this.container.addChild(map.display.container);
 	}
 
 	destroy(): void {
