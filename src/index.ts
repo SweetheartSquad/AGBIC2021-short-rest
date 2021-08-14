@@ -3,6 +3,8 @@ import './assets/style.css';
 import { Resizer, ScaleModes } from './Resizer';
 import { size } from './size';
 
+const debug = process.env.NODE_ENV === 'development';
+
 let preloaded = false;
 
 // 0 = preload doesn't visually affect loader progress
@@ -64,6 +66,7 @@ function play(): void {
 
 	Promise.all([import('./Game')]).then(
 		([{ game }]) => {
+			game.app.renderer.plugins.accessibility.debug = debug;
 			preloaded = true;
 			try {
 				// start the actual load
@@ -103,9 +106,7 @@ function play(): void {
 }
 
 playEl.onclick = play;
-if (process.env.NODE_ENV === 'development') {
-	// @ts-ignore
-	window.debugPhysics = true;
+if (debug) {
 	playEl.click();
 }
 
