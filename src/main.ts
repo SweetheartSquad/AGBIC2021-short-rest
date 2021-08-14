@@ -1,4 +1,5 @@
 import { Axes, Buttons, Gamepads } from 'input-gamepads.js';
+import { Sprite, Texture } from 'pixi.js';
 import { resizer } from '.';
 import { game } from './Game';
 import { GameScene } from './GameScene';
@@ -145,7 +146,7 @@ function update(): void {
 		window.scene = activeScene = newScene;
 		newScene = undefined;
 		if (activeScene) {
-			game.app.stage.addChildAt(activeScene.camera.display.container, 0);
+			game.app.stage.addChildAt(activeScene.camera.display.container, 1);
 		}
 	}
 
@@ -171,6 +172,12 @@ export function init(): void {
 		],
 	});
 	mouse = new Mouse(game.app.view, false);
+
+	const fill = new Sprite(Texture.WHITE);
+	fill.tint = 0x000000;
+	fill.width = size.x;
+	fill.height = size.x;
+	game.app.stage.addChildAt(fill, 0);
 
 	setScene(new GameScene());
 

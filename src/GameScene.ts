@@ -35,11 +35,6 @@ export class GameScene {
 	position = 0;
 
 	constructor() {
-		this.graphics.beginFill(0x123456);
-		this.graphics.drawRect(0, 0, size.x, size.y);
-		this.graphics.endFill();
-		this.container.addChildAt(this.graphics, 0);
-
 		const bg = new Sprite(resources.bg.texture as Texture);
 		this.container.addChild(bg);
 
