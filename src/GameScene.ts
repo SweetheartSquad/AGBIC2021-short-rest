@@ -1,3 +1,4 @@
+import { quadInOut, quadOut } from 'eases';
 import {
 	Container,
 	Graphics,
@@ -5,6 +6,7 @@ import {
 	Sprite,
 	Text,
 	Texture,
+	TilingSprite,
 } from 'pixi.js';
 import { Camera } from './Camera';
 import { Card } from './Card';
@@ -24,6 +26,10 @@ export class GameScene {
 
 	containerUI = new Container();
 
+	containerParty = new Container();
+
+	containerCards = new Container();
+
 	graphics = new Graphics();
 
 	camera = new Camera();
@@ -34,11 +40,13 @@ export class GameScene {
 
 	map: UIMap = new UIMap();
 
+	bg: TilingSprite;
+
 	position = 0;
 
 	constructor() {
-		const bg = new Sprite(resources.bg.texture as Texture);
-		this.container.addChild(bg);
+		this.bg = new TilingSprite(resources.bg.texture as Texture, size.x, size.y);
+		this.container.addChild(this.bg);
 
 		this.screenFilter = new ScreenFilter();
 		this.camera.display.container.filters = [this.screenFilter];
@@ -53,7 +61,7 @@ export class GameScene {
 		this.hand.push(new Card({ name: 'test4', body: 'test 4 description' }));
 		this.hand.push(new Card({ name: 'test5', body: 'test 5 description' }));
 		this.hand.forEach((i) => {
-			this.container.addChild(i.display.container);
+			this.containerCards.addChild(i.display.container);
 		});
 		// this.camera.setTarget(player.camPoint);
 
@@ -70,7 +78,6 @@ export class GameScene {
 		border.y = padding;
 		border.width = size.x - padding * 2;
 		border.height = size.y - padding * 2;
-		this.camera.display.container.addChild(border);
 
 		const textTitle = new Text('SHORT REST', fontTitle);
 		textTitle.y = size.y - 70;
@@ -83,15 +90,13 @@ export class GameScene {
 			{ spr: 'apple_rough', maxHealth: 2 },
 			{ spr: 'onion_rough', maxHealth: 4 },
 		];
-		const containerParty = new Container();
-		containerParty.y += 320;
-		containerParty.x += 150;
-		this.container.addChild(containerParty);
+		this.containerParty = new Container();
+		this.containerParty.y += 320;
 		const party = partyDef.map((i, idx) => {
 			const character = new Character(i);
 			character.init();
-			character.transform.x += 75 * idx;
-			containerParty.addChild(character.display.container);
+			character.transform.x += 150 + 75 * idx;
+			this.containerParty.addChild(character.display.container);
 			return character;
 		});
 		party[3].setHealth(2);
@@ -99,14 +104,11 @@ export class GameScene {
 		const containerEnemies = new Container();
 		containerEnemies.y += 320;
 		containerEnemies.x = size.x - 150;
-		this.container.addChild(containerEnemies);
 		const enemy = new Character({ spr: 'skeleton_rough', maxHealth: 2 });
 		enemy.init();
 		containerEnemies.addChild(enemy.display.container);
 
-		this.containerUI.addChild(this.map.display.container);
-
-		this.map.setAreas([
+		this.setAreas([
 			'camp',
 			'enemy',
 			'enemy',
@@ -117,7 +119,6 @@ export class GameScene {
 			'treasure',
 			'door',
 		]);
-		this.map.setPosition(0);
 
 		const sprAdvance = new Sprite(resources.advance.texture as Texture);
 		sprAdvance.interactive = true;
@@ -139,7 +140,14 @@ export class GameScene {
 		sprAdvance.anchor.x = sprAdvance.anchor.y = 0.5;
 		sprAdvance.x = size.x / 2;
 		sprAdvance.y = 80;
+
+		this.containerUI.addChild(this.map.display.container);
 		this.containerUI.addChild(sprAdvance);
+		this.containerUI.addChild(this.containerCards);
+		this.containerUI.addChild(border);
+
+		this.container.addChild(this.containerParty);
+		this.container.addChild(containerEnemies);
 		this.container.addChild(this.containerUI);
 	}
 
@@ -175,7 +183,7 @@ export class GameScene {
 				0.1
 			);
 			if (inspectingHand && hovered) {
-				this.container.addChild(i.display.container);
+				this.containerCards.addChild(i.display.container);
 			}
 		});
 
@@ -189,5 +197,27 @@ export class GameScene {
 	advance() {
 		this.position += 1;
 		this.map.setPosition(this.position);
+		TweenManager.tween(
+			this.camera.targetPivot,
+			'x',
+			size.x * this.position,
+			500,
+			undefined,
+			quadOut
+		);
+		TweenManager.tween(
+			this.containerParty,
+			'x',
+			size.x * this.position,
+			1500,
+			undefined,
+			quadInOut
+		);
+	}
+
+	setAreas(areas: string[]) {
+		this.map.setAreas(areas);
+		this.map.setPosition(0);
+		this.bg.width = size.x * areas.length;
 	}
 }
