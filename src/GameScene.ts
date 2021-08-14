@@ -82,7 +82,7 @@ export class GameScene {
 			{ spr: 'onion_rough', maxHealth: 4 },
 		];
 		const containerParty = new Container();
-		containerParty.y += 120;
+		containerParty.y += 320;
 		containerParty.x += 150;
 		this.container.addChild(containerParty);
 		const party = partyDef.map((i, idx) => {

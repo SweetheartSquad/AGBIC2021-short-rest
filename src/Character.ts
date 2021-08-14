@@ -1,11 +1,12 @@
 import { OutlineFilter } from 'pixi-filters';
 import { Container, Sprite, Texture } from 'pixi.js';
-import { resources } from './Game';
+import { game, resources } from './Game';
 import { GameObject } from './GameObject';
 import { Display } from './Scripts/Display';
 import { Transform } from './Scripts/Transform';
 
 const filterOL = new OutlineFilter(2, 0xffffff, 0);
+let offset = 0;
 
 export class Character extends GameObject {
 	sprOL: Sprite;
@@ -21,6 +22,8 @@ export class Character extends GameObject {
 	maxHealth: number;
 
 	hearts: Sprite[];
+
+	offset: number = ++offset;
 
 	constructor({
 		spr,
@@ -41,6 +44,7 @@ export class Character extends GameObject {
 		this.sprOL.filters = [filterOL];
 		this.sprBody = new Sprite(resources[spr].texture as Texture);
 		this.sprOL.anchor.x = this.sprBody.anchor.x = 0.5;
+		this.sprOL.anchor.y = this.sprBody.anchor.y = 1;
 		this.display.container.addChild(this.sprOL);
 		this.display.container.addChild(this.sprBody);
 
@@ -54,8 +58,15 @@ export class Character extends GameObject {
 		}
 		containerHealth.x -= Math.floor(containerHealth.width / 2);
 		this.setHealth(health ?? maxHealth);
-		containerHealth.y = this.display.container.height;
+		containerHealth.y = containerHealth.height;
 		this.display.container.addChild(containerHealth);
+	}
+
+	update() {
+		super.update();
+		const t = this.offset + game.app.ticker.lastTime / 100;
+		this.sprOL.scale.y = this.sprBody.scale.y = 1.0 + Math.sin(t) * 0.04;
+		this.sprOL.rotation = this.sprBody.rotation = Math.sin(t) * 0.03;
 	}
 
 	setHealth(h: number) {
