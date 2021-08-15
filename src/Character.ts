@@ -5,7 +5,7 @@ import { GameObject } from './GameObject';
 import { Display } from './Scripts/Display';
 import { Transform } from './Scripts/Transform';
 
-const filterOL = new OutlineFilter(2, 0xffffff, 0);
+const filterOL = new OutlineFilter(2, 0xffffff, 1);
 let offset = 0;
 
 export class Character extends GameObject {

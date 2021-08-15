@@ -6,7 +6,7 @@ import { Display } from './Scripts/Display';
 import { Transform } from './Scripts/Transform';
 import { size } from './size';
 
-const filterOL = new OutlineFilter(2, 0xffffff, 0);
+const filterOL = new OutlineFilter(2, 0xffffff, 1);
 
 export class UIMap extends GameObject {
 	display: Display;
