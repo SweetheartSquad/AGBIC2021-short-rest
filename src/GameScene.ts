@@ -85,10 +85,10 @@ export class GameScene {
 		game.app.stage.addChild(textTitle);
 
 		const partyDef = [
-			{ spr: 'frog_rough', maxHealth: 2 },
-			{ spr: 'cat_rough', maxHealth: 3 },
-			{ spr: 'apple_rough', maxHealth: 2 },
-			{ spr: 'onion_rough', maxHealth: 4 },
+			{ spr: 'frog', maxHealth: 2 },
+			{ spr: 'cat', maxHealth: 3 },
+			{ spr: 'apple', maxHealth: 2 },
+			{ spr: 'onion', maxHealth: 4 },
 		];
 		this.containerParty = new Container();
 		this.containerParty.y += 320;
@@ -104,7 +104,7 @@ export class GameScene {
 		const containerEnemies = new Container();
 		containerEnemies.y += 320;
 		containerEnemies.x = size.x - 150;
-		const enemy = new Character({ spr: 'skeleton_rough', maxHealth: 2 });
+		const enemy = new Character({ spr: 'skeleton', maxHealth: 2 });
 		enemy.init();
 		containerEnemies.addChild(enemy.display.container);
 
