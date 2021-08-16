@@ -4,6 +4,7 @@ import { resources } from './Game';
 import { GameObject } from './GameObject';
 import { Display } from './Scripts/Display';
 import { Transform } from './Scripts/Transform';
+import { btn } from './utils';
 
 export class Card extends GameObject {
 	transform: Transform;
@@ -34,6 +35,10 @@ export class Card extends GameObject {
 		this.textBody.style.wordWrapWidth = this.sprCard.width - 10;
 		this.textBody.y += 50;
 		this.textBody.x -= this.sprCard.width / 2 - 5;
+
+		btn(this.display.container, name, `${name}: ${body}`);
+
+		this.init();
 	}
 
 	update() {

@@ -9,17 +9,16 @@ import {
 	TilingSprite,
 } from 'pixi.js';
 import { Camera } from './Camera';
-import { Card } from './Card';
 import { Character } from './Character';
 import { fontTitle } from './font';
 import { game, resources } from './Game';
 import { GameObject } from './GameObject';
-import { getInput } from './main';
+import { Hand } from './Hand';
 import { ScreenFilter } from './ScreenFilter';
 import { size } from './size';
 import { Tween, TweenManager } from './Tweens';
 import { UIMap } from './UIMap';
-import { delay, lerp } from './utils';
+import { btn, delay } from './utils';
 
 export class GameScene {
 	container = new Container();
@@ -28,15 +27,14 @@ export class GameScene {
 
 	containerParty = new Container();
 
-	containerCards = new Container();
-
 	graphics = new Graphics();
 
 	camera = new Camera();
 
 	screenFilter: ScreenFilter;
 
-	hand: Card[] = [];
+	hand: Hand = new Hand();
+	// hand: Card[] = [];
 
 	map: UIMap = new UIMap();
 
@@ -59,15 +57,11 @@ export class GameScene {
 		this.camera.display.container.y -= size.y / 2;
 		this.camera.display.container.addChild(this.container);
 
-		this.hand.push(new Card({ name: 'test1', body: 'test 1 description' }));
-		this.hand.push(new Card({ name: 'test2', body: 'test 2 description' }));
-		this.hand.push(new Card({ name: 'test3', body: 'test 3 description' }));
-		this.hand.push(new Card({ name: 'test4', body: 'test 4 description' }));
-		this.hand.push(new Card({ name: 'test5', body: 'test 5 description' }));
-		this.hand.forEach((i) => {
-			this.containerCards.addChild(i.display.container);
-		});
-		// this.camera.setTarget(player.camPoint);
+		this.hand.addCard({ name: 'test1', body: 'test 1 description' });
+		this.hand.addCard({ name: 'test2', body: 'test 2 description' });
+		this.hand.addCard({ name: 'test3', body: 'test 3 description' });
+		this.hand.addCard({ name: 'test4', body: 'test 4 description' });
+		this.hand.addCard({ name: 'test5', body: 'test 5 description' });
 
 		const padding = 0;
 		const texBorder = resources.border.texture as Texture;
@@ -144,7 +138,7 @@ export class GameScene {
 
 		this.containerUI.addChild(this.map.display.container);
 		this.containerUI.addChild(sprAdvance);
-		this.containerUI.addChild(this.containerCards);
+		this.containerUI.addChild(this.hand.display.container);
 		this.containerUI.addChild(border);
 
 		this.container.addChild(this.containerParty);
@@ -166,27 +160,6 @@ export class GameScene {
 			this.camera.display.container.pivot.x,
 			-this.camera.display.container.pivot.y,
 		];
-
-		const input = getInput();
-		const cardSize = (resources.card.texture as Texture).width;
-		const cardOverlap = cardSize * 0.3;
-		const cardGap = cardSize - cardOverlap;
-		const handX = size.x / 2;
-		const inspectingHand = input.mouse.y > size.y * 0.8;
-		this.hand.forEach((i, idx) => {
-			const offset = idx - (this.hand.length - 1) / 2;
-			const hovered =
-				Math.abs(input.mouse.x - (handX + offset * cardGap)) < cardGap / 2;
-			i.transform.x = lerp(i.transform.x, handX + offset * cardGap, 0.1);
-			i.transform.y = lerp(
-				i.transform.y,
-				inspectingHand ? size.y - 100 - (hovered ? 100 : 0) : size.y - 10,
-				0.1
-			);
-			if (inspectingHand && hovered) {
-				this.containerCards.addChild(i.display.container);
-			}
-		});
 
 		if (!this.busy && this.queue.length) {
 			this.busy = true;
