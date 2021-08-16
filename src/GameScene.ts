@@ -90,12 +90,20 @@ export class GameScene {
 		];
 		this.containerParty = new Container();
 		this.containerParty.y += 320;
-		const party = partyDef.map((i, idx) => {
+		const party: Character[] = [];
+		const overlap = 0.6;
+		partyDef.forEach((i, idx) => {
 			const character = new Character(i);
+			const prev = party[idx - 1];
 			character.init();
-			character.transform.x += 150 + 75 * idx;
+			character.transform.x = prev
+				? prev.transform.x +
+				  (prev.display.container.width / 2 +
+						character.display.container.width / 2) *
+						overlap
+				: 75;
 			this.containerParty.addChild(character.display.container);
-			return character;
+			party.push(character);
 		});
 		party[3].setHealth(2);
 
