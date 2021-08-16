@@ -19,7 +19,7 @@ import { ScreenFilter } from './ScreenFilter';
 import { size } from './size';
 import { Tween, TweenManager } from './Tweens';
 import { UIMap } from './UIMap';
-import { lerp } from './utils';
+import { delay, lerp } from './utils';
 
 export class GameScene {
 	container = new Container();
@@ -41,6 +41,10 @@ export class GameScene {
 	map: UIMap = new UIMap();
 
 	bg: TilingSprite;
+
+	queue: (() => Promise<void> | void)[] = [];
+
+	busy = false;
 
 	position = 0;
 
@@ -187,6 +191,17 @@ export class GameScene {
 			}
 		});
 
+		if (!this.busy && this.queue.length) {
+			this.busy = true;
+			const next = this.queue.shift();
+			const p = (next as NonNullable<typeof next>)();
+			if (p) {
+				p.then(() => {
+					this.busy = false;
+				});
+			}
+		}
+
 		this.screenFilter.update();
 
 		GameObject.update();
@@ -195,24 +210,27 @@ export class GameScene {
 	}
 
 	advance() {
-		this.position += 1;
-		this.map.setPosition(this.position);
-		TweenManager.tween(
-			this.camera.targetPivot,
-			'x',
-			size.x * this.position,
-			500,
-			undefined,
-			quadOut
-		);
-		TweenManager.tween(
-			this.containerParty,
-			'x',
-			size.x * this.position,
-			1500,
-			undefined,
-			quadInOut
-		);
+		this.queue.push(() => {
+			this.position += 1;
+			this.map.setPosition(this.position);
+			TweenManager.tween(
+				this.camera.targetPivot,
+				'x',
+				size.x * this.position,
+				500,
+				undefined,
+				quadOut
+			);
+			TweenManager.tween(
+				this.containerParty,
+				'x',
+				size.x * this.position,
+				1500,
+				undefined,
+				quadInOut
+			);
+			return delay(1500);
+		});
 	}
 
 	setAreas(areas: string[]) {
