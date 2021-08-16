@@ -1,5 +1,5 @@
 import { Howler } from 'howler';
-import { Point } from 'pixi.js';
+import { DisplayObject, Point } from 'pixi.js';
 
 export const zero = new Point(0, 0);
 
@@ -100,4 +100,14 @@ export function removeFromArray<T>(array: T[], item: T) {
 
 export function randRange(min: number, max: number) {
 	return Math.random() * (max - min) + min;
+}
+
+export function btn(spr: DisplayObject, title: string, hint?: string) {
+	spr.interactive = true;
+	spr.interactiveChildren = true;
+	spr.buttonMode = true;
+	spr.tabIndex = 0;
+	spr.accessible = true;
+	spr.accessibleTitle = title;
+	spr.accessibleHint = hint;
 }

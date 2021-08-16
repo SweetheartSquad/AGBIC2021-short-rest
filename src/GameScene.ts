@@ -125,10 +125,7 @@ export class GameScene {
 		]);
 
 		const sprAdvance = new Sprite(resources.advance.texture as Texture);
-		sprAdvance.interactive = true;
-		sprAdvance.buttonMode = true;
-		sprAdvance.tabIndex = 0;
-		sprAdvance.accessibleTitle = 'advance';
+		btn(sprAdvance, 'advance');
 		sprAdvance.on('click', () => {
 			this.advance();
 		});
