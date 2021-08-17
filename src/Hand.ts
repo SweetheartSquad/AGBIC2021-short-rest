@@ -5,7 +5,7 @@ import { GameObject } from './GameObject';
 import { Display } from './Scripts/Display';
 import { Transform } from './Scripts/Transform';
 import { size } from './size';
-import { lerp } from './utils';
+import { lerp, removeFromArray } from './utils';
 
 export class Hand extends GameObject {
 	transform: Transform;
@@ -45,7 +45,9 @@ export class Hand extends GameObject {
 			);
 			i.display.container.rotation = lerp(
 				i.display.container.rotation,
-				hovered ? 0 : Math.sin((idx / (this.hand.length - 1) - 0.5) * 0.4),
+				hovered || this.hand.length <= 1
+					? 0
+					: Math.sin((idx / (this.hand.length - 1) - 0.5) * 0.4),
 				0.2
 			);
 		});
@@ -66,7 +68,17 @@ export class Hand extends GameObject {
 				this.hand.indexOf(card)
 			);
 		});
+		card.display.container.on('click', () => {
+			this.display.container.emit('play', card);
+		});
 		card.transform.x = size.x / 2;
 		card.transform.y = size.y * 2;
+	}
+
+	removeCard(card: Card) {
+		removeFromArray(this.hand, card);
+		if (card === this.inspecting) {
+			this.inspecting = undefined;
+		}
 	}
 }

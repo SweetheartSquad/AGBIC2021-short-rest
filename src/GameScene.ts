@@ -57,11 +57,10 @@ export class GameScene {
 		this.camera.display.container.y -= size.y / 2;
 		this.camera.display.container.addChild(this.container);
 
-		this.hand.addCard({ name: 'test1', body: 'test 1 description' });
-		this.hand.addCard({ name: 'test2', body: 'test 2 description' });
-		this.hand.addCard({ name: 'test3', body: 'test 3 description' });
-		this.hand.addCard({ name: 'test4', body: 'test 4 description' });
-		this.hand.addCard({ name: 'test5', body: 'test 5 description' });
+		this.hand.addCard('test');
+		this.hand.addCard('test');
+		this.hand.addCard('test');
+		this.hand.addCard('test');
 
 		const padding = 0;
 		const texBorder = resources.border.texture as Texture;
@@ -144,6 +143,10 @@ export class GameScene {
 		sprAdvance.x = size.x / 2;
 		sprAdvance.y = 80;
 
+		this.hand.display.container.on('play', (card) => {
+			this.playCard(card);
+		});
+
 		this.containerUI.addChild(this.map.display.container);
 		this.containerUI.addChild(sprAdvance);
 		this.containerUI.addChild(this.hand.display.container);
@@ -212,7 +215,15 @@ export class GameScene {
 	}
 
 	addCard(card: string) {
-		this.hand.addCard({ name: card, body: 'test' });
+		this.hand.addCard(card);
+	}
+
+	playCard(card: Card) {
+		const { def } = card;
+		if (def.canPlay && !def.canPlay(this)) return;
+		this.hand.removeCard(card);
+		card.destroy();
+		def.effect(this);
 	}
 
 	setAreas(areas: string[]) {
