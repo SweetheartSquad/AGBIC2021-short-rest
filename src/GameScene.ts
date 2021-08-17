@@ -211,6 +211,10 @@ export class GameScene {
 		});
 	}
 
+	addCard(card: string) {
+		this.hand.addCard({ name: card, body: 'test' });
+	}
+
 	setAreas(areas: string[]) {
 		this.map.setAreas(areas);
 		this.map.setPosition(0);

@@ -28,7 +28,10 @@ export class Hand extends GameObject {
 	update() {
 		const cardSize = (resources.card.texture as Texture).width;
 		const cardOverlap = cardSize * 0.3;
-		const cardGap = cardSize - cardOverlap;
+		const cardGap = Math.min(
+			cardSize - cardOverlap,
+			(size.x * 0.8) / this.hand.length
+		);
 		const handX = size.x / 2;
 		const inspectingHand = !!this.inspecting;
 		this.hand.forEach((i, idx) => {
@@ -37,12 +40,14 @@ export class Hand extends GameObject {
 			i.transform.x = lerp(i.transform.x, handX + offset * cardGap, 0.1);
 			i.transform.y = lerp(
 				i.transform.y,
-				inspectingHand ? size.y - 100 - (hovered ? 10 : 0) : size.y - 10,
-				0.1
+				inspectingHand ? size.y - 100 - (hovered ? 20 : 0) : size.y - 10,
+				0.2
 			);
-			if (inspectingHand && hovered) {
-				this.display.container.addChild(i.display.container);
-			}
+			i.display.container.rotation = lerp(
+				i.display.container.rotation,
+				hovered ? 0 : Math.sin((idx / (this.hand.length - 1) - 0.5) * 0.4),
+				0.2
+			);
 		});
 	}
 
@@ -52,11 +57,16 @@ export class Hand extends GameObject {
 		this.display.container.addChild(card.display.container);
 		card.display.container.on('pointerover', () => {
 			this.inspecting = card;
+			this.display.container.addChild(card.display.container);
 		});
 		card.display.container.on('pointerout', () => {
 			this.inspecting = undefined;
+			this.display.container.addChildAt(
+				card.display.container,
+				this.hand.indexOf(card)
+			);
 		});
 		card.transform.x = size.x / 2;
-		card.transform.y = size.y;
+		card.transform.y = size.y * 2;
 	}
 }
