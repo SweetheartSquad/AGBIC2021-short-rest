@@ -31,8 +31,10 @@ export class Card extends GameObject {
 
 	constructor(def: string) {
 		super();
-		// eslint-disable-next-line no-eval
-		if (!Card.cards) Card.cards = window.eval(resources.cards.data);
+		if (!Card.cards) {
+			// eslint-disable-next-line @typescript-eslint/no-implied-eval
+			Card.cards = Function(`"use strict";return ${resources.cards.data}`)();
+		}
 		this.def = Card.cards[def] || {
 			name: 'error',
 			description: `couldn't find card "${def}"`,

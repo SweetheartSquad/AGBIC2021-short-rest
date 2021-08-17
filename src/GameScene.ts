@@ -9,6 +9,7 @@ import {
 	TilingSprite,
 } from 'pixi.js';
 import { Camera } from './Camera';
+import { Card } from './Card';
 import { Character } from './Character';
 import { fontTitle } from './font';
 import { game, resources } from './Game';
@@ -18,7 +19,7 @@ import { ScreenFilter } from './ScreenFilter';
 import { size } from './size';
 import { Tween, TweenManager } from './Tweens';
 import { UIMap } from './UIMap';
-import { btn, delay } from './utils';
+import { btn, delay, lerp } from './utils';
 
 export class GameScene {
 	container = new Container();
@@ -34,7 +35,9 @@ export class GameScene {
 	screenFilter: ScreenFilter;
 
 	hand: Hand = new Hand();
+
 	// hand: Card[] = [];
+	party: Character[] = [];
 
 	map: UIMap = new UIMap();
 
@@ -58,6 +61,9 @@ export class GameScene {
 		this.camera.display.container.addChild(this.container);
 
 		this.hand.addCard('test');
+		this.hand.addCard('shuffle');
+		this.hand.addCard('shuffle');
+		this.hand.addCard('shuffle');
 		this.hand.addCard('test');
 		this.hand.addCard('test');
 		this.hand.addCard('test');
@@ -88,23 +94,14 @@ export class GameScene {
 			{ spr: 'onion', maxHealth: 4 },
 		];
 		this.containerParty = new Container();
+		this.containerParty.sortableChildren = true;
 		this.containerParty.y += 320;
-		const party: Character[] = [];
-		const overlap = 0.6;
-		partyDef.forEach((i, idx) => {
+		partyDef.forEach((i) => {
 			const character = new Character(i);
-			const prev = party[idx - 1];
-			character.init();
-			character.transform.x = prev
-				? prev.transform.x +
-				  (prev.display.container.width / 2 +
-						character.display.container.width / 2) *
-						overlap
-				: 75;
 			this.containerParty.addChild(character.display.container);
-			party.push(character);
+			this.party.push(character);
 		});
-		party[3].setHealth(2);
+		this.party[3].setHealth(2);
 
 		const containerEnemies = new Container();
 		containerEnemies.y += 320;
@@ -182,6 +179,22 @@ export class GameScene {
 				});
 			}
 		}
+
+		const overlap = 0.5;
+		this.party.forEach((i, idx) => {
+			const prev = this.party[idx - 1];
+			i.transform.x = lerp(
+				i.transform.x,
+				prev
+					? prev.transform.x +
+							(prev.display.container.width / 2 +
+								i.display.container.width / 2) *
+								overlap
+					: 75,
+				0.1
+			);
+			i.display.container.zIndex = idx;
+		});
 
 		this.screenFilter.update();
 

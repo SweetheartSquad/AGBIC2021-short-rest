@@ -60,6 +60,7 @@ export class Character extends GameObject {
 		this.setHealth(health ?? maxHealth);
 		containerHealth.y = containerHealth.height;
 		this.display.container.addChild(containerHealth);
+		this.init();
 	}
 
 	update() {
