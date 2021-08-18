@@ -62,13 +62,7 @@ export class GameScene {
 		this.camera.display.container.y -= size.y / 2;
 		this.camera.display.container.addChild(this.container);
 
-		this.hand.addCard('test');
-		this.hand.addCard('shuffle');
-		this.hand.addCard('shuffle');
-		this.hand.addCard('shuffle');
-		this.hand.addCard('test');
-		this.hand.addCard('test');
-		this.hand.addCard('test');
+		this.hand.addCard('refresh');
 
 		const padding = 0;
 		const texBorder = resources.border.texture as Texture;

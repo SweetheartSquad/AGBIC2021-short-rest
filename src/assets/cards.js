@@ -7,6 +7,16 @@
 		},
 		canPlay: () => true,
 	},
+	refresh: {
+		name: 'refresh',
+		description: 'gives cards',
+		effect(scene) {
+			scene.addCard('test');
+			scene.addCard('shuffle');
+			scene.addCard('refresh');
+		},
+		canPlay: () => true,
+	},
 	shuffle: {
 		name: 'shuffle',
 		description: 'Shuffles party',
