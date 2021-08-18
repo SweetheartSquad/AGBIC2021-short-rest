@@ -1,9 +1,10 @@
-import { OutlineFilter } from 'pixi-filters';
+import { ColorOverlayFilter, OutlineFilter } from 'pixi-filters';
 import { Container, Sprite, Texture } from 'pixi.js';
 import { game, resources } from './Game';
 import { GameObject } from './GameObject';
 import { Display } from './Scripts/Display';
 import { Transform } from './Scripts/Transform';
+import { TweenManager } from './Tweens';
 import { clamp } from './utils';
 
 const filterOL = new OutlineFilter(2, 0xffffff, 1);
@@ -26,6 +27,8 @@ export class Character extends GameObject {
 
 	offset: number = ++offset;
 
+	filterOverlay = new ColorOverlayFilter(0, 0);
+
 	constructor({
 		spr,
 		health,
@@ -43,6 +46,7 @@ export class Character extends GameObject {
 		this.sprOL.tint = 0x000000;
 		this.sprOL.filters = [filterOL];
 		this.sprBody = new Sprite(resources[spr].texture as Texture);
+		this.sprBody.filters = [this.filterOverlay];
 		this.sprOL.anchor.x = this.sprBody.anchor.x = 0.5;
 		this.sprOL.anchor.y = this.sprBody.anchor.y = 1;
 		const shadow = new Sprite(resources.shadow.texture as Texture);
@@ -88,5 +92,17 @@ export class Character extends GameObject {
 			i.texture = resources[filled ? 'icon_heart' : 'icon_heart_empty']
 				.texture as Texture;
 		});
+	}
+
+	damage(damage: number) {
+		this.setHealth(this.health - damage);
+		this.filterOverlay.color = 0xff0000;
+		TweenManager.tween(this.filterOverlay, 'alpha', 0, 200, 1);
+	}
+
+	heal(damage: number) {
+		this.setHealth(this.health + damage);
+		this.filterOverlay.color = 0x00ff00;
+		TweenManager.tween(this.filterOverlay, 'alpha', 0, 200, 1);
 	}
 }

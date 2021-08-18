@@ -236,8 +236,8 @@ export class GameScene {
 					front.display.container.scale.x -= 0.3;
 					front.display.container.scale.y += 0.3;
 					TweenManager.abort(t1);
-					facing.setHealth(facing.health - 1);
-					front.setHealth(front.health - 1);
+					facing.damage(1);
+					front.damage(1);
 					if (front.health <= 0) {
 						removeFromArray(this.party, front);
 						this.party.unshift(front);
@@ -277,6 +277,14 @@ export class GameScene {
 			}
 			return delay(1500);
 		});
+	}
+
+	damageFacing(damage: number) {
+		if (!this.facing) return;
+		this.facing.damage(damage);
+		if (this.facing.health <= 0) {
+			this.killFacing();
+		}
 	}
 
 	killFacing() {

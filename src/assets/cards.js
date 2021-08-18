@@ -46,7 +46,7 @@
 		description: 'fully heals',
 		effect(scene) {
 			scene.party.forEach((i) => {
-				i.setHealth(i.maxHealth);
+				i.heal(i.maxHealth);
 			});
 		},
 	},
