@@ -68,7 +68,9 @@ export class GameScene {
 		this.camera.display.container.y -= size.y / 2;
 		this.camera.display.container.addChild(this.container);
 
-		this.hand.addCard('refresh');
+		this.hand.addCard('init');
+		this.hand.hand[0].transform.y = -size.y;
+		this.playCard(this.hand.hand[0]);
 
 		const padding = 0;
 		const texBorder = resources.border.texture as Texture;
@@ -344,19 +346,24 @@ export class GameScene {
 		this.hand.addCard(card);
 	}
 
+	clearHand() {
+		while (this.hand.hand.length) {
+			this.hand.removeCard(this.hand.hand[this.hand.hand.length - 1]);
+		}
+	}
+
 	playCard(card: Card) {
 		const {
 			def,
 			sprCard: { texture },
 		} = card;
 		if (def.canPlay && !def.canPlay(this)) return;
-		this.hand.removeCard(card);
 		const sprCard = new Sprite(texture);
 		sprCard.anchor.x = sprCard.anchor.y = 0.5;
 		sprCard.x = card.transform.x;
 		sprCard.y = card.transform.y;
 		this.containerUI.addChild(sprCard);
-		card.destroy();
+		this.hand.removeCard(card);
 		this.queue.push(async () => {
 			const tweenR = TweenManager.tween(
 				sprCard,
@@ -377,7 +384,7 @@ export class GameScene {
 			const tweenY = TweenManager.tween(
 				sprCard,
 				'y',
-				0,
+				-sprCard.height,
 				500,
 				undefined,
 				backIn

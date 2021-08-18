@@ -80,5 +80,6 @@ export class Hand extends GameObject {
 		if (card === this.inspecting) {
 			this.inspecting = undefined;
 		}
+		card.destroy();
 	}
 }

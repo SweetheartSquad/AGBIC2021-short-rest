@@ -1,4 +1,54 @@
 (() => ({
+	// menus
+	init: {
+		effect(scene) {
+			scene.addCard('start');
+			scene.addCard('options');
+		},
+	},
+	start: {
+		name: 'Start',
+		effect(scene) {
+			scene.clearHand();
+			scene.addCard('refresh');
+		},
+	},
+	options: {
+		name: 'Options',
+		effect(scene) {
+			scene.clearHand();
+			scene.addCard('back');
+			scene.addCard('filter');
+			scene.addCard('scale');
+		},
+	},
+	filter: {
+		name: 'Toggle Filter',
+		effect(scene) {
+			scene.screenFilter.enabled = !scene.screenFilter.enabled;
+			scene.addCard('filter');
+		},
+	},
+	scale: {
+		name: 'Cycle Scale Mode',
+		effect(scene) {
+			window.resizer.scaleMode = {
+				FIT: 'MULTIPLES',
+				MULTIPLES: 'FIT',
+			}[window.resizer.scaleMode];
+			window.resizer.onResize();
+			scene.addCard('scale');
+		},
+	},
+	back: {
+		name: 'Back',
+		effect(scene) {
+			scene.clearHand();
+			scene.addCard('start');
+			scene.addCard('options');
+		},
+	},
+	// gameplay
 	test: {
 		name: 'test',
 		description: 'test card',

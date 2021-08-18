@@ -26,6 +26,8 @@ document.body.addEventListener('mousedown', () => {
 });
 
 export const resizer = new Resizer(size.x, size.y, ScaleModes.FIT);
+// @ts-ignore
+window.resizer = resizer;
 document.body.appendChild(resizer.element);
 
 const playEl = document.createElement('button');
