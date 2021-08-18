@@ -61,6 +61,7 @@
 		name: 'refresh',
 		description: 'gives cards',
 		effect(scene) {
+			scene.clearHand();
 			scene.addCard('test');
 			scene.addCard('kill');
 			scene.addCard('shuffle');
