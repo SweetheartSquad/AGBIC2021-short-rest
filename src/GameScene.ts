@@ -1,4 +1,4 @@
-import { quadInOut, quadOut } from 'eases';
+import { backIn, quadInOut, quadOut } from 'eases';
 import {
 	Container,
 	Graphics,
@@ -234,11 +234,50 @@ export class GameScene {
 	}
 
 	playCard(card: Card) {
-		const { def } = card;
+		const {
+			def,
+			sprCard: { texture },
+		} = card;
 		if (def.canPlay && !def.canPlay(this)) return;
 		this.hand.removeCard(card);
+		const sprCard = new Sprite(texture);
+		sprCard.anchor.x = sprCard.anchor.y = 0.5;
+		sprCard.x = card.transform.x;
+		sprCard.y = card.transform.y;
+		this.containerUI.addChild(sprCard);
 		card.destroy();
-		def.effect(this);
+		this.queue.push(async () => {
+			const tweenR = TweenManager.tween(
+				sprCard,
+				'rotation',
+				Math.PI * 2,
+				500,
+				undefined,
+				backIn
+			);
+			const tweenX = TweenManager.tween(
+				sprCard,
+				'x',
+				size.x / 2,
+				500,
+				undefined,
+				quadOut
+			);
+			const tweenY = TweenManager.tween(
+				sprCard,
+				'y',
+				0,
+				500,
+				undefined,
+				backIn
+			);
+			await delay(500);
+			TweenManager.abort(tweenR);
+			TweenManager.abort(tweenY);
+			TweenManager.abort(tweenX);
+			def.effect(this);
+			sprCard.destroy();
+		});
 	}
 
 	setAreas(areas: string[]) {
