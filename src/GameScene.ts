@@ -198,6 +198,12 @@ export class GameScene {
 			i.display.container.zIndex = idx;
 		});
 
+		this.hand.display.container.y = lerp(
+			this.hand.display.container.y,
+			this.busy ? 50 : 0,
+			0.1
+		);
+
 		this.screenFilter.update();
 
 		GameObject.update();
