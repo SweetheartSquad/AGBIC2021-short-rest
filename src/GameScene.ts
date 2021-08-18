@@ -169,17 +169,6 @@ export class GameScene {
 			-this.camera.display.container.pivot.y,
 		];
 
-		if (!this.busy && this.queue.length) {
-			this.busy = true;
-			const next = this.queue.shift();
-			const p = (next as NonNullable<typeof next>)();
-			if (p) {
-				p.then(() => {
-					this.busy = false;
-				});
-			}
-		}
-
 		const overlap = 0.5;
 		this.party.forEach((i, idx) => {
 			const prev = this.party[idx - 1];
@@ -201,6 +190,17 @@ export class GameScene {
 		GameObject.update();
 		TweenManager.update();
 		this.containerUI.x = this.camera.display.container.pivot.x;
+
+		if (!this.busy && this.queue.length) {
+			this.busy = true;
+			const next = this.queue.shift();
+			const p = (next as NonNullable<typeof next>)();
+			if (p) {
+				p.then(() => {
+					this.busy = false;
+				});
+			}
+		}
 	}
 
 	advance() {
