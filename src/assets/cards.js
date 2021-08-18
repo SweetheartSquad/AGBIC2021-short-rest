@@ -11,7 +11,10 @@
 		name: 'shuffle',
 		description: 'Shuffles party',
 		effect(scene) {
-			scene.party.sort(() => Math.random() - 0.5);
+			const original = scene.party.slice();
+			do {
+				scene.party.sort(() => Math.random() - 0.5);
+			} while (scene.party.every((i, idx) => i === original[idx]));
 		},
 	},
 }))();
