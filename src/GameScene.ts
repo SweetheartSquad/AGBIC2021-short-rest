@@ -201,6 +201,8 @@ export class GameScene {
 				});
 			}
 		}
+
+		this.containerUI.interactiveChildren = !this.busy;
 	}
 
 	advance() {
