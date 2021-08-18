@@ -19,7 +19,7 @@ import { ScreenFilter } from './ScreenFilter';
 import { size } from './size';
 import { Tween, TweenManager } from './Tweens';
 import { UIMap } from './UIMap';
-import { btn, delay, lerp } from './utils';
+import { btn, delay, lerp, removeFromArray } from './utils';
 
 export class GameScene {
 	container = new Container();
@@ -27,6 +27,8 @@ export class GameScene {
 	containerUI = new Container();
 
 	containerParty = new Container();
+
+	containerFacing = new Container();
 
 	graphics = new Graphics();
 
@@ -38,6 +40,8 @@ export class GameScene {
 
 	// hand: Card[] = [];
 	party: Character[] = [];
+
+	facing?: Character;
 
 	map: UIMap = new UIMap();
 
@@ -99,12 +103,14 @@ export class GameScene {
 		});
 		this.party[3].setHealth(2);
 
-		const containerEnemies = new Container();
-		containerEnemies.y += 320;
-		containerEnemies.x = size.x - 150;
-		const enemy = new Character({ spr: 'skeleton', maxHealth: 2 });
+		this.containerFacing.y += this.containerParty.y;
+		this.containerFacing.x = size.x - 150;
+
+		// TODO: genericize
+		const enemy = new Character({ spr: 'skeleton', maxHealth: 5 });
 		enemy.init();
-		containerEnemies.addChild(enemy.display.container);
+		this.facing = enemy;
+		this.containerFacing.addChild(enemy.display.container);
 
 		this.setAreas([
 			'camp',
@@ -147,7 +153,7 @@ export class GameScene {
 
 		this.container.addChild(this.bg);
 		this.container.addChild(this.containerParty);
-		this.container.addChild(containerEnemies);
+		this.container.addChild(this.containerFacing);
 		this.container.addChild(this.fg);
 		this.container.addChild(this.containerUI);
 	}
@@ -215,6 +221,35 @@ export class GameScene {
 	}
 
 	advance() {
+		const { facing } = this;
+		if (facing) {
+			if (facing.health > 0) {
+				this.queue.push(async () => {
+					const front = this.party[this.party.length - 1];
+					front.display.container.scale.x += 0.3;
+					front.display.container.scale.y -= 0.3;
+					const t1 = TweenManager.tween(
+						front.transform,
+						'x',
+						size.x * 0.66,
+						100,
+						undefined,
+						quadOut
+					);
+					await delay(100);
+					front.display.container.scale.x -= 0.3;
+					front.display.container.scale.y += 0.3;
+					TweenManager.abort(t1);
+					facing.setHealth(facing.health - 1);
+					front.setHealth(front.health - 1);
+					if (front.health <= 0) {
+						removeFromArray(this.party, front);
+						this.party.unshift(front);
+					}
+				});
+				return;
+			}
+		}
 		this.queue.push(() => {
 			this.position += 1;
 			this.map.setPosition(this.position);
