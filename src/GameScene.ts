@@ -1,4 +1,4 @@
-import { backIn, quadInOut, quadOut } from 'eases';
+import { backIn, quadIn, quadInOut, quadOut } from 'eases';
 import {
 	Container,
 	Graphics,
@@ -11,6 +11,8 @@ import {
 import { Camera } from './Camera';
 import { Card } from './Card';
 import { Character } from './Character';
+import { CharacterEnemy } from './CharacterEnemy';
+import { CharacterPlayer } from './CharacterPlayer';
 import { fontTitle } from './font';
 import { game, resources } from './Game';
 import { GameObject } from './GameObject';
@@ -19,7 +21,7 @@ import { ScreenFilter } from './ScreenFilter';
 import { size } from './size';
 import { Tween, TweenManager } from './Tweens';
 import { UIMap } from './UIMap';
-import { btn, delay, lerp, removeFromArray } from './utils';
+import { btn, delay, lerp, randRange, removeFromArray } from './utils';
 
 export class GameScene {
 	container = new Container();
@@ -97,20 +99,14 @@ export class GameScene {
 		this.containerParty.sortableChildren = true;
 		this.containerParty.y += 320;
 		partyDef.forEach((i) => {
-			const character = new Character(i);
+			const character = new CharacterPlayer(i);
 			this.containerParty.addChild(character.display.container);
 			this.party.push(character);
 		});
 		this.party[3].setHealth(2);
 
 		this.containerFacing.y += this.containerParty.y;
-		this.containerFacing.x = size.x - 150;
-
-		// TODO: genericize
-		const enemy = new Character({ spr: 'skeleton', maxHealth: 5 });
-		enemy.init();
-		this.facing = enemy;
-		this.containerFacing.addChild(enemy.display.container);
+		this.containerFacing.pivot.x -= size.x - 150;
 
 		this.setAreas([
 			'camp',
@@ -246,6 +242,63 @@ export class GameScene {
 						removeFromArray(this.party, front);
 						this.party.unshift(front);
 					}
+					if (facing.health <= 0) {
+						this.facing = undefined;
+						const tweens = [];
+						tweens.push(
+							TweenManager.tween(
+								facing.sprBody.scale,
+								'y',
+								0.8,
+								1000,
+								undefined,
+								quadIn
+							)
+						);
+						tweens.push(
+							TweenManager.tween(
+								facing.sprBody.scale,
+								'x',
+								1.2,
+								1000,
+								undefined,
+								quadIn
+							)
+						);
+						tweens.push(
+							TweenManager.tween(
+								facing.sprBody,
+								'x',
+								50,
+								1000,
+								undefined,
+								(t) => randRange(-t, t)
+							)
+						);
+						tweens.push(
+							TweenManager.tween(
+								facing.sprBody,
+								'y',
+								50,
+								1000,
+								undefined,
+								(t) => randRange(-t, t)
+							)
+						);
+						tweens.push(
+							TweenManager.tween(
+								facing.display.container,
+								'alpha',
+								0,
+								1000,
+								undefined,
+								quadIn
+							)
+						);
+						await delay(1000);
+						tweens.forEach((i) => TweenManager.abort(i));
+						facing.destroy();
+					}
 				});
 				return;
 			}
@@ -269,6 +322,13 @@ export class GameScene {
 				undefined,
 				quadInOut
 			);
+			this.containerFacing.x = size.x * this.position;
+			if (this.map.areas[this.position] === 'enemy') {
+				const enemy = new CharacterEnemy({ spr: 'skeleton', maxHealth: 5 });
+				enemy.init();
+				this.facing = enemy;
+				this.containerFacing.addChild(enemy.display.container);
+			}
 			return delay(1500);
 		});
 	}

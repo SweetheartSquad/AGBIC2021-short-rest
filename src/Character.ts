@@ -41,7 +41,6 @@ export class Character extends GameObject {
 		this.scripts.push((this.display = new Display(this)));
 		this.sprOL = new Sprite(resources[spr].texture as Texture);
 		this.sprOL.tint = 0x000000;
-		this.sprOL.x += -2;
 		this.sprOL.filters = [filterOL];
 		this.sprBody = new Sprite(resources[spr].texture as Texture);
 		this.sprOL.anchor.x = this.sprBody.anchor.x = 0.5;
@@ -70,14 +69,16 @@ export class Character extends GameObject {
 
 	update() {
 		super.update();
-		const t = this.offset + game.app.ticker.lastTime / 100;
-		if (this.health <= 0) {
-			this.sprOL.scale.y = this.sprBody.scale.y = 1;
-			this.sprOL.rotation = this.sprBody.rotation = 0;
-		} else {
+		if (this.health > 0) {
+			const t = this.offset + game.app.ticker.lastTime / 100;
 			this.sprOL.scale.y = this.sprBody.scale.y = 1.0 + Math.sin(t) * 0.04;
 			this.sprOL.rotation = this.sprBody.rotation = Math.sin(t) * 0.03;
 		}
+		this.sprOL.x = this.sprBody.x - 2;
+		this.sprOL.y = this.sprBody.y;
+		this.sprOL.scale.y = this.sprBody.scale.y;
+		this.sprOL.scale.x = this.sprBody.scale.x;
+		this.sprOL.rotation = this.sprBody.rotation;
 	}
 
 	setHealth(h: number) {
@@ -87,10 +88,5 @@ export class Character extends GameObject {
 			i.texture = resources[filled ? 'icon_heart' : 'icon_heart_empty']
 				.texture as Texture;
 		});
-		if (this.health <= 0) {
-			this.sprBody.tint = 0x000000;
-		} else {
-			this.sprBody.tint = 0xffffff;
-		}
 	}
 }
