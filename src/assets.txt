@@ -19,4 +19,7 @@ textures/icon_cleared.png
 textures/icon_heart.png
 textures/icon_heart_empty.png
 textures/advance.png
+textures/treasure.png
+textures/door.png
 textures/skeleton.png
+textures/bat.png

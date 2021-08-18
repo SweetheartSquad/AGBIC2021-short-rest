@@ -279,16 +279,23 @@ export class GameScene {
 			this.containerFacing.x = size.x * this.position;
 			const area = this.map.areas[this.position];
 			if (area === 'enemy') {
-				const enemy = new CharacterEnemy({ spr: 'skeleton', maxHealth: 5 });
+				const enemy = new CharacterEnemy({
+					spr: Math.random() > 0.5 ? 'skeleton' : 'bat',
+					maxHealth: Math.floor(Math.random() * 3) + 1,
+				});
 				enemy.init();
 				this.facing = enemy;
 				this.containerFacing.addChild(enemy.display.container);
 			} else if (area === 'treasure') {
-				const enemy = new CharacterEnemy({ spr: 'skeleton', maxHealth: 5 });
+				const enemy = new CharacterEnemy({ spr: 'treasure', maxHealth: 1 });
 				enemy.init();
 				this.facing = enemy;
 				this.containerFacing.addChild(enemy.display.container);
 			} else if (area === 'door') {
+				const enemy = new CharacterEnemy({ spr: 'door', maxHealth: 0 });
+				enemy.init();
+				this.facing = enemy;
+				this.containerFacing.addChild(enemy.display.container);
 				this.clearHand();
 				this.addCard('done');
 			}
