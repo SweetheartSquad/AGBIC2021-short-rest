@@ -43,6 +43,8 @@ export class GameScene {
 
 	bg: TilingSprite;
 
+	fg: TilingSprite;
+
 	queue: (() => Promise<void> | void)[] = [];
 
 	busy = false;
@@ -51,7 +53,7 @@ export class GameScene {
 
 	constructor() {
 		this.bg = new TilingSprite(resources.bg.texture as Texture, size.x, size.y);
-		this.container.addChild(this.bg);
+		this.fg = new TilingSprite(resources.fg.texture as Texture, size.x, size.y);
 
 		this.screenFilter = new ScreenFilter();
 		this.camera.display.container.filters = [this.screenFilter];
@@ -149,8 +151,10 @@ export class GameScene {
 		this.containerUI.addChild(this.hand.display.container);
 		this.containerUI.addChild(border);
 
+		this.container.addChild(this.bg);
 		this.container.addChild(this.containerParty);
 		this.container.addChild(containerEnemies);
+		this.container.addChild(this.fg);
 		this.container.addChild(this.containerUI);
 	}
 
@@ -283,6 +287,6 @@ export class GameScene {
 	setAreas(areas: string[]) {
 		this.map.setAreas(areas);
 		this.map.setPosition(0);
-		this.bg.width = size.x * areas.length;
+		this.bg.width = this.fg.width = size.x * areas.length;
 	}
 }
