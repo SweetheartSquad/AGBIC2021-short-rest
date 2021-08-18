@@ -62,7 +62,7 @@ export class Character extends GameObject {
 		}
 		containerHealth.x -= Math.floor(containerHealth.width / 2);
 		this.setHealth(health ?? maxHealth);
-		containerHealth.y = containerHealth.height;
+		containerHealth.y = containerHealth.height / 2;
 		this.display.container.addChild(containerHealth);
 		this.init();
 	}
