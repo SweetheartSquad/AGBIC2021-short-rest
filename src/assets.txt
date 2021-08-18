@@ -7,6 +7,7 @@ textures/frog.png
 textures/cat.png
 textures/apple.png
 textures/bg.png
+textures/fg.png
 textures/icon_attention.png
 textures/icon_camp.png
 textures/icon_door.png
