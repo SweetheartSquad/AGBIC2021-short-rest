@@ -13,6 +13,7 @@
 		effect(scene) {
 			scene.addCard('test');
 			scene.addCard('shuffle');
+			scene.addCard('fullheal');
 			scene.addCard('refresh');
 		},
 		canPlay: () => true,
@@ -29,6 +30,15 @@
 					return Math.random() - 0.5;
 				});
 			} while (scene.party.every((i, idx) => i === original[idx]));
+		},
+	},
+	fullheal: {
+		name: 'Full Heal',
+		description: 'fully heals',
+		effect(scene) {
+			scene.party.forEach((i) => {
+				i.setHealth(i.maxHealth);
+			});
 		},
 	},
 }))();
