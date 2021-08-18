@@ -243,61 +243,7 @@ export class GameScene {
 						this.party.unshift(front);
 					}
 					if (facing.health <= 0) {
-						this.facing = undefined;
-						const tweens = [];
-						tweens.push(
-							TweenManager.tween(
-								facing.sprBody.scale,
-								'y',
-								0.8,
-								1000,
-								undefined,
-								quadIn
-							)
-						);
-						tweens.push(
-							TweenManager.tween(
-								facing.sprBody.scale,
-								'x',
-								1.2,
-								1000,
-								undefined,
-								quadIn
-							)
-						);
-						tweens.push(
-							TweenManager.tween(
-								facing.sprBody,
-								'x',
-								50,
-								1000,
-								undefined,
-								(t) => randRange(-t, t)
-							)
-						);
-						tweens.push(
-							TweenManager.tween(
-								facing.sprBody,
-								'y',
-								50,
-								1000,
-								undefined,
-								(t) => randRange(-t, t)
-							)
-						);
-						tweens.push(
-							TweenManager.tween(
-								facing.display.container,
-								'alpha',
-								0,
-								1000,
-								undefined,
-								quadIn
-							)
-						);
-						await delay(1000);
-						tweens.forEach((i) => TweenManager.abort(i));
-						facing.destroy();
+						this.killFacing();
 					}
 				});
 				return;
@@ -330,6 +276,59 @@ export class GameScene {
 				this.containerFacing.addChild(enemy.display.container);
 			}
 			return delay(1500);
+		});
+	}
+
+	killFacing() {
+		const { facing } = this;
+		if (!facing) return;
+		this.facing = undefined;
+		facing.setHealth(0);
+		const tweens: Tween[] = [];
+		tweens.push(
+			TweenManager.tween(
+				facing.sprBody.scale,
+				'y',
+				0.8,
+				1000,
+				undefined,
+				quadIn
+			)
+		);
+		tweens.push(
+			TweenManager.tween(
+				facing.sprBody.scale,
+				'x',
+				1.2,
+				1000,
+				undefined,
+				quadIn
+			)
+		);
+		tweens.push(
+			TweenManager.tween(facing.sprBody, 'x', 50, 1000, undefined, (t) =>
+				randRange(-t, t)
+			)
+		);
+		tweens.push(
+			TweenManager.tween(facing.sprBody, 'y', 50, 1000, undefined, (t) =>
+				randRange(-t, t)
+			)
+		);
+		tweens.push(
+			TweenManager.tween(
+				facing.display.container,
+				'alpha',
+				0,
+				1000,
+				undefined,
+				quadIn
+			)
+		);
+		this.queue.push(async () => {
+			await delay(1000);
+			tweens.forEach((i) => TweenManager.abort(i));
+			facing.destroy();
 		});
 	}
 

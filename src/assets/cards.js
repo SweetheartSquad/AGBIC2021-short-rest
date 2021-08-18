@@ -12,11 +12,20 @@
 		description: 'gives cards',
 		effect(scene) {
 			scene.addCard('test');
+			scene.addCard('kill');
 			scene.addCard('shuffle');
 			scene.addCard('fullheal');
 			scene.addCard('refresh');
 		},
 		canPlay: () => true,
+	},
+	kill: {
+		name: 'kill',
+		description: 'kill card',
+		effect(scene) {
+			scene.killFacing();
+		},
+		canPlay: (scene) => scene.facing,
 	},
 	shuffle: {
 		name: 'shuffle',
