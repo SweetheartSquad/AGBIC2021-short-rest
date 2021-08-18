@@ -4,6 +4,7 @@ import { game, resources } from './Game';
 import { GameObject } from './GameObject';
 import { Display } from './Scripts/Display';
 import { Transform } from './Scripts/Transform';
+import { clamp } from './utils';
 
 const filterOL = new OutlineFilter(2, 0xffffff, 1);
 let offset = 0;
@@ -75,7 +76,7 @@ export class Character extends GameObject {
 	}
 
 	setHealth(h: number) {
-		this.health = Math.min(this.maxHealth, h);
+		this.health = clamp(0, h, this.maxHealth);
 		this.hearts.forEach((i, idx) => {
 			const filled = this.health > idx;
 			i.texture = resources[filled ? 'icon_heart' : 'icon_heart_empty']

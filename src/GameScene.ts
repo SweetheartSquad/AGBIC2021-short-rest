@@ -183,9 +183,20 @@ export class GameScene {
 							(prev.display.container.width / 2 +
 								i.display.container.width / 2) *
 								overlap
-					: 75,
+					: 120,
 				0.1
 			);
+			i.transform.y = lerp(
+				i.transform.y,
+				idx === this.party.length - 1 ? 0 : -20,
+				0.1
+			);
+			i.display.container.scale.y = lerp(
+				i.display.container.scale.y,
+				idx === this.party.length - 1 ? 1 : 0.8,
+				0.1
+			);
+			i.display.container.scale.x = i.display.container.scale.y;
 			i.display.container.zIndex = idx;
 		});
 
