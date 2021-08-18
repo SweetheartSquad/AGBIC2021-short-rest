@@ -11,6 +11,7 @@
 		effect(scene) {
 			scene.clearHand();
 			scene.addCard('refresh');
+			scene.addCard('advance');
 		},
 	},
 	options: {
@@ -48,6 +49,20 @@
 			scene.addCard('options');
 		},
 	},
+	advance: {
+		name: 'Advance',
+		effect(scene) {
+			scene.addCard('advance');
+			scene.advance();
+		},
+	},
+	done: {
+		name: 'Area Cleared!',
+		effect() {
+			// TODO: next level/camp
+			window.location.reload();
+		},
+	},
 	// gameplay
 	test: {
 		name: 'test',
@@ -67,6 +82,7 @@
 			scene.addCard('shuffle');
 			scene.addCard('fullheal');
 			scene.addCard('refresh');
+			scene.addCard('advance');
 		},
 		canPlay: () => true,
 	},
