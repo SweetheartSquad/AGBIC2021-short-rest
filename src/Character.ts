@@ -45,6 +45,10 @@ export class Character extends GameObject {
 		this.sprBody = new Sprite(resources[spr].texture as Texture);
 		this.sprOL.anchor.x = this.sprBody.anchor.x = 0.5;
 		this.sprOL.anchor.y = this.sprBody.anchor.y = 1;
+		const shadow = new Sprite(resources.shadow.texture as Texture);
+		shadow.anchor.x = shadow.anchor.y = 0.5;
+		shadow.width = this.sprBody.width / 2;
+		this.display.container.addChild(shadow);
 		this.display.container.addChild(this.sprOL);
 		this.display.container.addChild(this.sprBody);
 

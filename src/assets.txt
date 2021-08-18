@@ -1,5 +1,6 @@
 cards.js
 textures/border.png
+textures/shadow.png
 textures/card.png
 textures/ditherGrid.png
 textures/onion.png
