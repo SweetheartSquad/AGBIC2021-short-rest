@@ -71,8 +71,13 @@ export class Character extends GameObject {
 	update() {
 		super.update();
 		const t = this.offset + game.app.ticker.lastTime / 100;
-		this.sprOL.scale.y = this.sprBody.scale.y = 1.0 + Math.sin(t) * 0.04;
-		this.sprOL.rotation = this.sprBody.rotation = Math.sin(t) * 0.03;
+		if (this.health <= 0) {
+			this.sprOL.scale.y = this.sprBody.scale.y = 1;
+			this.sprOL.rotation = this.sprBody.rotation = 0;
+		} else {
+			this.sprOL.scale.y = this.sprBody.scale.y = 1.0 + Math.sin(t) * 0.04;
+			this.sprOL.rotation = this.sprBody.rotation = Math.sin(t) * 0.03;
+		}
 	}
 
 	setHealth(h: number) {
@@ -82,5 +87,10 @@ export class Character extends GameObject {
 			i.texture = resources[filled ? 'icon_heart' : 'icon_heart_empty']
 				.texture as Texture;
 		});
+		if (this.health <= 0) {
+			this.sprBody.tint = 0x000000;
+		} else {
+			this.sprBody.tint = 0xffffff;
+		}
 	}
 }
