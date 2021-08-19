@@ -18,9 +18,9 @@
 		},
 		interact(scene) {
 			scene.queue.push(async () => {
-				scene.facing.animator.setAnimation('treasure_open');
+				scene.obstacle.animator.setAnimation('treasure_open');
 				await scene.delay(100);
-				scene.killFacing();
+				scene.killObstacle();
 			});
 		},
 	},

@@ -83,9 +83,9 @@
 		name: 'kill',
 		description: 'kill card',
 		effect(scene) {
-			scene.killFacing();
+			scene.killObstacle();
 		},
-		canPlay: (scene) => scene.facing,
+		canPlay: (scene) => scene.obstacle,
 	},
 	shuffle: {
 		name: 'shuffle',

@@ -32,7 +32,7 @@ export class GameScene {
 
 	containerParty = new Container();
 
-	containerFacing = new Container();
+	containerobstacle = new Container();
 
 	graphics = new Graphics();
 
@@ -45,7 +45,7 @@ export class GameScene {
 	// hand: Card[] = [];
 	party: Character[] = [];
 
-	facing?: Obstacle;
+	obstacle?: Obstacle;
 
 	map: UIMap = new UIMap();
 
@@ -109,8 +109,8 @@ export class GameScene {
 		});
 		this.party[3].setHealth(2);
 
-		this.containerFacing.y += this.containerParty.y;
-		this.containerFacing.pivot.x -= size.x - 150;
+		this.containerobstacle.y += this.containerParty.y;
+		this.containerobstacle.pivot.x -= size.x - 150;
 
 		this.setAreas([
 			'camp',
@@ -153,7 +153,7 @@ export class GameScene {
 
 		this.container.addChild(this.bg);
 		this.container.addChild(this.containerParty);
-		this.container.addChild(this.containerFacing);
+		this.container.addChild(this.containerobstacle);
 		this.container.addChild(this.fg);
 		this.container.addChild(this.containerUI);
 	}
@@ -227,8 +227,8 @@ export class GameScene {
 	}
 
 	advance() {
-		const { facing } = this;
-		if (facing) {
+		const { obstacle } = this;
+		if (obstacle) {
 			this.queue.push(async () => {
 				const front = this.party[this.party.length - 1];
 				front.display.container.scale.x += 0.3;
@@ -242,11 +242,11 @@ export class GameScene {
 					quadOut
 				);
 				await delay(100);
-				await facing.def.interact?.(this);
+				await obstacle.def.interact?.(this);
 				front.display.container.scale.x -= 0.3;
 				front.display.container.scale.y += 0.3;
 				TweenManager.abort(t1);
-				if (facing.def.damage) front.damage(facing.def.damage);
+				if (obstacle.def.damage) front.damage(obstacle.def.damage);
 				if (front.health <= 0) {
 					removeFromArray(this.party, front);
 					this.party.splice(
@@ -255,10 +255,10 @@ export class GameScene {
 						front
 					);
 				}
-				if (facing.health > 0) {
-					facing.damage(1);
-					if (facing.health <= 0) {
-						this.killFacing();
+				if (obstacle.health > 0) {
+					obstacle.damage(1);
+					if (obstacle.health <= 0) {
+						this.killObstacle();
 					}
 				}
 			});
@@ -283,7 +283,7 @@ export class GameScene {
 				undefined,
 				quadInOut
 			);
-			this.containerFacing.x = size.x * this.position;
+			this.containerobstacle.x = size.x * this.position;
 			const area = this.map.areas[this.position];
 			if (area === 'enemy') {
 				this.addObstacle(Math.random() > 0.5 ? 'skeleton' : 'bat');
@@ -293,28 +293,28 @@ export class GameScene {
 				this.addObstacle('door');
 			}
 			await delay(1500);
-			await this.facing?.def?.start?.(this);
+			await this.obstacle?.def?.start?.(this);
 		});
 	}
 
-	damageFacing(damage: number) {
-		if (!this.facing) return;
-		this.facing.damage(damage);
-		if (this.facing.health <= 0) {
-			this.killFacing();
+	damageObstacle(damage: number) {
+		if (!this.obstacle) return;
+		this.obstacle.damage(damage);
+		if (this.obstacle.health <= 0) {
+			this.killObstacle();
 		}
 	}
 
-	killFacing() {
-		const { facing } = this;
-		if (!facing) return;
-		this.facing = undefined;
-		facing.setHealth(0);
-		removeFromArray(facing.scripts, facing.animator);
+	killObstacle() {
+		const { obstacle } = this;
+		if (!obstacle) return;
+		this.obstacle = undefined;
+		obstacle.setHealth(0);
+		removeFromArray(obstacle.scripts, obstacle.animator);
 		const tweens: Tween[] = [];
 		tweens.push(
 			TweenManager.tween(
-				facing.sprBody.scale,
+				obstacle.sprBody.scale,
 				'y',
 				0.8,
 				1000,
@@ -324,7 +324,7 @@ export class GameScene {
 		);
 		tweens.push(
 			TweenManager.tween(
-				facing.sprBody.scale,
+				obstacle.sprBody.scale,
 				'x',
 				1.2,
 				1000,
@@ -333,18 +333,18 @@ export class GameScene {
 			)
 		);
 		tweens.push(
-			TweenManager.tween(facing.sprBody, 'x', 50, 1000, undefined, (t) =>
+			TweenManager.tween(obstacle.sprBody, 'x', 50, 1000, undefined, (t) =>
 				randRange(-t, t)
 			)
 		);
 		tweens.push(
-			TweenManager.tween(facing.sprBody, 'y', 50, 1000, undefined, (t) =>
+			TweenManager.tween(obstacle.sprBody, 'y', 50, 1000, undefined, (t) =>
 				randRange(-t, t)
 			)
 		);
 		tweens.push(
 			TweenManager.tween(
-				facing.display.container,
+				obstacle.display.container,
 				'alpha',
 				0,
 				1000,
@@ -355,8 +355,8 @@ export class GameScene {
 		this.queue.push(async () => {
 			await delay(1000);
 			tweens.forEach((i) => TweenManager.abort(i));
-			await facing.def.end?.(this);
-			facing.destroy();
+			await obstacle.def.end?.(this);
+			obstacle.destroy();
 		});
 	}
 
@@ -419,8 +419,8 @@ export class GameScene {
 	addObstacle(...options: ConstructorParameters<typeof Obstacle>) {
 		const enemy = new Obstacle(...options);
 		enemy.init();
-		this.facing = enemy;
-		this.containerFacing.addChild(enemy.display.container);
+		this.obstacle = enemy;
+		this.containerobstacle.addChild(enemy.display.container);
 	}
 
 	setAreas(areas: string[]) {
