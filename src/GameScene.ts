@@ -251,6 +251,11 @@ export class GameScene {
 						0,
 						front
 					);
+					if (!this.front.health) {
+						// TODO: lose state + restart
+						this.clearHand();
+						this.addCard({ name: 'you died', effect() {} });
+					}
 				}
 				if (obstacle.health > 0) {
 					obstacle.damage(1);
