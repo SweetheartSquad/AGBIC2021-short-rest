@@ -24,6 +24,8 @@ import { UIMap } from './UIMap';
 import { delay, lerp, randRange, removeFromArray } from './utils';
 
 export class GameScene {
+	delay = delay;
+
 	container = new Container();
 
 	containerUI = new Container();

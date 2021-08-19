@@ -22,6 +22,7 @@ textures/icon_heart_empty.png
 textures/advance.png
 textures/error.png
 textures/treasure.png
+textures/treasure_open.png
 textures/door.png
 textures/skeleton.png
 textures/bat1.png
