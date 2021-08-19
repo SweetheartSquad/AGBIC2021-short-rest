@@ -56,13 +56,6 @@
 			scene.advance();
 		},
 	},
-	done: {
-		name: 'Area Cleared!',
-		effect() {
-			// TODO: next level/camp
-			window.location.reload();
-		},
-	},
 	// gameplay
 	test: {
 		name: 'test',

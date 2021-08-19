@@ -1,4 +1,5 @@
 cards.js
+obstacles.js
 textures/border.png
 textures/shadow.png
 textures/card.png
