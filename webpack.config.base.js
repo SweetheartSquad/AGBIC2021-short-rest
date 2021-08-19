@@ -60,7 +60,7 @@ module.exports = (env, argv) => ({
 		new CopyPlugin({
 			patterns: [
 				{
-					from: 'assets/**/*.{png,mp3,js}',
+					from: 'assets/**/*.{png,mp3,txt}',
 					context: 'src',
 				},
 			],

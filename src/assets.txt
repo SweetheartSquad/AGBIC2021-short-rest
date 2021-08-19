@@ -1,5 +1,5 @@
-cards.js
-obstacles.js
+cards.txt
+obstacles.txt
 textures/camp_bg.png
 textures/camp_unlit.png
 textures/camp_lit1.png
