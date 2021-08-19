@@ -89,7 +89,7 @@
 		effect(scene) {
 			scene.killObstacle();
 		},
-		canPlay: (scene) => scene.obstacle,
+		canPlay: (scene) => scene.obstacle && scene.obstacle.health,
 	},
 	shuffle: {
 		name: 'shuffle',
