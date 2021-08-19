@@ -388,6 +388,7 @@ export class GameScene {
 		const character = new CharacterPlayer(...options);
 		this.containerParty.addChild(character.display.container);
 		this.party.push(character);
+		return character;
 	}
 
 	addObstacle(...options: ConstructorParameters<typeof Obstacle>) {
@@ -395,6 +396,7 @@ export class GameScene {
 		enemy.init();
 		this.obstacle = enemy;
 		this.containerObstacle.addChild(enemy.display.container);
+		return enemy;
 	}
 
 	setAreas(areas: string[]) {
