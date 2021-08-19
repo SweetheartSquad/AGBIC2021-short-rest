@@ -21,7 +21,7 @@ import { ScreenFilter } from './ScreenFilter';
 import { size } from './size';
 import { Tween, TweenManager } from './Tweens';
 import { UIMap } from './UIMap';
-import { delay, lerp, randRange, removeFromArray } from './utils';
+import { delay, lerp, randItem, randRange, removeFromArray } from './utils';
 
 export class GameScene {
 	delay = delay;
@@ -288,7 +288,10 @@ export class GameScene {
 			this.containerObstacle.x = size.x * this.position;
 			const area = this.map.areas[this.position];
 			if (area === 'enemy') {
-				this.addObstacle(Math.random() > 0.5 ? 'skeleton' : 'bat');
+				// TODO: difficulty curve
+				this.addObstacle(
+					randItem(['skeleton', 'bat', 'cube_big', 'cube_small'])
+				);
 			} else if (area === 'treasure') {
 				this.addObstacle('treasure');
 			} else if (area === 'door') {
