@@ -42,7 +42,6 @@ export class GameScene {
 
 	hand: Hand = new Hand();
 
-	// hand: Card[] = [];
 	party: Character[] = [];
 
 	obstacle?: Obstacle;
