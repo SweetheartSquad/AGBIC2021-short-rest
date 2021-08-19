@@ -292,7 +292,11 @@ export class GameScene {
 			} else if (area === 'door') {
 				this.addObstacle('door');
 			}
-			await delay(1500);
+			await delay(500);
+			this.party.forEach((i) => {
+				i.transform.x = 0;
+			});
+			await delay(1000);
 			await Promise.all(this.obstacles.map((i) => i.def?.start?.(this)));
 		});
 	}
