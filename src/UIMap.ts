@@ -30,6 +30,7 @@ export class UIMap extends GameObject {
 
 		this.display.container.addChild(this.graphics);
 		this.transform.y = 50;
+		this.transform.x = size.x / 2;
 		this.init();
 	}
 
@@ -47,23 +48,23 @@ export class UIMap extends GameObject {
 	setAreas(areas: string[]) {
 		this.areas = areas;
 		this.sprAreas.forEach((i) => i.destroy());
+		this.graphics.clear();
 		this.sprAreas = areas.map((i, idx) => {
 			const icon = new Sprite(resources[`icon_${i}`].texture as Texture);
 			icon.x += 50 * idx;
 			this.display.container.addChild(icon);
-			icon.anchor.x = icon.anchor.y = 0.5;
+			icon.anchor.y = 0.5;
 			icon.filters = filtersOL;
 			return icon;
 		});
-		this.transform.x = size.x / 2 - this.display.container.width / 2;
+		const b = this.display.container.getLocalBounds();
+		this.display.container.pivot.x = this.display.container.width / 2;
 
-		this.graphics.clear();
-		const b = this.display.container.getBounds(true);
 		this.graphics.beginFill(0xffffff);
-		this.graphics.drawRect(b.left + 25, -3, b.width - 50, 6);
+		this.graphics.drawRect(25, -3, b.width - 50, 6);
 		this.graphics.endFill();
 		this.graphics.beginFill(0x000000);
-		this.graphics.drawRect(b.left + 25 + 2, -2, b.width - 50 - 4, 4);
+		this.graphics.drawRect(25 + 2, -2, b.width - 50 - 4, 4);
 		this.graphics.endFill();
 	}
 }
