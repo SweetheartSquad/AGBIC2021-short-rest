@@ -448,27 +448,6 @@ export class GameScene {
 		this.party.forEach((i) => {
 			i.transform.x = 0;
 		});
-		// this.queue.push(async () => {
-		// 	TweenManager.tween(
-		// 		this.camera.targetPivot,
-		// 		'x',
-		// 		size.x * this.position,
-		// 		500,
-		// 		undefined,
-		// 		quadOut
-		// 	);
-		// 	TweenManager.tween(
-		// 		this.containerParty,
-		// 		'x',
-		// 		size.x * this.position,
-		// 		1500,
-		// 		undefined,
-		// 		quadInOut
-		// 	);
-		// 	await delay(500);
-		// 	this.containerParty.visible = true;
-		// 	await delay(1000);
-		// });
 	}
 
 	startCamp() {
