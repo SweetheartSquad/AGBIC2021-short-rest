@@ -1,5 +1,9 @@
 cards.js
 obstacles.js
+textures/camp_bg.png
+textures/camp_unlit.png
+textures/camp_lit1.png
+textures/camp_lit2.png
 textures/border.png
 textures/shadow.png
 textures/card.png

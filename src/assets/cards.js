@@ -16,6 +16,18 @@
 			scene.addParty({ spr: 'cat', maxHealth: 3 });
 			scene.addParty({ spr: 'apple', maxHealth: 2 });
 			scene.addParty({ spr: 'onion', maxHealth: 4 });
+			// TODO: real start
+			scene.setAreas([
+				'camp',
+				'enemy',
+				'enemy',
+				'treasure',
+				'unknown',
+				'attention',
+				'enemy',
+				'treasure',
+				'door',
+			]);
 		},
 	},
 	options: {

@@ -9,6 +9,7 @@ import {
 	TilingSprite,
 } from 'pixi.js';
 import { Camera } from './Camera';
+import { Camp } from './Camp';
 import { Card } from './Card';
 import { Character } from './Character';
 import { CharacterPlayer } from './CharacterPlayer';
@@ -25,6 +26,8 @@ import { delay, lerp, randItem, randRange, removeFromArray } from './utils';
 
 export class GameScene {
 	delay = delay;
+
+	camp: Camp;
 
 	container = new Container();
 
@@ -67,6 +70,9 @@ export class GameScene {
 	position = 0;
 
 	constructor() {
+		this.camp = new Camp();
+		this.camp.display.container.visible = false;
+
 		this.bg = new TilingSprite(resources.bg.texture as Texture, size.x, size.y);
 		this.fg = new TilingSprite(resources.fg.texture as Texture, size.x, size.y);
 
@@ -107,23 +113,12 @@ export class GameScene {
 		this.containerObstacle.y += this.containerParty.y;
 		this.containerObstacle.pivot.x -= size.x - 175;
 
-		this.setAreas([
-			'camp',
-			'enemy',
-			'enemy',
-			'treasure',
-			'unknown',
-			'attention',
-			'enemy',
-			'treasure',
-			'door',
-		]);
-
 		this.hand.display.container.on('play', (card) => {
 			this.playCard(card);
 		});
 
 		this.containerUI.addChild(this.map.display.container);
+		this.containerUI.addChild(this.camp.display.container);
 		this.containerUI.addChild(this.hand.display.container);
 		this.containerUI.addChild(border);
 
@@ -366,8 +361,8 @@ export class GameScene {
 		});
 	}
 
-	addCard(card: string) {
-		this.hand.addCard(card);
+	addCard(...options: Parameters<Hand['addCard']>) {
+		this.hand.addCard(...options);
 	}
 
 	clearHand() {
@@ -438,8 +433,69 @@ export class GameScene {
 	}
 
 	setAreas(areas: string[]) {
+		this.obstacles.forEach((i) => i.destroy());
+		this.obstacles.length = 0;
 		this.map.setAreas(areas);
-		this.map.setPosition(0);
+		this.position = 0;
+		this.map.setPosition(this.position);
 		this.bg.width = this.fg.width = size.x * areas.length;
+
+		this.camera.display.container.pivot.x =
+			this.camera.targetPivot.x =
+			this.containerParty.x =
+			this.containerObstacle.x =
+				size.x * this.position;
+		this.party.forEach((i) => {
+			i.transform.x = 0;
+		});
+		// this.queue.push(async () => {
+		// 	TweenManager.tween(
+		// 		this.camera.targetPivot,
+		// 		'x',
+		// 		size.x * this.position,
+		// 		500,
+		// 		undefined,
+		// 		quadOut
+		// 	);
+		// 	TweenManager.tween(
+		// 		this.containerParty,
+		// 		'x',
+		// 		size.x * this.position,
+		// 		1500,
+		// 		undefined,
+		// 		quadInOut
+		// 	);
+		// 	await delay(500);
+		// 	this.containerParty.visible = true;
+		// 	await delay(1000);
+		// });
+	}
+
+	startCamp() {
+		this.camp.display.container.visible = true;
+		this.clearHand();
+		this.addCard({
+			name: 'kindle campfire',
+			effect(scene) {
+				// TODO: select card to burn
+				scene.camp.light();
+			},
+		});
+
+		// TODO: shuffle hand
+
+		this.addCard({
+			name: 'continue',
+			effect(scene) {
+				scene.camp.display.container.visible = false;
+				scene.camp.douse();
+				// TODO: use saved hand
+				scene.clearHand();
+				scene.addCard('refresh');
+				scene.addCard('advance');
+				// TODO: progression
+				scene.setAreas(['camp', 'enemy', 'door']);
+			},
+		});
 	}
 }

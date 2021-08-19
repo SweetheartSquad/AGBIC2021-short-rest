@@ -9,7 +9,7 @@ import { btn } from './utils';
 
 type CardDef = {
 	name: string;
-	description: string;
+	description?: string;
 	canPlay?: (scene: GameScene) => boolean;
 	effect: (scene: GameScene) => void;
 };
@@ -29,13 +29,13 @@ export class Card extends GameObject {
 
 	def: CardDef;
 
-	constructor(def: string) {
+	constructor(def: string | CardDef) {
 		super();
 		if (!Card.cards) {
 			// eslint-disable-next-line @typescript-eslint/no-implied-eval
 			Card.cards = Function(`"use strict";return ${resources.cards.data}`)();
 		}
-		this.def = Card.cards[def] || {
+		this.def = (typeof def === 'string' ? Card.cards[def] : def) || {
 			name: 'error',
 			description: `couldn't find card "${def}"`,
 			effect: () => {},
@@ -49,7 +49,7 @@ export class Card extends GameObject {
 		this.sprCard.anchor.x = this.sprCard.anchor.y = 0.5;
 		this.display.container.addChild(this.sprCard);
 		this.textName = new Text(name, font);
-		this.textDescription = new Text(description, font);
+		this.textDescription = new Text(description || '', font);
 		this.display.container.addChild(this.textName);
 		this.display.container.addChild(this.textDescription);
 		this.textName.y -= this.sprCard.height / 2 - 10;

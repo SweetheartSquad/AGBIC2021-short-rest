@@ -1,7 +1,7 @@
 (() => ({
 	door: {
-		interact() {
-			window.location.reload();
+		interact(scene) {
+			scene.startCamp();
 		},
 	},
 	skeleton: {
