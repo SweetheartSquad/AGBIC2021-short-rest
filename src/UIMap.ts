@@ -6,7 +6,7 @@ import { Display } from './Scripts/Display';
 import { Transform } from './Scripts/Transform';
 import { size } from './size';
 
-const filterOL = new OutlineFilter(2, 0xffffff, 1);
+const filtersOL = [new OutlineFilter(2, 0xffffff, 1)];
 
 export class UIMap extends GameObject {
 	display: Display;
@@ -52,7 +52,7 @@ export class UIMap extends GameObject {
 			icon.x += 50 * idx;
 			this.display.container.addChild(icon);
 			icon.anchor.x = icon.anchor.y = 0.5;
-			icon.filters = [filterOL];
+			icon.filters = filtersOL;
 			return icon;
 		});
 		this.transform.x = size.x / 2 - this.display.container.width / 2;
