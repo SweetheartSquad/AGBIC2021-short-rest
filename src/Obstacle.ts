@@ -32,7 +32,7 @@ export class Obstacle extends Character {
 			},
 		};
 		super({
-			spr: def.sprite || 'error',
+			spr: def.sprite || obstacle,
 			maxHealth: def.health || 0,
 		});
 		this.def = def;
