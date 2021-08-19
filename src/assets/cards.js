@@ -12,6 +12,10 @@
 			scene.clearHand();
 			scene.addCard('refresh');
 			scene.addCard('advance');
+			scene.addParty({ spr: 'frog', maxHealth: 2 });
+			scene.addParty({ spr: 'cat', maxHealth: 3 });
+			scene.addParty({ spr: 'apple', maxHealth: 2 });
+			scene.addParty({ spr: 'onion', maxHealth: 4 });
 		},
 	},
 	options: {

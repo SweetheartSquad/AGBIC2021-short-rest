@@ -93,21 +93,9 @@ export class GameScene {
 		textTitle.x = 30;
 		game.app.stage.addChild(textTitle);
 
-		const partyDef = [
-			{ spr: 'frog', maxHealth: 2 },
-			{ spr: 'cat', maxHealth: 3 },
-			{ spr: 'apple', maxHealth: 2 },
-			{ spr: 'onion', maxHealth: 4 },
-		];
 		this.containerParty = new Container();
 		this.containerParty.sortableChildren = true;
 		this.containerParty.y += 320;
-		partyDef.forEach((i) => {
-			const character = new CharacterPlayer(i);
-			this.containerParty.addChild(character.display.container);
-			this.party.push(character);
-		});
-		this.party[3].setHealth(2);
 
 		this.containerObstacle.y += this.containerParty.y;
 		this.containerObstacle.pivot.x -= size.x - 150;
@@ -414,6 +402,12 @@ export class GameScene {
 			def.effect(this);
 			sprCard.destroy();
 		});
+	}
+
+	addParty(...options: ConstructorParameters<typeof CharacterPlayer>) {
+		const character = new CharacterPlayer(...options);
+		this.containerParty.addChild(character.display.container);
+		this.party.push(character);
 	}
 
 	addObstacle(...options: ConstructorParameters<typeof Obstacle>) {
