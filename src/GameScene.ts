@@ -111,30 +111,11 @@ export class GameScene {
 			'door',
 		]);
 
-		// const sprAdvance = new Sprite(resources.advance.texture as Texture);
-		// btn(sprAdvance, 'advance');
-		// sprAdvance.on('click', () => {
-		// 	this.advance();
-		// });
-		// let tweenAdvance: Tween;
-		// sprAdvance.on('pointerover', () => {
-		// 	if (tweenAdvance) TweenManager.abort(tweenAdvance);
-		// 	tweenAdvance = TweenManager.tween(sprAdvance, 'alpha', 0.8, 100);
-		// });
-		// sprAdvance.on('pointerout', () => {
-		// 	if (tweenAdvance) TweenManager.abort(tweenAdvance);
-		// 	tweenAdvance = TweenManager.tween(sprAdvance, 'alpha', 1.0, 100);
-		// });
-		// sprAdvance.anchor.x = sprAdvance.anchor.y = 0.5;
-		// sprAdvance.x = size.x / 2;
-		// sprAdvance.y = 80;
-
 		this.hand.display.container.on('play', (card) => {
 			this.playCard(card);
 		});
 
 		this.containerUI.addChild(this.map.display.container);
-		// this.containerUI.addChild(sprAdvance);
 		this.containerUI.addChild(this.hand.display.container);
 		this.containerUI.addChild(border);
 
