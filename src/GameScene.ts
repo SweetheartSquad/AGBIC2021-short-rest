@@ -32,7 +32,7 @@ export class GameScene {
 
 	containerParty = new Container();
 
-	containerobstacle = new Container();
+	containerObstacle = new Container();
 
 	graphics = new Graphics();
 
@@ -109,8 +109,8 @@ export class GameScene {
 		});
 		this.party[3].setHealth(2);
 
-		this.containerobstacle.y += this.containerParty.y;
-		this.containerobstacle.pivot.x -= size.x - 150;
+		this.containerObstacle.y += this.containerParty.y;
+		this.containerObstacle.pivot.x -= size.x - 150;
 
 		this.setAreas([
 			'camp',
@@ -153,7 +153,7 @@ export class GameScene {
 
 		this.container.addChild(this.bg);
 		this.container.addChild(this.containerParty);
-		this.container.addChild(this.containerobstacle);
+		this.container.addChild(this.containerObstacle);
 		this.container.addChild(this.fg);
 		this.container.addChild(this.containerUI);
 	}
@@ -283,7 +283,7 @@ export class GameScene {
 				undefined,
 				quadInOut
 			);
-			this.containerobstacle.x = size.x * this.position;
+			this.containerObstacle.x = size.x * this.position;
 			const area = this.map.areas[this.position];
 			if (area === 'enemy') {
 				this.addObstacle(Math.random() > 0.5 ? 'skeleton' : 'bat');
@@ -420,7 +420,7 @@ export class GameScene {
 		const enemy = new Obstacle(...options);
 		enemy.init();
 		this.obstacle = enemy;
-		this.containerobstacle.addChild(enemy.display.container);
+		this.containerObstacle.addChild(enemy.display.container);
 	}
 
 	setAreas(areas: string[]) {
