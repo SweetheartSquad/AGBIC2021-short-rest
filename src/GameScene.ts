@@ -248,7 +248,11 @@ export class GameScene {
 					front.damage(1);
 					if (front.health <= 0) {
 						removeFromArray(this.party, front);
-						this.party.unshift(front);
+						this.party.splice(
+							this.party.findIndex((i) => i.health > 0),
+							0,
+							front
+						);
 					}
 					if (facing.health <= 0) {
 						this.killFacing();
