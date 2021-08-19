@@ -44,7 +44,15 @@ export class GameScene {
 
 	party: Character[] = [];
 
-	obstacle?: Obstacle;
+	obstacles: Obstacle[] = [];
+
+	get front() {
+		return this.party[this.party.length - 1];
+	}
+
+	get obstacle() {
+		return this.obstacles[this.obstacles.length - 1];
+	}
 
 	map: UIMap = new UIMap();
 
@@ -97,7 +105,7 @@ export class GameScene {
 		this.containerParty.y += 320;
 
 		this.containerObstacle.y += this.containerParty.y;
-		this.containerObstacle.pivot.x -= size.x - 150;
+		this.containerObstacle.pivot.x -= size.x - 175;
 
 		this.setAreas([
 			'camp',
@@ -141,7 +149,7 @@ export class GameScene {
 			-this.camera.display.container.pivot.y,
 		];
 
-		const overlap = 0.5;
+		let overlap = 2 / this.party.length;
 		this.party.forEach((i, idx) => {
 			const prev = this.party[idx - 1];
 			i.transform.x = lerp(
@@ -162,6 +170,32 @@ export class GameScene {
 			i.display.container.scale.y = lerp(
 				i.display.container.scale.y,
 				idx === this.party.length - 1 ? 1 : 0.8,
+				0.1
+			);
+			i.display.container.scale.x = i.display.container.scale.y;
+			i.display.container.zIndex = idx;
+		});
+		overlap = 1 / this.obstacles.length;
+		this.obstacles.forEach((i, idx) => {
+			const prev = this.obstacles[idx - 1];
+			i.transform.x = lerp(
+				i.transform.x,
+				prev
+					? prev.transform.x -
+							(prev.display.container.width / 2 +
+								i.display.container.width / 2) *
+								overlap
+					: 0,
+				0.1
+			);
+			i.transform.y = lerp(
+				i.transform.y,
+				idx === this.obstacles.length - 1 ? 0 : -20,
+				0.1
+			);
+			i.display.container.scale.y = lerp(
+				i.display.container.scale.y,
+				idx === this.obstacles.length - 1 ? 1 : 0.8,
 				0.1
 			);
 			i.display.container.scale.x = i.display.container.scale.y;
@@ -198,7 +232,7 @@ export class GameScene {
 		const { obstacle } = this;
 		if (obstacle) {
 			this.queue.push(async () => {
-				const front = this.party[this.party.length - 1];
+				const { front } = this;
 				front.display.container.scale.x += 0.3;
 				front.display.container.scale.y -= 0.3;
 				const t1 = TweenManager.tween(
@@ -261,14 +295,15 @@ export class GameScene {
 				this.addObstacle('door');
 			}
 			await delay(1500);
-			await this.obstacle?.def?.start?.(this);
+			await Promise.all(this.obstacles.map((i) => i.def?.start?.(this)));
 		});
 	}
 
 	damageObstacle(damage: number) {
-		if (!this.obstacle) return;
-		this.obstacle.damage(damage);
-		if (this.obstacle.health <= 0) {
+		const { obstacle } = this;
+		if (!obstacle) return;
+		obstacle.damage(damage);
+		if (obstacle.health <= 0) {
 			this.killObstacle();
 		}
 	}
@@ -276,7 +311,7 @@ export class GameScene {
 	killObstacle() {
 		const { obstacle } = this;
 		if (!obstacle) return;
-		this.obstacle = undefined;
+		removeFromArray(this.obstacles, obstacle);
 		obstacle.setHealth(0);
 		removeFromArray(obstacle.scripts, obstacle.animator);
 		const tweens: Tween[] = [];
@@ -394,7 +429,7 @@ export class GameScene {
 	addObstacle(...options: ConstructorParameters<typeof Obstacle>) {
 		const enemy = new Obstacle(...options);
 		enemy.init();
-		this.obstacle = enemy;
+		this.obstacles.push(enemy);
 		this.containerObstacle.addChild(enemy.display.container);
 		return enemy;
 	}
