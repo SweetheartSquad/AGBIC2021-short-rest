@@ -2,10 +2,11 @@ import { ColorOverlayFilter, OutlineFilter } from 'pixi-filters';
 import { Container, Sprite, Texture } from 'pixi.js';
 import { game, resources } from './Game';
 import { GameObject } from './GameObject';
+import { Animator } from './Scripts/Animator';
 import { Display } from './Scripts/Display';
 import { Transform } from './Scripts/Transform';
 import { TweenManager } from './Tweens';
-import { clamp } from './utils';
+import { clamp, tex } from './utils';
 
 const filterOL = new OutlineFilter(2, 0xffffff, 1);
 let offset = 0;
@@ -14,6 +15,8 @@ export class Character extends GameObject {
 	sprOL: Sprite;
 
 	sprBody: Sprite;
+
+	animator: Animator;
 
 	transform: Transform;
 
@@ -42,13 +45,16 @@ export class Character extends GameObject {
 		this.maxHealth = maxHealth;
 		this.scripts.push((this.transform = new Transform(this)));
 		this.scripts.push((this.display = new Display(this)));
-		this.sprOL = new Sprite(resources[spr].texture as Texture);
+		this.sprOL = new Sprite(tex(spr));
 		this.sprOL.tint = 0x000000;
 		this.sprOL.filters = [filterOL];
-		this.sprBody = new Sprite(resources[spr].texture as Texture);
+		this.sprBody = new Sprite(this.sprOL.texture);
 		this.sprBody.filters = [this.filterOverlay];
 		this.sprOL.anchor.x = this.sprBody.anchor.x = 0.5;
 		this.sprOL.anchor.y = this.sprBody.anchor.y = 1;
+		this.scripts.push(
+			(this.animator = new Animator(this, { spr: this.sprBody }))
+		);
 		const shadow = new Sprite(resources.shadow.texture as Texture);
 		shadow.anchor.x = shadow.anchor.y = 0.5;
 		shadow.width = this.sprBody.width / 2;
@@ -83,6 +89,7 @@ export class Character extends GameObject {
 		this.sprOL.scale.y = this.sprBody.scale.y;
 		this.sprOL.scale.x = this.sprBody.scale.x;
 		this.sprOL.rotation = this.sprBody.rotation;
+		this.sprOL.texture = this.sprBody.texture;
 	}
 
 	setHealth(h: number) {

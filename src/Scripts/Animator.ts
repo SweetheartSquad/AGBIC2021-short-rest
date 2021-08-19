@@ -1,4 +1,4 @@
-import { Sprite, utils } from 'pixi.js';
+import { Sprite, Texture } from 'pixi.js';
 import { game, resources } from '../Game';
 import { GameObject } from '../GameObject';
 import { Script } from './Script';
@@ -6,7 +6,9 @@ import { Script } from './Script';
 function getFrameCount(animation: string): number {
 	let count = 0;
 	// eslint-disable-next-line no-empty
-	while (resources[`${animation}${++count + 1}`]?.texture) {}
+	while (resources[`${animation}${count + 1}`]?.texture) {
+		++count;
+	}
 	return count;
 }
 
@@ -19,11 +21,11 @@ export class Animator extends Script {
 
 	offset: number;
 
-	frameCount: number;
+	frameCount!: number;
 
-	frame: number;
+	frame!: number;
 
-	animation: string;
+	animation!: string;
 
 	constructor(
 		gameObject: GameObject,
@@ -33,23 +35,30 @@ export class Animator extends Script {
 		this.spr = spr;
 		this.freq = freq;
 		this.offset = ++offset;
-		this.frame = 0;
-		this.animation = this.spr.texture.textureCacheIds[0].slice(0, -1);
-		this.frameCount = getFrameCount(this.animation);
+		this.setAnimation(spr.texture.textureCacheIds[0]);
 	}
 
-	setAnimation(animation: string) {
-		if (this.animation === animation) return;
+	setAnimation(a: string) {
+		if (this.animation === a) return;
+		const [animation, index] = a.split(/(\d+)$/);
 		this.animation = animation;
-		this.frameCount = getFrameCount(this.animation);
-		this.frame = 0;
+		this.frameCount = getFrameCount(animation);
+		this.frame = this.frameCount ? parseInt(index, 10) - 1 : 0;
+		this.updateTexture();
+	}
+
+	updateTexture() {
+		this.spr.texture =
+			resources[
+				this.frameCount ? `${this.animation}${this.frame + 1}` : this.animation
+			]?.texture || (resources.error.texture as Texture);
 	}
 
 	update(): void {
+		if (!this.frameCount) return;
 		const curTime = game.app.ticker.lastTime;
 		this.frame =
 			Math.floor(curTime * this.freq + this.offset * 0.5) % this.frameCount;
-		const tex = utils.TextureCache[`${this.animation}${this.frame + 1}`];
-		this.spr.texture = tex;
+		this.updateTexture();
 	}
 }

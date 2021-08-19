@@ -308,6 +308,7 @@ export class GameScene {
 		if (!facing) return;
 		this.facing = undefined;
 		facing.setHealth(0);
+		removeFromArray(facing.scripts, facing.animator);
 		const tweens: Tween[] = [];
 		tweens.push(
 			TweenManager.tween(

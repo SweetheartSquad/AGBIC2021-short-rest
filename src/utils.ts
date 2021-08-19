@@ -1,5 +1,6 @@
 import { Howler } from 'howler';
-import { DisplayObject, Point } from 'pixi.js';
+import { DisplayObject, Point, Texture } from 'pixi.js';
+import { resources } from './Game';
 
 export const zero = new Point(0, 0);
 
@@ -110,4 +111,12 @@ export function btn(spr: DisplayObject, title: string, hint?: string) {
 	spr.accessible = true;
 	spr.accessibleTitle = title;
 	spr.accessibleHint = hint;
+}
+
+export function tex(texture: string) {
+	let t = resources[texture]?.texture;
+	if (t) return t;
+	t = resources[`${texture}1`]?.texture;
+	if (t) return t;
+	return resources.error.texture as Texture;
 }

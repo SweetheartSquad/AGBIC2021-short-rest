@@ -24,4 +24,5 @@ textures/error.png
 textures/treasure.png
 textures/door.png
 textures/skeleton.png
-textures/bat.png
+textures/bat1.png
+textures/bat2.png
