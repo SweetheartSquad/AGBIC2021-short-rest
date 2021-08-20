@@ -37,12 +37,16 @@ export class Card extends GameObject {
 		const d = Card.getCard(def);
 		const sprCard = new Sprite(resources.card.texture);
 		sprCard.anchor.x = sprCard.anchor.y = 0.5;
+		const sprImg = new Sprite(tex(d.sprite || d.name));
+		sprImg.anchor.x = sprImg.anchor.y = 0.5;
+		sprImg.y = -50;
 		const textName = new Text(d.name, fontName);
 		textName.y += 51;
 		textName.anchor.x = textName.anchor.y = 0.5;
 		textName.style.wordWrap = true;
 		textName.style.wordWrapWidth = sprCard.width - 50;
 		textName.x = 0;
+		sprCard.addChild(sprImg);
 		sprCard.addChild(textName);
 		return sprCard;
 	}
