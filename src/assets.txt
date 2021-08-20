@@ -7,6 +7,7 @@ textures/camp_lit2.png
 textures/border.png
 textures/shadow.png
 textures/card.png
+textures/card_back.png
 textures/ditherGrid.png
 textures/onion.png
 textures/frog.png
