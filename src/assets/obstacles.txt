@@ -20,6 +20,7 @@
 			scene.queue.push(async () => {
 				scene.obstacle.animator.setAnimation('treasure_open');
 				await scene.delay(100);
+				await scene.loot(['test', 'test', 'test']); // TODO: loot pools?
 				scene.killObstacle();
 			});
 		},

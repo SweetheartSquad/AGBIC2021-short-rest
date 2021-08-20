@@ -1,4 +1,4 @@
-import { backIn, quadIn, quadInOut, quadOut } from 'eases';
+import { backIn, elasticOut, quadIn, quadInOut, quadOut } from 'eases';
 import {
 	Container,
 	Graphics,
@@ -22,7 +22,14 @@ import { ScreenFilter } from './ScreenFilter';
 import { size } from './size';
 import { Tween, TweenManager } from './Tweens';
 import { UIMap } from './UIMap';
-import { delay, lerp, randItem, randRange, removeFromArray } from './utils';
+import {
+	btn,
+	delay,
+	lerp,
+	randItem,
+	randRange,
+	removeFromArray,
+} from './utils';
 
 export class GameScene {
 	delay = delay;
@@ -491,6 +498,75 @@ export class GameScene {
 				// TODO: progression
 				scene.setAreas(['camp', 'enemy', 'door']);
 			},
+		});
+	}
+
+	loot(cards: Parameters<GameScene['addCard']>[0][]) {
+		this.queue.push(async () => {
+			const sprs = cards.map((i, idx) => {
+				const def = Card.getCard(i);
+				const spr = new Sprite(resources.card_back.texture as Texture);
+				spr.anchor.x = spr.anchor.y = 0.5;
+				this.containerUI.addChild(spr);
+				spr.x = size.x / 2;
+				spr.y = size.y / 2;
+				spr.alpha = 0;
+				btn(spr, def.name, def.description);
+				TweenManager.tween(
+					spr,
+					'x',
+					size.x / 2 + (idx / (cards.length - 1) - 0.5) * 2 * spr.width,
+					500,
+					undefined,
+					quadOut
+				);
+				TweenManager.tween(
+					spr,
+					'y',
+					size.y / 2 - Math.random() * 10 - 10,
+					500,
+					undefined,
+					quadOut
+				);
+				TweenManager.tween(spr, 'alpha', 1, 200, undefined, quadOut);
+				spr.interactive = false;
+				return spr;
+			});
+			await delay(500);
+			sprs.forEach((i) => {
+				i.interactive = true;
+			});
+			const picked = await new Promise<number>((r) => {
+				sprs.forEach((i, idx) => {
+					i.once('click', () => {
+						TweenManager.tween(i.scale, 'x', 0, 100, 1, quadIn);
+						delay(100).then(() => {
+							TweenManager.tween(i.scale, 'x', 1, 300, 0, elasticOut);
+							i.texture = resources.card.texture as Texture;
+							i.once('click', () => {
+								r(idx);
+							});
+						});
+					});
+				});
+			});
+			const card = this.addCard(cards[picked]);
+			card.transform.x = sprs[picked].x;
+			card.transform.y = sprs[picked].y;
+			sprs.forEach((i, idx) => {
+				if (idx === picked) {
+					i.destroy();
+				} else {
+					i.interactive = false;
+					const t1 = TweenManager.tween(i, 'alpha', 0, 500, undefined, quadIn);
+					const t2 = TweenManager.tween(i, 'y', 0, 500, undefined, backIn);
+					delay(500).then(() => {
+						i.destroy();
+						TweenManager.abort(t1);
+						TweenManager.abort(t2);
+					});
+				}
+			});
 		});
 	}
 }
