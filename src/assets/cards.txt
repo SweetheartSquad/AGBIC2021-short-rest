@@ -10,6 +10,7 @@
 		name: 'Start',
 		effect(scene) {
 			scene.clearHand();
+			scene.clearParty();
 			scene.addCard('refresh');
 			scene.addCard('advance');
 			scene.addParty({ spr: 'frog', maxHealth: 2 });

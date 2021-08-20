@@ -374,6 +374,13 @@ export class GameScene {
 		return this.hand.addCard(...options);
 	}
 
+	clearParty() {
+		this.party.forEach((i) => {
+			i.destroy();
+		});
+		this.party.length = 0;
+	}
+
 	clearHand() {
 		while (this.hand.hand.length) {
 			this.hand.removeCard(this.hand.hand[this.hand.hand.length - 1]);
