@@ -16,23 +16,35 @@ type ObstacleDef = {
 export class Obstacle extends Character {
 	static obstacles: Partial<Record<string, ObstacleDef>>;
 
-	def: ObstacleDef;
-
-	constructor(obstacle: string) {
+	static getObstacle(def: string | ObstacleDef) {
 		if (!Obstacle.obstacles) {
 			// eslint-disable-next-line @typescript-eslint/no-implied-eval
 			Obstacle.obstacles = Function(
 				`"use strict";return ${resources.obstacles.data}`
 			)();
 		}
-		const def = Obstacle.obstacles[obstacle] || {
-			sprite: 'error',
-			start() {
-				console.warn(`couldn't find obstacle "${obstacle}"`);
-			},
-		};
+		return (
+			(typeof def === 'string' ? Obstacle.obstacles[def] : def) || {
+				sprite: 'error',
+				start() {
+					console.warn(`couldn't find obstacle "${def}"`);
+				},
+			}
+		);
+	}
+
+	def: ObstacleDef;
+
+	constructor(obstacle: string | ObstacleDef) {
+		if (!Obstacle.obstacles) {
+			// eslint-disable-next-line @typescript-eslint/no-implied-eval
+			Obstacle.obstacles = Function(
+				`"use strict";return ${resources.obstacles.data}`
+			)();
+		}
+		const def = Obstacle.getObstacle(obstacle);
 		super({
-			spr: def.sprite || obstacle,
+			spr: def.sprite || (typeof obstacle === 'string' ? obstacle : 'error'),
 			maxHealth: def.health || 0,
 		});
 		this.def = def;

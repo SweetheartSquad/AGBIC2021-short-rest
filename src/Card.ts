@@ -17,6 +17,21 @@ type CardDef = {
 export class Card extends GameObject {
 	static cards: Partial<Record<string, CardDef>>;
 
+	static getCard(def: string | CardDef) {
+		if (!Card.cards) {
+			// eslint-disable-next-line @typescript-eslint/no-implied-eval
+			Card.cards = Function(`"use strict";return ${resources.cards.data}`)();
+		}
+		return (
+			(typeof def === 'string' ? Card.cards[def] : def) || {
+				name: 'error',
+				description: `couldn't find card "${def}"`,
+				effect: () => {},
+				canPlay: () => false,
+			}
+		);
+	}
+
 	transform: Transform;
 
 	display: Display;
@@ -31,16 +46,7 @@ export class Card extends GameObject {
 
 	constructor(def: string | CardDef) {
 		super();
-		if (!Card.cards) {
-			// eslint-disable-next-line @typescript-eslint/no-implied-eval
-			Card.cards = Function(`"use strict";return ${resources.cards.data}`)();
-		}
-		this.def = (typeof def === 'string' ? Card.cards[def] : def) || {
-			name: 'error',
-			description: `couldn't find card "${def}"`,
-			effect: () => {},
-			canPlay: () => false,
-		};
+		this.def = Card.getCard(def);
 		const { name, description } = this.def;
 		this.scripts.push((this.transform = new Transform(this)));
 		this.scripts.push((this.display = new Display(this)));
