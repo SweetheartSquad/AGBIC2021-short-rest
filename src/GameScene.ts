@@ -220,7 +220,7 @@ export class GameScene {
 			}
 		}
 
-		this.containerUI.interactiveChildren = !this.busy;
+		this.hand.display.container.interactiveChildren = !this.busy;
 	}
 
 	advance() {
