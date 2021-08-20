@@ -11,6 +11,16 @@ export const font: Partial<ITextStyle> = {
 	letterSpacing: 1,
 };
 
+export const fontName: Partial<ITextStyle> = {
+	fontFamily: 'font',
+	fontSize: 32,
+	fill: 0x201b20,
+	align: 'center',
+	lineHeight: 32,
+	letterSpacing: 1,
+	padding: 5,
+};
+
 export const fontTitle: Partial<ITextStyle> = {
 	fontFamily: 'font',
 	fontSize: 48,

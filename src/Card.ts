@@ -1,14 +1,15 @@
 import { Sprite, Text } from 'pixi.js';
-import { font } from './font';
+import { fontName } from './font';
 import { resources } from './Game';
 import { GameObject } from './GameObject';
 import { GameScene } from './GameScene';
 import { Display } from './Scripts/Display';
 import { Transform } from './Scripts/Transform';
-import { btn } from './utils';
+import { btn, tex } from './utils';
 
 type CardDef = {
 	name: string;
+	sprite?: string;
 	description?: string;
 	canPlay?: (scene: GameScene) => boolean;
 	effect: (scene: GameScene) => void;
@@ -32,15 +33,25 @@ export class Card extends GameObject {
 		);
 	}
 
+	static getCardSpr(def: string | CardDef) {
+		const d = Card.getCard(def);
+		const sprCard = new Sprite(resources.card.texture);
+		sprCard.anchor.x = sprCard.anchor.y = 0.5;
+		const textName = new Text(d.name, fontName);
+		textName.y += 51;
+		textName.anchor.x = textName.anchor.y = 0.5;
+		textName.style.wordWrap = true;
+		textName.style.wordWrapWidth = sprCard.width - 50;
+		textName.x = 0;
+		sprCard.addChild(textName);
+		return sprCard;
+	}
+
 	transform: Transform;
 
 	display: Display;
 
 	sprCard: Sprite;
-
-	textName: Text;
-
-	textDescription: Text;
 
 	def: CardDef;
 
@@ -51,19 +62,9 @@ export class Card extends GameObject {
 		this.scripts.push((this.transform = new Transform(this)));
 		this.scripts.push((this.display = new Display(this)));
 
-		this.sprCard = new Sprite(resources.card.texture);
+		this.sprCard = Card.getCardSpr(this.def);
 		this.sprCard.anchor.x = this.sprCard.anchor.y = 0.5;
 		this.display.container.addChild(this.sprCard);
-		this.textName = new Text(name, font);
-		this.textDescription = new Text(description || '', font);
-		this.display.container.addChild(this.textName);
-		this.display.container.addChild(this.textDescription);
-		this.textName.y -= this.sprCard.height / 2 - 10;
-		this.textName.x -= this.sprCard.width / 2 - 10;
-		this.textDescription.style.wordWrap = true;
-		this.textDescription.style.wordWrapWidth = this.sprCard.width - 10;
-		this.textDescription.y += 50;
-		this.textDescription.x -= this.sprCard.width / 2 - 5;
 
 		btn(this.display.container, name, `${name}: ${description}`);
 

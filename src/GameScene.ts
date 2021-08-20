@@ -3,7 +3,6 @@ import {
 	Container,
 	Graphics,
 	NineSlicePlane,
-	Sprite,
 	Text,
 	Texture,
 	TilingSprite,
@@ -395,12 +394,9 @@ export class GameScene {
 	}
 
 	playCard(card: Card) {
-		const {
-			def,
-			sprCard: { texture },
-		} = card;
+		const { def } = card;
 		if (def.canPlay && !def.canPlay(this)) return;
-		const sprCard = new Sprite(texture);
+		const sprCard = Card.getCardSpr(def);
 		sprCard.anchor.x = sprCard.anchor.y = 0.5;
 		sprCard.x = card.transform.x;
 		sprCard.y = card.transform.y;
@@ -506,7 +502,11 @@ export class GameScene {
 		this.queue.push(async () => {
 			const sprs = cards.map((i, idx) => {
 				const def = Card.getCard(i);
-				const spr = new Sprite(resources.card_back.texture as Texture);
+				const spr = Card.getCardSpr(def);
+				spr.texture = resources.card_back.texture as Texture;
+				spr.children.forEach((c) => {
+					c.visible = false;
+				});
 				spr.anchor.x = spr.anchor.y = 0.5;
 				this.containerUI.addChild(spr);
 				spr.x = size.x / 2;
@@ -550,6 +550,9 @@ export class GameScene {
 						delay(100).then(() => {
 							TweenManager.tween(i.scale, 'x', 1, 300, 0, elasticOut);
 							i.texture = resources.card.texture as Texture;
+							i.children.forEach((c) => {
+								c.visible = true;
+							});
 							i.once('click', () => {
 								r(idx);
 							});
