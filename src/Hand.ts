@@ -73,6 +73,7 @@ export class Hand extends GameObject {
 		});
 		card.transform.x = size.x / 2;
 		card.transform.y = size.y * 2;
+		return card;
 	}
 
 	removeCard(card: Card) {

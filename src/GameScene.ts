@@ -371,7 +371,7 @@ export class GameScene {
 	}
 
 	addCard(...options: Parameters<Hand['addCard']>) {
-		this.hand.addCard(...options);
+		return this.hand.addCard(...options);
 	}
 
 	clearHand() {
