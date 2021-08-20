@@ -524,19 +524,22 @@ export class GameScene {
 					undefined,
 					quadOut
 				);
-				TweenManager.tween(
-					spr,
-					'y',
-					size.y / 2 - Math.random() * 10 - 10,
-					500,
-					undefined,
-					quadOut
-				);
+				TweenManager.tween(spr, 'y', size.y / 2, 500, undefined, quadOut);
 				TweenManager.tween(spr, 'alpha', 1, 200, undefined, quadOut);
 				spr.interactive = false;
 				return spr;
 			});
+			const wavy = {
+				gameObject: this.camera,
+				update: () => {
+					sprs.forEach((i, idx) => {
+						i.pivot.y = Math.sin(game.app.ticker.lastTime / 500 + idx * 2) * 5;
+					});
+				},
+			};
+			this.camera.scripts.push(wavy);
 			await delay(500);
+
 			sprs.forEach((i) => {
 				i.interactive = true;
 			});
@@ -554,6 +557,7 @@ export class GameScene {
 					});
 				});
 			});
+			removeFromArray(this.camera.scripts, wavy);
 			const card = this.addCard(cards[picked]);
 			card.transform.x = sprs[picked].x;
 			card.transform.y = sprs[picked].y;
