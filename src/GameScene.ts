@@ -502,6 +502,7 @@ export class GameScene {
 	}
 
 	loot(cards: Parameters<GameScene['addCard']>[0][]) {
+		if (cards.length <= 0) return;
 		this.queue.push(async () => {
 			const sprs = cards.map((i, idx) => {
 				const def = Card.getCard(i);
