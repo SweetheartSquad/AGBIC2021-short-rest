@@ -516,7 +516,10 @@ export class GameScene {
 				TweenManager.tween(
 					spr,
 					'x',
-					size.x / 2 + (idx / (cards.length - 1) - 0.5) * 2 * spr.width,
+					size.x / 2 +
+						(cards.length > 1
+							? (idx / (cards.length - 1) - 0.5) * 2 * spr.width
+							: 0),
 					500,
 					undefined,
 					quadOut
