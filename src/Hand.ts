@@ -1,3 +1,4 @@
+import { quadOut } from 'eases';
 import { OutlineFilter } from 'pixi-filters';
 import { BitmapFont, BitmapText, Texture } from 'pixi.js';
 import { Card } from './Card';
@@ -7,7 +8,8 @@ import { GameObject } from './GameObject';
 import { Display } from './Scripts/Display';
 import { Transform } from './Scripts/Transform';
 import { size } from './size';
-import { lerp, removeFromArray } from './utils';
+import { Tween, TweenManager } from './Tweens';
+import { lerp, removeFromArray, wrap } from './utils';
 
 export class Hand extends GameObject {
 	transform: Transform;
@@ -19,6 +21,8 @@ export class Hand extends GameObject {
 	inspecting?: Card;
 
 	textDescription: BitmapText;
+
+	tweenDescription?: Tween;
 
 	constructor() {
 		super();
@@ -35,6 +39,7 @@ export class Hand extends GameObject {
 		this.textDescription.y = size.y - 10 - (fontDescription.fontSize || 0);
 		this.textDescription.anchor.x = 0.5;
 		this.textDescription.anchor.y = 1.0;
+		this.textDescription.alpha = 0;
 		this.textDescription.filters = [new OutlineFilter(4, 0, 1)];
 		game.app.stage.addChild(this.textDescription);
 
@@ -72,13 +77,6 @@ export class Hand extends GameObject {
 				0.2
 			);
 		});
-		this.textDescription.text =
-			this.inspecting?.def.description || this.textDescription.text;
-		this.textDescription.alpha = lerp(
-			this.textDescription.alpha,
-			this.inspecting?.def.description ? 1 : -100,
-			0.1
-		);
 	}
 
 	addCard(...options: ConstructorParameters<typeof Card>) {
@@ -88,6 +86,19 @@ export class Hand extends GameObject {
 		card.display.container.on('pointerover', () => {
 			this.inspecting = card;
 			this.display.container.addChild(card.display.container);
+
+			this.textDescription.text = wrap(card.def.description || ' ', 50);
+			if (this.tweenDescription) TweenManager.abort(this.tweenDescription);
+			this.tweenDescription = TweenManager.tween(
+				this.textDescription,
+				'alpha',
+				1,
+				this.textDescription.alpha > 0 ? 500 : 2000,
+				undefined,
+				this.textDescription.alpha > 0
+					? quadOut
+					: (t) => quadOut(Math.max(0, t - 0.75) * 4)
+			);
 		});
 		card.display.container.on('pointerout', () => {
 			this.display.container.addChildAt(
@@ -96,7 +107,7 @@ export class Hand extends GameObject {
 			);
 			requestAnimationFrame(() => {
 				if (this.inspecting === card) {
-					this.inspecting = undefined;
+					this.stopInspecting();
 				}
 			});
 		});
@@ -111,8 +122,21 @@ export class Hand extends GameObject {
 	removeCard(card: Card) {
 		removeFromArray(this.hand, card);
 		if (card === this.inspecting) {
-			this.inspecting = undefined;
+			this.stopInspecting();
 		}
 		card.destroy();
+	}
+
+	stopInspecting() {
+		this.inspecting = undefined;
+		if (this.tweenDescription) TweenManager.abort(this.tweenDescription);
+		this.tweenDescription = TweenManager.tween(
+			this.textDescription,
+			'alpha',
+			0,
+			200,
+			undefined,
+			quadOut
+		);
 	}
 }
