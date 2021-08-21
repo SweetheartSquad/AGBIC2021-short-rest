@@ -188,7 +188,7 @@ export class GameScene {
 			i.display.container.scale.x = i.display.container.scale.y;
 			i.display.container.zIndex = idx;
 		});
-		overlap = 1 / this.obstacles.length;
+		overlap = (1 / this.obstacles.length) * 0.7;
 		this.obstacles.forEach((i, idx) => {
 			const prev = this.obstacles[idx - 1];
 			i.transform.x = lerp(
