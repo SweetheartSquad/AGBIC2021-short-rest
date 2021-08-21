@@ -27,10 +27,13 @@ import {
 	randItem,
 	randRange,
 	removeFromArray,
+	shuffle,
 } from './utils';
 
 export class GameScene {
 	delay = delay;
+
+	shuffle = shuffle;
 
 	camp: Camp;
 

@@ -146,3 +146,14 @@ export function wrap(str: string, max: number) {
 	rows.push(s.trim());
 	return rows.join('\n');
 }
+
+export function shuffle<T>(array: T[]) {
+	const pool = array.slice();
+	const shuffled = [];
+	while (pool.length) {
+		const i = randItem(pool);
+		removeFromArray(pool, i);
+		shuffled.push(i);
+	}
+	return shuffled;
+}
