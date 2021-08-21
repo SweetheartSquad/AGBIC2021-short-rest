@@ -8,6 +8,7 @@ import {
 	Text,
 } from 'pixi.js';
 import assets from './assets.txt';
+import alpha from './assets/alpha-mask.frag.glsl';
 import frag from './assets/postprocess.frag.glsl';
 import * as fonts from './font';
 import { init } from './main';
@@ -61,6 +62,7 @@ class Game {
 			this.app.loader.reset();
 			this.app.loader.add(assetResources);
 			this.app.loader.add({ name: 'frag', url: frag });
+			this.app.loader.add({ name: 'alpha', url: alpha });
 			this.app.loader.onLoad.add(onLoad);
 			this.app.loader.onComplete.once(onComplete);
 			this.app.loader.onComplete.once(init);

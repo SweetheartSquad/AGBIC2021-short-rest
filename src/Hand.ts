@@ -1,6 +1,7 @@
 import { quadOut } from 'eases';
 import { OutlineFilter } from 'pixi-filters';
 import { BitmapFont, BitmapText, Texture } from 'pixi.js';
+import { getAlphaFilter } from './AlphaFilter';
 import { Card } from './Card';
 import { fontDescription } from './font';
 import { game, resources } from './Game';
@@ -40,7 +41,10 @@ export class Hand extends GameObject {
 		this.textDescription.anchor.x = 0.5;
 		this.textDescription.anchor.y = 1.0;
 		this.textDescription.alpha = 0;
-		this.textDescription.filters = [new OutlineFilter(4, 0, 1)];
+		this.textDescription.filters = [
+			new OutlineFilter(4, 0, 1),
+			getAlphaFilter(),
+		];
 		game.app.stage.addChild(this.textDescription);
 
 		this.init();

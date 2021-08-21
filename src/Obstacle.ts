@@ -1,4 +1,5 @@
 import { quadIn } from 'eases';
+import { getAlphaFilter } from './AlphaFilter';
 import { Character } from './Character';
 import { resources } from './Game';
 import { GameScene } from './GameScene';
@@ -48,6 +49,7 @@ export class Obstacle extends Character {
 			maxHealth: def.health || 0,
 		});
 		this.def = def;
+		this.display.container.filters = [getAlphaFilter()];
 	}
 
 	setHealth(h: number) {

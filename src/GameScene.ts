@@ -6,6 +6,7 @@ import {
 	Texture,
 	TilingSprite,
 } from 'pixi.js';
+import { getAlphaFilter } from './AlphaFilter';
 import { Camera } from './Camera';
 import { Camp } from './Camp';
 import { Card } from './Card';
@@ -505,6 +506,7 @@ export class GameScene {
 				spr.x = size.x / 2;
 				spr.y = size.y / 2;
 				spr.alpha = 0;
+				spr.filters = [getAlphaFilter()];
 				btn(spr, def.name, def.description);
 				TweenManager.tween(
 					spr,
