@@ -62,11 +62,15 @@ export class Hand extends GameObject {
 			this.display.container.addChild(card.display.container);
 		});
 		card.display.container.on('pointerout', () => {
-			this.inspecting = undefined;
 			this.display.container.addChildAt(
 				card.display.container,
 				this.hand.indexOf(card)
 			);
+			requestAnimationFrame(() => {
+				if (this.inspecting === card) {
+					this.inspecting = undefined;
+				}
+			});
 		});
 		card.display.container.on('click', () => {
 			this.display.container.emit('play', card);
