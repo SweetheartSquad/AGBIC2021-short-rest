@@ -295,7 +295,7 @@ export class GameScene {
 			if (area === 'enemy') {
 				// TODO: difficulty curve
 				this.addObstacle(
-					randItem(['skeleton', 'bat', 'cube_big', 'cube_small'])
+					randItem(['skeleton', 'bat', 'slime_big', 'slime_medium'])
 				);
 			} else if (area === 'treasure') {
 				this.addObstacle('treasure');

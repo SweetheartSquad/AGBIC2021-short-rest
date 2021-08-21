@@ -25,23 +25,23 @@
 			});
 		},
 	},
-	cube_big: {
+	slime_big: {
 		health: 3,
 		damage: 1,
 		end(scene) {
-			scene.addObstacle('cube_small');
-			scene.addObstacle('cube_small');
+			scene.addObstacle('slime_medium');
+			scene.addObstacle('slime_medium');
 		},
 	},
-	cube_small: {
+	slime_medium: {
 		health: 1,
 		damage: 1,
 		end(scene) {
-			scene.addObstacle('cube_tiny');
-			scene.addObstacle('cube_tiny');
+			scene.addObstacle('slime_small');
+			scene.addObstacle('slime_small');
 		},
 	},
-	cube_tiny: {
+	slime_small: {
 		health: 1,
 	},
 }))();

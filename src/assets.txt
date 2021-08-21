@@ -34,6 +34,6 @@ textures/skeleton.png
 textures/bat1.png
 textures/bat2.png
 textures/bat3.png
-textures/cube_big.png
-textures/cube_small.png
-textures/cube_tiny.png
+textures/slime_big.png
+textures/slime_medium.png
+textures/slime_small.png
