@@ -1,6 +1,8 @@
-import { Texture } from 'pixi.js';
+import { OutlineFilter } from 'pixi-filters';
+import { BitmapFont, BitmapText, Texture } from 'pixi.js';
 import { Card } from './Card';
-import { resources } from './Game';
+import { fontDescription } from './font';
+import { game, resources } from './Game';
 import { GameObject } from './GameObject';
 import { Display } from './Scripts/Display';
 import { Transform } from './Scripts/Transform';
@@ -16,13 +18,32 @@ export class Hand extends GameObject {
 
 	inspecting?: Card;
 
+	textDescription: BitmapText;
+
 	constructor() {
 		super();
 		this.scripts.push((this.transform = new Transform(this)));
 		this.scripts.push((this.display = new Display(this)));
 		this.display.container.interactiveChildren = true;
 
+		BitmapFont.install(
+			resources.fontfnt.data,
+			resources.fontimg.texture as Texture
+		);
+		this.textDescription = new BitmapText('', fontDescription);
+		this.textDescription.x = size.x / 2;
+		this.textDescription.y = size.y - 10 - (fontDescription.fontSize || 0);
+		this.textDescription.anchor.x = 0.5;
+		this.textDescription.anchor.y = 1.0;
+		this.textDescription.filters = [new OutlineFilter(4, 0, 1)];
+		game.app.stage.addChild(this.textDescription);
+
 		this.init();
+	}
+
+	destroy() {
+		super.destroy();
+		this.textDescription.destroy();
 	}
 
 	update() {
@@ -51,6 +72,13 @@ export class Hand extends GameObject {
 				0.2
 			);
 		});
+		this.textDescription.text =
+			this.inspecting?.def.description || this.textDescription.text;
+		this.textDescription.alpha = lerp(
+			this.textDescription.alpha,
+			this.inspecting?.def.description ? 1 : -100,
+			0.1
+		);
 	}
 
 	addCard(...options: ConstructorParameters<typeof Card>) {
