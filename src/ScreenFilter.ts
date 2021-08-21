@@ -22,8 +22,6 @@ export class ScreenFilter extends CustomFilter<{
 			WRAP_MODES.REPEAT;
 		this.uniforms.ditherGridMap = resources.ditherGrid.texture as Texture;
 		this.padding = 0;
-		// @ts-ignore
-		window.screenFilter = this;
 	}
 
 	update() {}
