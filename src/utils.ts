@@ -120,3 +120,28 @@ export function tex(texture: string) {
 	if (t) return t;
 	return resources.error.texture as Texture;
 }
+
+/** get word-wrapped string (assuming monospace) */
+export function wrap(str: string, max: number) {
+	const words = str.split(/(\s)/);
+	let s = '';
+	let w = '';
+	const rows = [];
+	for (let i = 0; i < words.length; ++i) {
+		if (
+			s.length + w.length + words[i].trim().length > max ||
+			words[i] === '\n'
+		) {
+			rows.push(s);
+			s = '';
+			w = '';
+		}
+		if (words[i].trim() === '') {
+			w += words[i].replace('\n', '');
+		} else {
+			s += w + words[i];
+		}
+	}
+	rows.push(s.trim());
+	return rows.join('\n');
+}

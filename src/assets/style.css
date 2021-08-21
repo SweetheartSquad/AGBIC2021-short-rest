@@ -72,10 +72,3 @@ canvas {
 	/* pixelated */
 	image-rendering: pixelated;
 }
-
-@font-face {
-	font-family: 'font';
-	font-style: normal;
-	font-weight: normal;
-	src: url('./font/BirchStd.woff') format('woff');
-}

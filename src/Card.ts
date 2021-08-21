@@ -1,11 +1,11 @@
-import { Sprite, Text } from 'pixi.js';
+import { BitmapText, Sprite } from 'pixi.js';
 import { fontName } from './font';
 import { resources } from './Game';
 import { GameObject } from './GameObject';
 import { GameScene } from './GameScene';
 import { Display } from './Scripts/Display';
 import { Transform } from './Scripts/Transform';
-import { btn, tex } from './utils';
+import { btn, tex, wrap } from './utils';
 
 type CardDef = {
 	name: string;
@@ -40,12 +40,11 @@ export class Card extends GameObject {
 		const sprImg = new Sprite(tex(d.sprite || d.name));
 		sprImg.anchor.x = sprImg.anchor.y = 0.5;
 		sprImg.y = -50;
-		const textName = new Text(d.name, fontName);
+		const textName = new BitmapText(wrap(d.name, 8), fontName);
 		textName.y += 51;
 		textName.anchor.x = textName.anchor.y = 0.5;
-		textName.style.wordWrap = true;
-		textName.style.wordWrapWidth = sprCard.width - 50;
 		textName.x = 0;
+		textName.tint = 0x33252b;
 		sprCard.addChild(sprImg);
 		sprCard.addChild(textName);
 		return sprCard;

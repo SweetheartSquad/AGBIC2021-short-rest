@@ -1,9 +1,11 @@
 import { backIn, elasticOut, quadIn, quadInOut, quadOut } from 'eases';
+import { OutlineFilter } from 'pixi-filters';
 import {
+	BitmapFont,
+	BitmapText,
 	Container,
 	Graphics,
 	NineSlicePlane,
-	Text,
 	Texture,
 	TilingSprite,
 } from 'pixi.js';
@@ -12,7 +14,7 @@ import { Camp } from './Camp';
 import { Card } from './Card';
 import { Character } from './Character';
 import { CharacterPlayer } from './CharacterPlayer';
-import { fontTitle } from './font';
+import { fontDescription } from './font';
 import { game, resources } from './Game';
 import { GameObject } from './GameObject';
 import { Hand } from './Hand';
@@ -54,6 +56,8 @@ export class GameScene {
 	party: Character[] = [];
 
 	obstacles: Obstacle[] = [];
+
+	textDescription: BitmapText;
 
 	get front() {
 		return this.party[this.party.length - 1];
@@ -107,11 +111,6 @@ export class GameScene {
 		border.width = size.x - padding * 2;
 		border.height = size.y - padding * 2;
 
-		const textTitle = new Text('SHORT REST', fontTitle);
-		textTitle.y = size.y - 70;
-		textTitle.x = 30;
-		game.app.stage.addChild(textTitle);
-
 		this.containerParty = new Container();
 		this.containerParty.sortableChildren = true;
 		this.containerParty.y += 320;
@@ -123,9 +122,21 @@ export class GameScene {
 			this.playCard(card);
 		});
 
+		BitmapFont.install(
+			resources.fontfnt.data,
+			resources.fontimg.texture as Texture
+		);
+		this.textDescription = new BitmapText('', fontDescription);
+		this.textDescription.x = size.x / 2;
+		this.textDescription.y = size.y - 10 - (fontDescription.fontSize || 0);
+		this.textDescription.anchor.x = 0.5;
+		this.textDescription.anchor.y = 1.0;
+		this.textDescription.filters = [new OutlineFilter(4, 0, 1)];
+
 		this.containerUI.addChild(this.map.display.container);
 		this.containerUI.addChild(this.camp.display.container);
 		this.containerUI.addChild(this.hand.display.container);
+		this.containerUI.addChild(this.textDescription);
 		this.containerUI.addChild(border);
 
 		this.container.addChild(this.bg);
@@ -133,6 +144,7 @@ export class GameScene {
 		this.container.addChild(this.containerParty);
 		this.container.addChild(this.fg);
 		this.container.addChild(this.containerUI);
+		game.app.stage.addChild(this.textDescription);
 	}
 
 	destroy(): void {
@@ -206,6 +218,13 @@ export class GameScene {
 		this.hand.display.container.y = lerp(
 			this.hand.display.container.y,
 			this.busy ? 50 : 0,
+			0.1
+		);
+		this.textDescription.text =
+			this.hand.inspecting?.def.description || this.textDescription.text;
+		this.textDescription.alpha = lerp(
+			this.textDescription.alpha,
+			this.hand.inspecting?.def.description ? 1 : -100,
 			0.1
 		);
 
