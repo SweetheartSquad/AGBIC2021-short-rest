@@ -140,6 +140,7 @@ export function wrap(str: string, max: number) {
 			w += words[i].replace('\n', '');
 		} else {
 			s += w + words[i];
+			w = '';
 		}
 	}
 	rows.push(s.trim());
