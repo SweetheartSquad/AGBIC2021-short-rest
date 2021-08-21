@@ -7,7 +7,7 @@ import { Display } from './Scripts/Display';
 import { Transform } from './Scripts/Transform';
 import { btn, tex, wrap } from './utils';
 
-type CardDef = {
+export type CardDef = {
 	name: string;
 	sprite?: string;
 	description?: string;

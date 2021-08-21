@@ -9,7 +9,7 @@ import {
 import { getAlphaFilter } from './AlphaFilter';
 import { Camera } from './Camera';
 import { Camp } from './Camp';
-import { Card } from './Card';
+import { Card, CardDef } from './Card';
 import { Character } from './Character';
 import { CharacterPlayer } from './CharacterPlayer';
 import { game, resources } from './Game';
@@ -70,6 +70,8 @@ export class GameScene {
 	bg: TilingSprite;
 
 	fg: TilingSprite;
+
+	deck: CardDef[] = [];
 
 	queue: (() => Promise<void> | void)[] = [];
 
@@ -469,29 +471,20 @@ export class GameScene {
 	startCamp() {
 		this.camp.display.container.visible = true;
 		this.clearHand();
-		this.addCard({
-			name: 'kindle campfire',
-			effect(scene) {
-				// TODO: select card to burn
-				scene.camp.light();
-			},
-		});
+		this.addCard('Kindle');
+		this.addCard('Continue');
+	}
 
-		// TODO: shuffle hand
-
-		this.addCard({
-			name: 'continue',
-			effect(scene) {
-				scene.camp.display.container.visible = false;
-				scene.camp.douse();
-				// TODO: use saved hand
-				scene.clearHand();
-				scene.addCard('refresh');
-				scene.addCard('advance');
-				// TODO: progression
-				scene.setAreas(['camp', 'enemy', 'door']);
-			},
-		});
+	addDeck(...options: Parameters<typeof Card['getCard']>) {
+		const def = Card.getCard(...options);
+		this.deck.push(def);
+		this.deck.sort((a, b) =>
+			a.name.localeCompare(b.name, undefined, {
+				sensitivity: 'base',
+				ignorePunctuation: true,
+			})
+		);
+		return def;
 	}
 
 	loot(cards: Parameters<GameScene['addCard']>[0][]) {
@@ -559,22 +552,23 @@ export class GameScene {
 				});
 			});
 			removeFromArray(this.camera.scripts, wavy);
-			const card = this.addCard(cards[picked]);
-			card.transform.x = sprs[picked].x;
-			card.transform.y = sprs[picked].y;
+			this.addDeck(cards[picked]);
 			sprs.forEach((i, idx) => {
-				if (idx === picked) {
+				i.interactive = false;
+				const t1 = TweenManager.tween(i, 'alpha', 0, 500, undefined, quadIn);
+				const t2 = TweenManager.tween(
+					i,
+					'y',
+					idx === picked ? size.y * 2 : 0,
+					500,
+					undefined,
+					idx === picked ? quadOut : backIn
+				);
+				delay(500).then(() => {
 					i.destroy();
-				} else {
-					i.interactive = false;
-					const t1 = TweenManager.tween(i, 'alpha', 0, 500, undefined, quadIn);
-					const t2 = TweenManager.tween(i, 'y', 0, 500, undefined, backIn);
-					delay(500).then(() => {
-						i.destroy();
-						TweenManager.abort(t1);
-						TweenManager.abort(t2);
-					});
-				}
+					TweenManager.abort(t1);
+					TweenManager.abort(t2);
+				});
 			});
 		});
 	}

@@ -11,6 +11,9 @@
 		effect(scene) {
 			scene.clearHand();
 			scene.clearParty();
+			scene.deck.length = 0;
+			scene.addDeck('refresh');
+			// TODO: proper hand init
 			scene.addCard('refresh');
 			scene.addCard('Advance');
 			scene.addParty({ spr: 'frog', maxHealth: 2 });
@@ -67,9 +70,76 @@
 		},
 	},
 	Advance: {
+		description: 'Move, attack, interact (gives another "Advance" when played)',
 		effect(scene) {
 			scene.addCard('Advance');
 			scene.advance();
+		},
+	},
+	Kindle: {
+		description: 'Burn a card to light the campfire',
+		effect(scene) {
+			scene.clearHand();
+			scene.deck.forEach((i, idx) => {
+				scene.addCard({
+					...i,
+					description: `Burn "${i.name}" to light the campfire`,
+					effect: () => {
+						scene.camp.light();
+						scene.deck.splice(idx, 1);
+						scene.clearHand();
+						scene.addCard('Continue');
+					},
+				});
+			});
+			scene.addCard({
+				name: 'Back',
+				effect: () => {
+					scene.clearHand();
+					scene.addCard('Kindle');
+					scene.addCard('Continue');
+				},
+			});
+		},
+	},
+	Continue: {
+		description: 'Prepare to embark into the dungeon',
+		effect(scene) {
+			scene.clearHand();
+			const deck = scene.deck.slice();
+			scene.shuffle(deck);
+			const hand = deck.splice(0, 5);
+			hand.forEach((i) => {
+				scene.addCard({
+					...i,
+					description: `Mulligan "${i.name}"`,
+					effect: () => {
+						scene.addCard({
+							...deck.splice(0, 1)[0],
+							description: "Can't mulligan a card twice",
+							canPlay: () => false,
+						});
+					},
+					canPlay: () => deck.length > 0,
+				});
+			});
+			scene.addCard({
+				name: 'Continue',
+				description: 'Embark into the dungeon with this hand',
+				effect(scene) {
+					scene.camp.display.container.visible = false;
+					scene.camp.douse();
+					scene.clearHand();
+					hand.forEach((i) => {
+						scene.addCard(i);
+					});
+					scene.addCard('Advance');
+					// TODO: progression
+					scene.setAreas(['camp', 'enemy', 'door']);
+				},
+			});
+			// TODO: progression
+			scene.setAreas(['camp', 'enemy', 'door']);
 		},
 	},
 	// gameplay
