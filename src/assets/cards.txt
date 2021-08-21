@@ -1,20 +1,18 @@
 (() => ({
 	// menus
 	init: {
-		name: 'init',
 		effect(scene) {
-			scene.addCard('start');
-			scene.addCard('options');
+			scene.addCard('Start');
+			scene.addCard('Options');
 		},
 	},
-	start: {
-		name: 'Start',
+	Start: {
 		description: 'Start a new game',
 		effect(scene) {
 			scene.clearHand();
 			scene.clearParty();
 			scene.addCard('refresh');
-			scene.addCard('advance');
+			scene.addCard('Advance');
 			scene.addParty({ spr: 'frog', maxHealth: 2 });
 			scene.addParty({ spr: 'cat', maxHealth: 3 });
 			scene.addParty({ spr: 'apple', maxHealth: 2 });
@@ -33,26 +31,23 @@
 			]);
 		},
 	},
-	options: {
-		name: 'Options',
+	Options: {
 		description: 'Edit game options',
 		effect(scene) {
 			scene.clearHand();
-			scene.addCard('back');
-			scene.addCard('filter');
-			scene.addCard('scale');
+			scene.addCard('Back');
+			scene.addCard('Filter');
+			scene.addCard('Scale');
 		},
 	},
-	filter: {
-		name: 'Toggle Filter',
+	Filter: {
 		description: 'Enables/disables post-processing filter',
 		effect(scene) {
 			scene.screenFilter.enabled = !scene.screenFilter.enabled;
-			scene.addCard('filter');
+			scene.addCard('Filter');
 		},
 	},
-	scale: {
-		name: 'Cycle Scale Mode',
+	Scale: {
 		description: 'Enables/disables pixel-perfect scaling',
 		effect(scene) {
 			window.resizer.scaleMode = {
@@ -60,28 +55,25 @@
 				MULTIPLES: 'FIT',
 			}[window.resizer.scaleMode];
 			window.resizer.onResize();
-			scene.addCard('scale');
+			scene.addCard('Scale');
 		},
 	},
-	back: {
-		name: 'Back',
+	Back: {
 		description: 'Back to main menu',
 		effect(scene) {
 			scene.clearHand();
-			scene.addCard('start');
-			scene.addCard('options');
+			scene.addCard('Start');
+			scene.addCard('Options');
 		},
 	},
-	advance: {
-		name: 'Advance',
+	Advance: {
 		effect(scene) {
-			scene.addCard('advance');
+			scene.addCard('Advance');
 			scene.advance();
 		},
 	},
 	// gameplay
 	test: {
-		name: 'test',
 		description: 'test card',
 		effect() {
 			console.log('test effect');
@@ -89,29 +81,26 @@
 		canPlay: () => true,
 	},
 	refresh: {
-		name: 'refresh',
 		description: 'gives cards',
 		effect(scene) {
 			scene.clearHand();
 			scene.addCard('test');
 			scene.addCard('kill');
 			scene.addCard('shuffle');
-			scene.addCard('fullheal');
+			scene.addCard('Full Heal');
 			scene.addCard('refresh');
-			scene.addCard('advance');
+			scene.addCard('Advance');
 		},
 		canPlay: () => true,
 	},
 	kill: {
-		name: 'kill',
-		description: 'kill card',
+		description: 'Destroys opponent',
 		effect(scene) {
 			scene.killObstacle();
 		},
 		canPlay: (scene) => scene.obstacle && scene.obstacle.health,
 	},
 	shuffle: {
-		name: 'shuffle',
 		description: 'Shuffles party',
 		effect(scene) {
 			const original = scene.party.slice();
@@ -124,9 +113,8 @@
 			} while (scene.party.every((i, idx) => i === original[idx]));
 		},
 	},
-	fullheal: {
-		name: 'Full Heal',
-		description: 'fully heals',
+	'Full Heal': {
+		description: 'Fully heals party',
 		effect(scene) {
 			scene.party.forEach((i) => {
 				i.heal(i.maxHealth);

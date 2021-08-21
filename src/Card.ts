@@ -22,6 +22,9 @@ export class Card extends GameObject {
 		if (!Card.cards) {
 			// eslint-disable-next-line @typescript-eslint/no-implied-eval
 			Card.cards = Function(`"use strict";return ${resources.cards.data}`)();
+			Object.entries(Card.cards).forEach(([name, card]) => {
+				(card as CardDef).name = name;
+			});
 		}
 		return (
 			(typeof def === 'string' ? Card.cards[def] : def) || {
