@@ -129,8 +129,8 @@ export class GameScene {
 		this.containerUI.addChild(border);
 
 		this.container.addChild(this.bg);
-		this.container.addChild(this.containerParty);
 		this.container.addChild(this.containerObstacle);
+		this.container.addChild(this.containerParty);
 		this.container.addChild(this.fg);
 		this.container.addChild(this.containerUI);
 	}
