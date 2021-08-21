@@ -24,6 +24,7 @@ export class Card extends GameObject {
 			Card.cards = Function(`"use strict";return ${resources.cards.data}`)();
 			Object.entries(Card.cards).forEach(([name, card]) => {
 				(card as CardDef).name = name;
+				(card as CardDef).description = card?.description || ' ';
 			});
 		}
 		return (
