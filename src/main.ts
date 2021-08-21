@@ -35,7 +35,7 @@ export function getInput(): {
 		y: number;
 	};
 	interact: boolean;
-} {
+	} {
 	const res = {
 		mouse: {
 			x: Math.floor(
