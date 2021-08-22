@@ -27,6 +27,7 @@
 		return areas;
 	},
 	1: (scene) => {
+		scene.setBg('bg2');
 		const areas = [
 			{
 				icon: 'icon_camp',
