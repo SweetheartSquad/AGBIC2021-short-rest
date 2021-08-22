@@ -2,16 +2,16 @@
 	0: (scene) => {
 		const areas = [
 			{
-				icon: 'camp',
+				icon: 'icon_camp',
 			},
 		];
 		// TODO: real level generation
 		areas.push({
-			icon: 'enemy',
+			icon: 'icon_enemy',
 			obstacles: ['skeleton'],
 		});
 		areas.push({
-			icon: 'enemy',
+			icon: 'icon_enemy',
 			obstacles: [
 				{
 					sprite: 'treasure',
@@ -21,7 +21,7 @@
 			],
 		});
 		areas.push({
-			icon: 'door',
+			icon: 'icon_door',
 			obstacles: ['door'],
 		});
 		return areas;
@@ -29,11 +29,11 @@
 	1: (scene) => {
 		const areas = [
 			{
-				icon: 'camp',
+				icon: 'icon_camp',
 			},
 		];
 		areas.push({
-			icon: 'door',
+			icon: 'icon_door',
 			obstacles: ['door'],
 		});
 		return areas;
@@ -41,7 +41,7 @@
 	2: (scene) => {
 		const areas = [
 			{
-				icon: 'camp',
+				icon: 'icon_camp',
 			},
 		];
 		// TODO: endgame

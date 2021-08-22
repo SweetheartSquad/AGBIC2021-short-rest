@@ -37,9 +37,7 @@ export class UIMap extends GameObject {
 	setPosition(pos: number) {
 		this.areas.forEach((i, idx) => {
 			this.sprAreas[idx].texture = (
-				idx < pos
-					? resources.icon_cleared.texture
-					: resources[`icon_${i}`].texture
+				idx < pos ? resources.icon_cleared.texture : resources[i].texture
 			) as Texture;
 		});
 		this.position = pos;
@@ -50,7 +48,7 @@ export class UIMap extends GameObject {
 		this.sprAreas.forEach((i) => i.destroy());
 		this.graphics.clear();
 		this.sprAreas = areas.map((i, idx) => {
-			const icon = new Sprite(resources[`icon_${i}`].texture as Texture);
+			const icon = new Sprite(resources[i].texture as Texture);
 			icon.x += 50 * idx;
 			this.display.container.addChild(icon);
 			icon.anchor.y = 0.5;
