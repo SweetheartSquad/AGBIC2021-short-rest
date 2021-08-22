@@ -1,5 +1,6 @@
 import { resources } from './Game';
 import { GameScene } from './GameScene';
+import { evalFn } from './utils';
 
 export type LevelDef = {
 	icon: string;
@@ -11,8 +12,7 @@ export class Level {
 
 	static getLevel(def: number) {
 		if (!Level.levels) {
-			// eslint-disable-next-line @typescript-eslint/no-implied-eval
-			Level.levels = Function(`"use strict";return ${resources.levels.data}`)();
+			Level.levels = evalFn(resources.levels.data);
 		}
 		return (
 			Level.levels[def] ||

@@ -4,6 +4,7 @@ import { Character } from './Character';
 import { resources } from './Game';
 import { GameScene } from './GameScene';
 import { TweenManager } from './Tweens';
+import { evalFn } from './utils';
 
 type ObstacleDef = {
 	health?: number;
@@ -19,10 +20,7 @@ export class Obstacle extends Character {
 
 	static getObstacle(def: string | ObstacleDef) {
 		if (!Obstacle.obstacles) {
-			// eslint-disable-next-line @typescript-eslint/no-implied-eval
-			Obstacle.obstacles = Function(
-				`"use strict";return ${resources.obstacles.data}`
-			)();
+			Obstacle.obstacles = evalFn(resources.obstacles.data);
 		}
 		return (
 			(typeof def === 'string' ? Obstacle.obstacles[def] : def) || {

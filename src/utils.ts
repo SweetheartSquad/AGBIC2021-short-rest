@@ -157,3 +157,10 @@ export function shuffle<T>(array: T[]) {
 	}
 	return shuffled;
 }
+
+export function evalFn(fn: string) {
+	// eslint-disable-next-line @typescript-eslint/no-implied-eval
+	return Function(
+		`"use strict";return ${fn.replace(/\/\*\*[^]*?\*\//m, '').trim()}`
+	)();
+}

@@ -6,7 +6,7 @@ import { GameObject } from './GameObject';
 import { GameScene } from './GameScene';
 import { Display } from './Scripts/Display';
 import { Transform } from './Scripts/Transform';
-import { btn, tex, wrap } from './utils';
+import { btn, evalFn, tex, wrap } from './utils';
 
 export type CardDef = {
 	name: string;
@@ -21,8 +21,7 @@ export class Card extends GameObject {
 
 	static getCard(def: string | CardDef) {
 		if (!Card.cards) {
-			// eslint-disable-next-line @typescript-eslint/no-implied-eval
-			Card.cards = Function(`"use strict";return ${resources.cards.data}`)();
+			Card.cards = evalFn(resources.cards.data);
 			Object.entries(Card.cards).forEach(([name, card]) => {
 				(card as CardDef).name = name;
 				(card as CardDef).description = card?.description || ' ';
