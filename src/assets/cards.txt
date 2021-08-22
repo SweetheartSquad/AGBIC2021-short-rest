@@ -104,7 +104,7 @@
 		},
 	},
 	Continue: {
-		description: 'Prepare to embark into the dungeon',
+		description: 'Prepare cards to embark into the dungeon',
 		effect(scene) {
 			scene.clearHand();
 			const deck = scene.deck.slice();
@@ -126,21 +126,62 @@
 			});
 			scene.addCard({
 				name: 'Continue',
-				description: 'Embark into the dungeon with this hand',
+				description: 'Prepare party to embark into the dungeon with this hand',
 				effect(scene) {
-					scene.camp.display.container.visible = false;
-					scene.camp.douse();
 					scene.clearHand();
-					hand.forEach((i) => {
-						scene.addCard(i);
-					});
-					scene.addCard('Advance');
-					// TODO: progression
-					scene.setAreas(['camp', 'enemy', 'door']);
+					const party = scene.party.slice();
+					const order = [];
+					const positions = ['the lead'];
+					positions[party.length - 1] = 'the back';
+					const embark = () => {
+						scene.camp.display.container.visible = false;
+						scene.camp.douse();
+						scene.clearHand();
+						hand.forEach((i) => {
+							scene.addCard(i);
+						});
+						scene.addCard('Advance');
+						// TODO: progression
+						scene.setAreas(['camp', 'enemy', 'door']);
+					};
+
+					// party order selection
+					const partyOrder = () => {
+						if (party.length > 0) {
+							scene.clearHand();
+							party.forEach((i) => {
+								const idx = scene.party.length - party.length;
+								const position = positions[idx] || `position ${idx + 1}`;
+								scene.addCard({
+									name: i.name,
+									description: `Put ${i.name} in ${position}`,
+									effect: () => {
+										party.splice(party.indexOf(i), 1);
+										order.push(i);
+										partyOrder();
+									},
+								});
+							});
+							if (party.length === scene.party.length) {
+								scene.addCard({
+									name: 'Continue',
+									description:
+										'Embark into the dungeon without changing party order',
+									effect: embark,
+								});
+							}
+							return;
+						}
+						scene.party = order.reverse();
+						scene.addCard({
+							name: 'Continue',
+							description: 'Embark into the dungeon',
+							effect: embark,
+						});
+					};
+					partyOrder();
 				},
 			});
-			// TODO: progression
-			scene.setAreas(['camp', 'enemy', 'door']);
 		},
 	},
 	// gameplay
