@@ -207,6 +207,10 @@ export class GameScene {
 			this.busy ? 50 : 0,
 			0.1
 		);
+		this.hand.hand.forEach((i) => {
+			i.display.container.alpha =
+				!i.def.canPlay || i.def.canPlay(this) ? 1 : 0.8;
+		});
 
 		this.screenFilter.update();
 

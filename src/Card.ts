@@ -1,4 +1,5 @@
 import { BitmapText, Sprite } from 'pixi.js';
+import { getAlphaFilter } from './AlphaFilter';
 import { fontName } from './font';
 import { resources } from './Game';
 import { GameObject } from './GameObject';
@@ -72,6 +73,7 @@ export class Card extends GameObject {
 		this.sprCard = Card.getCardSpr(this.def);
 		this.sprCard.anchor.x = this.sprCard.anchor.y = 0.5;
 		this.display.container.addChild(this.sprCard);
+		this.display.container.filters = [getAlphaFilter()];
 
 		btn(this.display.container, name, `${name}: ${description}`);
 
