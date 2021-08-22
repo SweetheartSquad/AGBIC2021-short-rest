@@ -70,7 +70,8 @@
 		},
 	},
 	Advance: {
-		description: 'Move, attack, interact (gives another "Advance" when played)',
+		description:
+			'Move, exchange blows, interact (gives another "Advance" when played)',
 		effect(scene) {
 			scene.addCard('Advance');
 			scene.advance();
