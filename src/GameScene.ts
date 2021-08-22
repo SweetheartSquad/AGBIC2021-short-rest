@@ -418,12 +418,13 @@ export class GameScene {
 		sprCard.y = card.transform.y;
 		this.containerUI.addChild(sprCard);
 		this.hand.removeCard(card);
+		const d = 500 * this.cardSpeed;
 		this.queue.push(async () => {
 			const tweenR = TweenManager.tween(
 				sprCard,
 				'rotation',
 				Math.PI * 2,
-				500,
+				d,
 				undefined,
 				backIn
 			);
@@ -431,7 +432,7 @@ export class GameScene {
 				sprCard,
 				'x',
 				size.x / 2,
-				500,
+				d,
 				undefined,
 				quadOut
 			);
@@ -439,11 +440,11 @@ export class GameScene {
 				sprCard,
 				'y',
 				-sprCard.height,
-				500,
+				d,
 				undefined,
 				backIn
 			);
-			await delay(500);
+			await delay(d);
 			TweenManager.abort(tweenR);
 			TweenManager.abort(tweenY);
 			TweenManager.abort(tweenX);

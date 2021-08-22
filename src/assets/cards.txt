@@ -48,6 +48,7 @@ format:
 			scene.addCard('Back');
 			scene.addCard('Filter');
 			scene.addCard('Scale');
+			scene.addCard('Card Throw');
 		},
 	},
 	Filter: {
@@ -66,6 +67,13 @@ format:
 			}[window.resizer.scaleMode];
 			window.resizer.onResize();
 			scene.addCard('Scale');
+		},
+	},
+	'Card Throw': {
+		description: 'Enables/disables card play animation',
+		effect(scene) {
+			scene.cardSpeed = scene.cardSpeed ? 0 : 1;
+			scene.addCard('Card Throw');
 		},
 	},
 	Back: {
