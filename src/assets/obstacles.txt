@@ -1,3 +1,20 @@
+/**
+format:
+{
+	sprite: 'obstacle image (uses object key if not set)',
+	health: number | undefined,
+	damage: number | undefined,
+	start: (scene) => {
+		// effect triggered when obstacle is encountered
+	},
+	interact: (scene) => {
+		// effect triggered when obstacle is hit
+	},
+	end: (scene) => {
+		// effect triggered when obstacle is killed
+	},
+}
+*/
 (() => ({
 	door: {
 		interact(scene) {

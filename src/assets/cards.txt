@@ -1,3 +1,20 @@
+/**
+format:
+{
+	name: 'Name of Card (uses object key if not set)',
+	description: 'Description text shown on hover',
+	sprite: 'card image (uses name or object key if not set)',
+	effect: (scene) => {
+		// effect triggered when card is played
+		// e.g. `scene.damageObstacle(1)` to damage obstacle in the lead by 1 hp
+	},
+	canPlay: (scene) => {
+		// whether playing the card is allowed
+		// e.g. `return false` if scene has no valid target
+		return true | false;
+	},
+}
+*/
 (() => ({
 	// menus
 	init: {

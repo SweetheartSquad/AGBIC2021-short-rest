@@ -1,3 +1,17 @@
+/**
+format:
+[level]: (scene) => {
+	return [{
+		icon: 'map icon image',
+		obstacles: [
+			'obstacle name', // see obstacles.txt for list
+			{
+				// unique hard-coded obstacle; see obstacles.txt for format
+			}
+		]
+	}]
+}
+*/
 (() => ({
 	0: (scene) => {
 		scene.log('bwahaha welcome to the dungeon');
