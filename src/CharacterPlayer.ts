@@ -1,6 +1,16 @@
 import { Character } from './Character';
 
 export class CharacterPlayer extends Character {
+	name: string;
+
+	constructor({
+		name,
+		...options
+	}: ConstructorParameters<typeof Character>[0] & { name: string }) {
+		super(options);
+		this.name = name;
+	}
+
 	update() {
 		if (this.health <= 0) {
 			this.sprBody.scale.y = 1;
