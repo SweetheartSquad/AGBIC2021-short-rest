@@ -21,7 +21,15 @@ import { ScreenFilter } from './ScreenFilter';
 import { size } from './size';
 import { Tween, TweenManager } from './Tweens';
 import { UIMap } from './UIMap';
-import { btn, delay, lerp, randRange, removeFromArray, shuffle } from './utils';
+import {
+	btn,
+	delay,
+	lerp,
+	randRange,
+	removeFromArray,
+	shuffle,
+	tex,
+} from './utils';
 
 export class GameScene {
 	delay = delay;
@@ -470,6 +478,14 @@ export class GameScene {
 		this.level = level;
 		const areas = Level.getLevel(level)(this);
 		this.setAreas(areas);
+	}
+
+	setBg(bg: string) {
+		this.bg.texture = tex(bg);
+	}
+
+	setFg(fg: string) {
+		this.fg.texture = tex(fg);
 	}
 
 	nextLevel() {
