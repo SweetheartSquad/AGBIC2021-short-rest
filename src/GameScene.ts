@@ -1,5 +1,6 @@
 import { backIn, elasticOut, quadIn, quadInOut, quadOut } from 'eases';
 import {
+	BitmapText,
 	Container,
 	Graphics,
 	NineSlicePlane,
@@ -12,6 +13,7 @@ import { Camp } from './Camp';
 import { Card, CardDef } from './Card';
 import { Character } from './Character';
 import { CharacterPlayer } from './CharacterPlayer';
+import { fontLog } from './font';
 import { game, resources } from './Game';
 import { GameObject } from './GameObject';
 import { Hand } from './Hand';
@@ -29,6 +31,7 @@ import {
 	removeFromArray,
 	shuffle,
 	tex,
+	wrap,
 } from './utils';
 
 export class GameScene {
@@ -67,6 +70,8 @@ export class GameScene {
 	}
 
 	map: UIMap = new UIMap();
+
+	logs: Container[] = [];
 
 	bg: TilingSprite;
 
@@ -595,5 +600,41 @@ export class GameScene {
 				});
 			});
 		});
+	}
+
+	async log(log: string) {
+		const textLog = new BitmapText(wrap(log, 20), fontLog);
+		textLog.x = 40;
+		textLog.y = 40;
+		textLog.anchor.y = 1.0;
+		textLog.alpha = 0;
+		textLog.filters = [getAlphaFilter()];
+		const containerLog = new Container();
+		containerLog.x = 0;
+		containerLog.y = 0;
+		containerLog.addChild(textLog);
+		if (this.logs.length) {
+			const lastLog = this.logs[this.logs.length - 1];
+			containerLog.addChild(lastLog);
+		}
+		this.logs.push(containerLog);
+		game.app.stage.addChild(containerLog);
+		const t1 = TweenManager.tween(textLog, 'alpha', 1, 200, undefined, quadOut);
+		const t2 = TweenManager.tween(
+			containerLog,
+			'y',
+			textLog.height + 10,
+			200,
+			undefined,
+			quadOut
+		);
+		await delay(5000);
+		TweenManager.abort(t1);
+		const t3 = TweenManager.tween(textLog, 'alpha', 0, 200, undefined, quadIn);
+		await delay(200);
+		TweenManager.abort(t2);
+		TweenManager.abort(t3);
+		this.logs.splice(this.logs.indexOf(containerLog), 1);
+		containerLog.destroy({ children: true });
 	}
 }

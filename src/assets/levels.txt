@@ -16,6 +16,15 @@
 				{
 					sprite: 'treasure',
 					health: 1,
+					start() {
+						scene.log('Test log');
+					},
+					interact() {
+						scene.log(
+							'A really long log to test the text wrapping and automatic shifting of different log lines'
+						);
+						scene.log('Another log right after');
+					},
 				},
 				'treasure',
 			],
