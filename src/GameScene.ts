@@ -15,20 +15,13 @@ import { CharacterPlayer } from './CharacterPlayer';
 import { game, resources } from './Game';
 import { GameObject } from './GameObject';
 import { Hand } from './Hand';
+import { Level, LevelDef } from './Map';
 import { Obstacle } from './Obstacle';
 import { ScreenFilter } from './ScreenFilter';
 import { size } from './size';
 import { Tween, TweenManager } from './Tweens';
 import { UIMap } from './UIMap';
-import {
-	btn,
-	delay,
-	lerp,
-	randItem,
-	randRange,
-	removeFromArray,
-	shuffle,
-} from './utils';
+import { btn, delay, lerp, randRange, removeFromArray, shuffle } from './utils';
 
 export class GameScene {
 	delay = delay;
@@ -73,11 +66,15 @@ export class GameScene {
 
 	deck: CardDef[] = [];
 
+	areas: LevelDef[] = [];
+
 	queue: (() => Promise<void> | void)[] = [];
 
 	busy = false;
 
 	position = 0;
+
+	level = 0;
 
 	constructor() {
 		this.camp = new Camp();
@@ -295,17 +292,13 @@ export class GameScene {
 				quadInOut
 			);
 			this.containerObstacle.x = size.x * this.position;
-			const area = this.map.areas[this.position];
-			if (area === 'enemy') {
-				// TODO: difficulty curve
-				this.addObstacle(
-					randItem(['skeleton', 'bat', 'slime_big', 'slime_medium'])
-				);
-			} else if (area === 'treasure') {
-				this.addObstacle('treasure');
-			} else if (area === 'door') {
-				this.addObstacle('door');
-			}
+			const area = this.areas[this.position];
+			area?.obstacles
+				?.slice()
+				.reverse()
+				.forEach((i) => {
+					this.addObstacle(i);
+				});
 			await delay(500);
 			this.party.forEach((i) => {
 				i.transform.x = 0;
@@ -454,10 +447,11 @@ export class GameScene {
 		return enemy;
 	}
 
-	setAreas(areas: string[]) {
+	setAreas(areas: GameScene['areas']) {
 		this.obstacles.forEach((i) => i.destroy());
 		this.obstacles.length = 0;
-		this.map.setAreas(areas);
+		this.areas = areas;
+		this.map.setAreas(areas.map((i) => i.icon));
 		this.position = 0;
 		this.map.setPosition(this.position);
 		this.bg.width = this.fg.width = size.x * areas.length;
@@ -470,6 +464,16 @@ export class GameScene {
 		this.party.forEach((i) => {
 			i.transform.x = 0;
 		});
+	}
+
+	setLevel(level: number) {
+		this.level = level;
+		const areas = Level.getLevel(level)(this);
+		this.setAreas(areas);
+	}
+
+	nextLevel() {
+		this.setLevel(this.level + 1);
 	}
 
 	startCamp() {

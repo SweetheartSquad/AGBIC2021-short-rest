@@ -1,5 +1,6 @@
 /font/fontimg.png
 /font/fontfnt.fnt
+levels.txt
 cards.txt
 obstacles.txt
 textures/camp_bg.png

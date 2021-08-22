@@ -11,6 +11,7 @@
 		effect(scene) {
 			scene.clearHand();
 			scene.clearParty();
+			// TODO: proper deck init
 			scene.deck.length = 0;
 			scene.addDeck('refresh');
 			// TODO: proper hand init
@@ -20,18 +21,7 @@
 			scene.addParty({ name: 'Priest', spr: 'cat', maxHealth: 3 });
 			scene.addParty({ name: 'Rogue', spr: 'apple', maxHealth: 2 });
 			scene.addParty({ name: 'Knight', spr: 'onion', maxHealth: 4 });
-			// TODO: real start
-			scene.setAreas([
-				'camp',
-				'enemy',
-				'enemy',
-				'treasure',
-				'unknown',
-				'attention',
-				'enemy',
-				'treasure',
-				'door',
-			]);
+			scene.setLevel(0);
 		},
 	},
 	Options: {
@@ -141,8 +131,7 @@
 							scene.addCard(i);
 						});
 						scene.addCard('Advance');
-						// TODO: progression
-						scene.setAreas(['camp', 'enemy', 'door']);
+						scene.nextLevel();
 					};
 
 					// party order selection
