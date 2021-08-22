@@ -229,8 +229,6 @@ export class GameScene {
 				!i.def.canPlay || i.def.canPlay(this) ? 1 : 0.8;
 		});
 
-		this.screenFilter.update();
-
 		GameObject.update();
 		TweenManager.update();
 		this.containerUI.x = this.camera.display.container.pivot.x;

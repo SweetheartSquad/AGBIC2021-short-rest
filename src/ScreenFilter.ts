@@ -23,6 +23,4 @@ export class ScreenFilter extends CustomFilter<{
 		this.uniforms.ditherGridMap = resources.ditherGrid.texture as Texture;
 		this.padding = 0;
 	}
-
-	update() {}
 }
