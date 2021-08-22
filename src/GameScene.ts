@@ -90,6 +90,8 @@ export class GameScene {
 
 	level = 0;
 
+	cardSpeed = 0;
+
 	musicPlaying?: {
 		howl: Howl;
 		id: number;
@@ -100,10 +102,19 @@ export class GameScene {
 		this.camp = new Camp();
 		this.camp.display.container.visible = false;
 
-		this.bg = new TilingSprite(resources.bg.texture as Texture, size.x, size.y);
-		this.fg = new TilingSprite(resources.fg.texture as Texture, size.x, size.y);
+		this.bg = new TilingSprite(
+			resources.error.texture as Texture,
+			size.x,
+			size.y
+		);
+		this.fg = new TilingSprite(
+			resources.error.texture as Texture,
+			size.x,
+			size.y
+		);
 
 		this.screenFilter = new ScreenFilter();
+		this.screenFilter.uniforms.overlay = [0, 0, 0, 1];
 		this.camera.display.container.filters = [this.screenFilter];
 
 		this.camera.display.container.x -= size.x / 2;

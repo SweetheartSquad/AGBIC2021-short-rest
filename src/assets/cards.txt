@@ -19,8 +19,12 @@ format:
 	// menus
 	init: {
 		effect(scene) {
+			scene.setBg('bg');
+			scene.setFg('fg');
 			scene.addCard('Start');
 			scene.addCard('Options');
+			scene.cardSpeed = 1;
+			scene.blackout();
 		},
 	},
 	Start: {
