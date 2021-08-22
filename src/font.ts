@@ -1,3 +1,4 @@
+import { OutlineFilter } from 'pixi-filters';
 import type { IBitmapTextStyle } from 'pixi.js';
 
 export const fontLog: Partial<IBitmapTextStyle> = {
@@ -20,3 +21,5 @@ export const fontName: Partial<IBitmapTextStyle> = {
 	align: 'center',
 	letterSpacing: -1,
 };
+
+export const filterTextOutline = new OutlineFilter(4, 0, 1);

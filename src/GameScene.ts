@@ -13,7 +13,7 @@ import { Camp } from './Camp';
 import { Card, CardDef } from './Card';
 import { Character } from './Character';
 import { CharacterPlayer } from './CharacterPlayer';
-import { fontLog } from './font';
+import { filterTextOutline, fontLog } from './font';
 import { game, resources } from './Game';
 import { GameObject } from './GameObject';
 import { Hand } from './Hand';
@@ -608,7 +608,7 @@ export class GameScene {
 		textLog.y = 40;
 		textLog.anchor.y = 1.0;
 		textLog.alpha = 0;
-		textLog.filters = [getAlphaFilter()];
+		textLog.filters = [filterTextOutline, getAlphaFilter()];
 		const containerLog = new Container();
 		containerLog.x = 0;
 		containerLog.y = 0;
