@@ -3,7 +3,7 @@ precision mediump float;
 varying vec2 vTextureCoord;
 
 uniform sampler2D uSampler;
-uniform float whiteout;
+uniform vec4 overlay;
 uniform float invert;
 uniform float curTime;
 uniform vec2 camPos;
@@ -74,6 +74,11 @@ void main(void) {
 	vec3 orig = texture2D(uSampler, uv).rgb;
 
 	vec3 rgb = chrAbb(uv, abs(uv.x-0.5)*2.0, 0.0);
+
+	// fx
+	rgb = mix(rgb, overlay.rgb, overlay.a);
+	rgb = mix(rgb, vec3(1.0) - rgb, invert);
+
 	// soft vignette
 	float haze = 0.02;
 	rgb *= (vignette(uv + noise(uv*5.0+t)*haze, 1.0)*0.75+0.25);
@@ -85,10 +90,6 @@ void main(void) {
 	// 
 	// rgbPreDither = (rgbPreDither - 0.5 + (brightness - 1.0)) * contrast + 0.5;
 	rgb = dither(rgb);
-
-	// fx
-	// col = mix(col, 1.0, whiteout);
-	// col = mix(col, 1.0 - col, invert);
 
 	gl_FragColor = vec4(rgb, 1.0);
 	// gl_FragColor = vec4(texture2D(uSampler, uvPreview).rgb, 1.0);

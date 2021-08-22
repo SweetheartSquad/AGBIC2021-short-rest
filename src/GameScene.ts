@@ -693,4 +693,40 @@ export class GameScene {
 		};
 		return id;
 	}
+
+	overlay(
+		[r, g, b, a = 1]:
+			| [number, number, number]
+			| [number, number, number, number],
+		duration = 200
+	) {
+		this.screenFilter.uniforms.overlay = [r, g, b, a];
+		TweenManager.tween(
+			this.screenFilter.uniforms.overlay,
+			'3',
+			0,
+			duration,
+			undefined,
+			quadIn
+		);
+	}
+
+	blackout(duration = 200) {
+		this.overlay([0, 0, 0], duration);
+	}
+
+	whiteout(duration = 200) {
+		this.overlay([1, 1, 1], duration);
+	}
+
+	invert(duration = 200) {
+		TweenManager.tween(
+			this.screenFilter.uniforms,
+			'invert',
+			0,
+			duration,
+			1,
+			quadIn
+		);
+	}
 }

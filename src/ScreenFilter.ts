@@ -4,7 +4,7 @@ import { resources } from './Game';
 import { size } from './size';
 
 export class ScreenFilter extends CustomFilter<{
-	whiteout: number;
+	overlay: [number, number, number, number];
 	invert: number;
 	curTime: number;
 	camPos: [number, number];
@@ -13,7 +13,7 @@ export class ScreenFilter extends CustomFilter<{
 }> {
 	constructor() {
 		super(resources.frag.data);
-		this.uniforms.whiteout = 0;
+		this.uniforms.overlay = [0, 0, 0, 0];
 		this.uniforms.invert = 0;
 		this.uniforms.curTime = 0;
 		this.uniforms.camPos = [0, 0];
