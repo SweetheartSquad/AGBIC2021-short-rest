@@ -3,6 +3,8 @@
 levels.txt
 cards.txt
 obstacles.txt
+audio/voiceTwang.mp3
+audio/voiceWhisper.mp3
 textures/camp_bg.png
 textures/camp_unlit.png
 textures/camp_lit1.png

@@ -1,4 +1,5 @@
 import { backIn, elasticOut, quadIn, quadInOut, quadOut } from 'eases';
+import { Howl } from 'howler';
 import {
 	BitmapText,
 	Container,
@@ -88,6 +89,12 @@ export class GameScene {
 	position = 0;
 
 	level = 0;
+
+	musicPlaying?: {
+		howl: Howl;
+		id: number;
+		volume: number;
+	};
 
 	constructor() {
 		this.camp = new Camp();
@@ -636,5 +643,55 @@ export class GameScene {
 		TweenManager.abort(t3);
 		this.logs.splice(this.logs.indexOf(containerLog), 1);
 		containerLog.destroy({ children: true });
+	}
+
+	howl(howl: string) {
+		const h = resources[howl]?.data as Maybe<Howl>;
+		if (!h) {
+			console.warn(`Audio "${howl}" not found`);
+			this.log(`Audio "${howl}" not found`);
+		}
+		return h;
+	}
+
+	sfx(
+		sfx: string,
+		{ rate = 1, volume = 1 }: { rate?: number; volume?: number } = {}
+	) {
+		const howl = this.howl(sfx);
+		if (!howl) return undefined;
+		const id = howl.play();
+		howl.rate(rate, id);
+		howl.volume(volume, id);
+		return id;
+	}
+
+	music(
+		music: string,
+		{
+			rate = 1,
+			volume = 1,
+			fade = 1000,
+		}: { rate?: number; volume?: number; fade?: number } = {}
+	) {
+		const howl = this.howl(music);
+		if (!howl) return undefined;
+		const id = howl.play();
+		howl.rate(rate, id);
+		howl.loop(true, id);
+		howl.fade(0, volume, fade, id);
+		const playing = this.musicPlaying;
+		if (playing) {
+			playing.howl.fade(playing.volume, 0, fade, playing.id);
+			delay(fade).then(() => {
+				playing.howl.stop(playing.id);
+			});
+		}
+		this.musicPlaying = {
+			howl,
+			id,
+			volume,
+		};
+		return id;
 	}
 }
