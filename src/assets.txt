@@ -41,4 +41,6 @@ textures/bat3.png
 textures/slime_big.png
 textures/slime_medium.png
 textures/slime_small.png
+textures/dragon.png
+textures/dragon_hand.png
 textures/fountain.png
