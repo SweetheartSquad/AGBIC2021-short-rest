@@ -65,9 +65,10 @@ format:
 	fountain_healing: {
 		sprite: 'fountain',
 		interact(scene) {
+			scene.log('The party considers slaking their thirst.');
 			scene.choice(
 				{
-					name: 'Drink',
+					name: 'Slake',
 					effect() {
 						scene.party.forEach((i) => {
 							if (i.health > 0) {
@@ -80,7 +81,7 @@ format:
 					},
 				},
 				{
-					name: "Don't Drink",
+					name: "Don't Slake",
 					effect() {
 						scene.log('The party suppresses their thirst.');
 						scene.killObstacle();
@@ -92,9 +93,10 @@ format:
 	fountain_poison: {
 		sprite: 'fountain',
 		interact(scene) {
+			scene.log('The party considers slaking their thirst.');
 			scene.choice(
 				{
-					name: 'Drink',
+					name: 'Slake',
 					effect() {
 						scene.party.forEach((i) => {
 							i.damage(1);
@@ -105,7 +107,7 @@ format:
 					},
 				},
 				{
-					name: "Don't Drink",
+					name: "Don't Slake",
 					effect() {
 						scene.log('The party suppresses their thirst.');
 						scene.killObstacle();
