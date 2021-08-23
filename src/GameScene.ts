@@ -395,7 +395,7 @@ export class GameScene {
 		this.queue.push(async () => {
 			await delay(1000);
 			tweens.forEach((i) => TweenManager.abort(i));
-			await obstacle.def.end?.(this);
+			await obstacle.def.end?.call(obstacle, this);
 			obstacle.destroy();
 		});
 	}
