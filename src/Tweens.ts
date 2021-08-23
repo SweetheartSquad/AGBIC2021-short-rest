@@ -37,25 +37,25 @@ export class TweenManager {
 			s: game.app.ticker.lastTime,
 			e: ease,
 		};
-		this.tweens.push(t);
+		TweenManager.tweens.push(t);
 		return t;
 	}
 
 	static abort(tween: Tween) {
-		removeFromArray(this.tweens, tween);
+		removeFromArray(TweenManager.tweens, tween);
 	}
 
 	static finish(tween: Tween) {
 		tween.t[tween.p] = tween.b;
-		removeFromArray(this.tweens, tween);
+		removeFromArray(TweenManager.tweens, tween);
 	}
 
 	static update() {
 		const curTime = game.app.ticker.lastTime;
-		this.tweens.forEach((i) => {
+		TweenManager.tweens.forEach((i) => {
 			if (curTime > i.s + i.d) {
 				i.t[i.p] = i.b;
-				removeFromArray(this.tweens, i);
+				removeFromArray(TweenManager.tweens, i);
 				return;
 			}
 			i.t[i.p] = lerp(i.a, i.b, i.e((curTime - i.s) / i.d));
