@@ -278,17 +278,19 @@ export class GameScene {
 					quadOut
 				);
 				await delay(100);
-				await obstacle.def.interact?.(this);
 				front.display.container.scale.x -= 0.3;
 				front.display.container.scale.y += 0.3;
 				TweenManager.abort(t1);
-				if (obstacle.def.damage) front.damage(obstacle.def.damage);
 				if (obstacle.health > 0) {
 					obstacle.damage(1);
+					await obstacle.def.interact?.(this);
 					if (obstacle.health <= 0) {
 						this.killObstacle();
 					}
+				} else {
+					await obstacle.def.interact?.(this);
 				}
+				if (obstacle.def.damage) front.damage(obstacle.def.damage);
 			});
 			return;
 		}
