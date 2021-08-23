@@ -26,10 +26,44 @@ format:
 			},
 		];
 		// TODO: real level generation
-		areas.push({
-			icon: 'icon_enemy',
-			obstacles: ['skeleton'],
-		});
+		areas.push(
+			{
+				icon: 'icon_enemy',
+				obstacles: ['bat'],
+			},
+			{
+				icon: 'icon_enemy',
+				obstacles: ['skeleton'],
+			},
+			{
+				icon: 'icon_enemy',
+				obstacles: ['zombie'],
+			},
+			{
+				icon: 'icon_enemy',
+				obstacles: ['bomb'],
+			},
+			{
+				icon: 'icon_unknown',
+				obstacles: ['fountain_healing'],
+			},
+			{
+				icon: 'icon_unknown',
+				obstacles: ['fountain_poison'],
+			},
+			{
+				icon: 'icon_unknown',
+				obstacles: ['trap'],
+			},
+			{
+				icon: 'icon_enemy',
+				obstacles: ['slime_big'],
+			},
+			{
+				icon: 'icon_enemy',
+				obstacles: ['dragon'],
+			}
+		);
 		areas.push({
 			icon: 'icon_enemy',
 			obstacles: [
