@@ -5,7 +5,7 @@ import { GameObject } from './GameObject';
 import { Animator } from './Scripts/Animator';
 import { Display } from './Scripts/Display';
 import { Transform } from './Scripts/Transform';
-import { TweenManager } from './Tweens';
+import { Tween, TweenManager } from './Tweens';
 import { clamp, tex } from './utils';
 
 const filterOL = new OutlineFilter(2, 0xffffff, 1);
@@ -31,6 +31,8 @@ export class Character extends GameObject {
 	offset: number = ++offset;
 
 	filterOverlay = new ColorOverlayFilter(0, 0);
+
+	tweenFilter?: Tween;
 
 	constructor({
 		spr,
@@ -77,6 +79,11 @@ export class Character extends GameObject {
 		this.init();
 	}
 
+	destroy() {
+		super.destroy();
+		if (this.tweenFilter) TweenManager.abort(this.tweenFilter);
+	}
+
 	update() {
 		super.update();
 		if (this.health > 0) {
@@ -105,7 +112,14 @@ export class Character extends GameObject {
 		if (this.health <= 0) return;
 		this.setHealth(this.health - damage);
 		this.filterOverlay.color = 0xff0000;
-		TweenManager.tween(this.filterOverlay, 'alpha', 0, 200, 1);
+		if (this.tweenFilter) TweenManager.finish(this.tweenFilter);
+		this.tweenFilter = TweenManager.tween(
+			this.filterOverlay,
+			'alpha',
+			0,
+			200,
+			1
+		);
 		if (this.health <= 0) {
 			this.display.container.emit('dead');
 		}
@@ -114,6 +128,13 @@ export class Character extends GameObject {
 	heal(damage: number) {
 		this.setHealth(this.health + damage);
 		this.filterOverlay.color = 0x00ff00;
-		TweenManager.tween(this.filterOverlay, 'alpha', 0, 200, 1);
+		if (this.tweenFilter) TweenManager.finish(this.tweenFilter);
+		this.tweenFilter = TweenManager.tween(
+			this.filterOverlay,
+			'alpha',
+			0,
+			200,
+			1
+		);
 	}
 }
