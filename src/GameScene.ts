@@ -347,6 +347,7 @@ export class GameScene {
 		removeFromArray(obstacle.scripts, obstacle.animator);
 		const tweens: Tween[] = [];
 		if (obstacle.maxHealth > 0) {
+			obstacle.kill();
 			tweens.push(
 				TweenManager.tween(
 					obstacle.sprBody.scale,
