@@ -36,7 +36,7 @@ format:
 		},
 		interact(scene) {
 			scene.queue.push(async () => {
-				scene.obstacle.animator.setAnimation('treasure_open');
+				this.animator.setAnimation('treasure_open');
 				await scene.delay(100);
 				scene.loot(['test', 'test', 'test']); // TODO: loot pools?
 				scene.killObstacle();
@@ -120,13 +120,13 @@ format:
 		async interact(scene) {
 			if (scene.front.name === 'Rogue') {
 				scene.log('The Rogue disables the trap.');
-				scene.obstacle.transform.y += 10;
+				this.transform.y += 10;
 				await scene.delay(200);
 				scene.killObstacle();
 			} else {
 				scene.log('A trap is sprung!');
-				scene.obstacle.animator.setAnimation('trap_triggered');
-				scene.obstacle.transform.y += 10;
+				this.animator.setAnimation('trap_triggered');
+				this.transform.y += 10;
 				scene.front.damage(4);
 				await scene.delay(200);
 				scene.killObstacle();
@@ -137,17 +137,17 @@ format:
 		sprite: 'bomb_c',
 		health: 3,
 		interact(scene) {
-			if (scene.obstacle.countdown === undefined) {
-				scene.obstacle.countdown = 3;
+			if (this.countdown === undefined) {
+				this.countdown = 3;
 			}
-			scene.obstacle.countdown -= 1;
-			if (scene.obstacle.countdown) {
-				scene.obstacle.animator.setAnimation(
-					`bomb_${['a', 'b', 'c'][scene.obstacle.countdown - 1]}`
+			this.countdown -= 1;
+			if (this.countdown) {
+				this.animator.setAnimation(
+					`bomb_${['a', 'b', 'c'][this.countdown - 1]}`
 				);
 			} else {
 				scene.log('The bomb goes off!');
-				scene.obstacle.animator.setAnimation('bomb');
+				this.animator.setAnimation('bomb');
 				scene.front.damage(scene.front.health);
 			}
 		},
