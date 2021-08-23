@@ -234,7 +234,7 @@ export class GameScene {
 
 		this.hand.display.container.y = lerp(
 			this.hand.display.container.y,
-			this.busy ? 50 : 0,
+			this.busy ? 30 : 0,
 			0.1
 		);
 		this.hand.hand.forEach((i) => {

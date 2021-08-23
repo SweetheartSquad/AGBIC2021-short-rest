@@ -66,7 +66,7 @@ export class Hand extends GameObject {
 			i.transform.x = lerp(i.transform.x, handX + offset * cardGap, 0.1);
 			i.transform.y = lerp(
 				i.transform.y,
-				inspectingHand ? size.y - 100 - (hovered ? 20 : 0) : size.y - 10,
+				inspectingHand ? size.y - 100 - (hovered ? 20 : 0) : size.y + 20,
 				0.2
 			);
 			i.display.container.rotation = lerp(
