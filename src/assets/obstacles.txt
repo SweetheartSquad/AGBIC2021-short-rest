@@ -176,6 +176,7 @@ format:
 			scene.tween(scene.containerParty.pivot, 'x', -40, 0);
 		},
 		end(scene) {
+			scene.log('"NOOO!!"');
 			scene.whiteout();
 			scene.tween(scene.containerParty.scale, 'x', 1, 0);
 			scene.tween(scene.containerParty.scale, 'y', 1, 0);
@@ -183,7 +184,6 @@ format:
 		},
 		async interact(scene) {
 			if (this.health <= 0) {
-				scene.log('"NOOO!!"');
 				return;
 			}
 			if (scene.obstacles.length === 1) {
