@@ -58,6 +58,8 @@ export class GameScene {
 
 	hand: Hand = new Hand();
 
+	handStack: CardDef[][] = [];
+
 	party: Character[] = [];
 
 	obstacles: Obstacle[] = [];
@@ -405,6 +407,19 @@ export class GameScene {
 		return this.hand.addCard(...options);
 	}
 
+	pushHand() {
+		this.handStack.push(this.hand.hand.map((i) => i.def));
+	}
+
+	popHand() {
+		this.clearHand();
+		const hand = this.handStack.pop();
+		if (hand) {
+			hand.forEach((c) => {
+				this.addCard(c);
+			});
+		}
+	}
 	clearParty() {
 		this.party.forEach((i) => {
 			i.destroy();
