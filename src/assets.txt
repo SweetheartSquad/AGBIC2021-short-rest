@@ -50,3 +50,4 @@ textures/bomb.png
 textures/bomb_a.png
 textures/bomb_b.png
 textures/bomb_c.png
+textures/zombie.png

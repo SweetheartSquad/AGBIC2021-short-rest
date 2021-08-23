@@ -152,6 +152,20 @@ format:
 			}
 		},
 	},
+	zombie: {
+		health: 3,
+		async interact(scene) {
+			if (scene.front.name === 'Priest') {
+				scene.log('The Priest banishes the zombie!');
+				this.damage(3);
+			} else if (this.health <= 0) {
+				if (Math.random() > 0.5) {
+					scene.log('The zombie got back up!');
+					this.heal(3);
+				}
+			}
+		},
+	},
 	dragon: {
 		health: 10,
 		start: async (scene) => {
