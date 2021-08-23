@@ -116,6 +116,23 @@ format:
 			);
 		},
 	},
+	trap: {
+		async interact(scene) {
+			if (scene.front.name === 'Rogue') {
+				scene.log('The Rogue disables the trap.');
+				scene.obstacle.transform.y += 10;
+				await scene.delay(200);
+				scene.killObstacle();
+			} else {
+				scene.log('A trap is sprung!');
+				scene.obstacle.animator.setAnimation('trap_triggered');
+				scene.obstacle.transform.y += 10;
+				scene.front.damage(4);
+				await scene.delay(200);
+				scene.killObstacle();
+			}
+		},
+	},
 	dragon: {
 		health: 10,
 		start: async (scene) => {

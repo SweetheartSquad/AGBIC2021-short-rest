@@ -44,3 +44,5 @@ textures/slime_small.png
 textures/dragon.png
 textures/dragon_hand.png
 textures/fountain.png
+textures/trap.png
+textures/trap_triggered.png
