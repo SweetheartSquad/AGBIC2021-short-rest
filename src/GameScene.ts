@@ -494,11 +494,8 @@ export class GameScene {
 
 		character.display.container.on('dead', () => {
 			removeFromArray(this.party, character);
-			this.party.splice(
-				this.party.findIndex((i) => i.health > 0),
-				0,
-				character
-			);
+			const slot = this.party.findIndex((i) => i.health > 0);
+			this.party.splice(slot >= 0 ? slot : this.party.length, 0, character);
 			if (!this.front.health) {
 				// TODO: lose state + restart
 				this.clearHand();
