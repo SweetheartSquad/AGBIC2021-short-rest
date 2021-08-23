@@ -328,7 +328,7 @@ export class GameScene {
 				?.slice()
 				.reverse()
 				.forEach((i) => {
-					this.addObstacle(i);
+					this.addObstacle(i, false);
 				});
 			await delay(500);
 			this.party.forEach((i) => {
@@ -499,11 +499,17 @@ export class GameScene {
 		return character;
 	}
 
-	addObstacle(...options: ConstructorParameters<typeof Obstacle>) {
-		const enemy = new Obstacle(...options);
+	addObstacle(
+		options: ConstructorParameters<typeof Obstacle>[0],
+		start = true
+	) {
+		const enemy = new Obstacle(options);
 		enemy.init();
 		this.obstacles.push(enemy);
 		this.containerObstacle.addChild(enemy.display.container);
+		if (start && enemy.def.start) {
+			this.queue.push(async () => enemy.def.start?.(this));
+		}
 		return enemy;
 	}
 
