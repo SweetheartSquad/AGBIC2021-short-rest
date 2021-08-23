@@ -344,36 +344,42 @@ export class GameScene {
 		obstacle.setHealth(0);
 		removeFromArray(obstacle.scripts, obstacle.animator);
 		const tweens: Tween[] = [];
-		tweens.push(
-			TweenManager.tween(
-				obstacle.sprBody.scale,
-				'y',
-				0.8,
-				1000,
-				undefined,
-				quadIn
-			)
-		);
-		tweens.push(
-			TweenManager.tween(
-				obstacle.sprBody.scale,
-				'x',
-				1.2,
-				1000,
-				undefined,
-				quadIn
-			)
-		);
-		tweens.push(
-			TweenManager.tween(obstacle.sprBody, 'x', 50, 1000, undefined, (t) =>
-				randRange(-t, t)
-			)
-		);
-		tweens.push(
-			TweenManager.tween(obstacle.sprBody, 'y', 50, 1000, undefined, (t) =>
-				randRange(-t, t)
-			)
-		);
+		if (obstacle.maxHealth > 0) {
+			tweens.push(
+				TweenManager.tween(
+					obstacle.sprBody.scale,
+					'y',
+					0.8,
+					1000,
+					undefined,
+					quadIn
+				)
+			);
+			tweens.push(
+				TweenManager.tween(
+					obstacle.sprBody.scale,
+					'x',
+					1.2,
+					1000,
+					undefined,
+					quadIn
+				)
+			);
+			tweens.push(
+				TweenManager.tween(obstacle.sprBody, 'x', 50, 1000, undefined, (t) =>
+					randRange(-t, t)
+				)
+			);
+			tweens.push(
+				TweenManager.tween(obstacle.sprBody, 'y', 50, 1000, undefined, (t) =>
+					randRange(-t, t)
+				)
+			);
+		} else {
+			tweens.push(
+				TweenManager.tween(obstacle.sprBody, 'x', 20, 1000, undefined, quadIn)
+			);
+		}
 		tweens.push(
 			TweenManager.tween(
 				obstacle.display.container,
