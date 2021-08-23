@@ -10,6 +10,7 @@ type ObstacleDef = {
 	health?: number;
 	damage?: number;
 	sprite?: string;
+	shadow?: false;
 	start?: (scene: GameScene) => void | Promise<void>;
 	interact?: (scene: GameScene) => void | Promise<void>;
 	end?: (scene: GameScene) => void | Promise<void>;
@@ -48,6 +49,9 @@ export class Obstacle extends Character {
 		});
 		this.def = def;
 		this.display.container.filters = [getAlphaFilter()];
+		if (def.shadow === false) {
+			this.display.container.children[0].visible = false;
+		}
 	}
 
 	setHealth(h: number) {
