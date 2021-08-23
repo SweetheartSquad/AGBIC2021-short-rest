@@ -283,12 +283,12 @@ export class GameScene {
 				TweenManager.abort(t1);
 				if (obstacle.health > 0) {
 					obstacle.damage(1);
-					await obstacle.def.interact?.(this);
+					await obstacle.def.interact?.call(obstacle, this);
 					if (obstacle.health <= 0) {
 						this.killObstacle(obstacle);
 					}
 				} else {
-					await obstacle.def.interact?.(this);
+					await obstacle.def.interact?.call(obstacle, this);
 				}
 				if (obstacle.def.damage) front.damage(obstacle.def.damage);
 			});
@@ -326,7 +326,7 @@ export class GameScene {
 				i.transform.x = 0;
 			});
 			await delay(1000);
-			await Promise.all(this.obstacles.map((i) => i.def?.start?.(this)));
+			await Promise.all(this.obstacles.map((i) => i.def?.start?.call(i, this)));
 		});
 	}
 
