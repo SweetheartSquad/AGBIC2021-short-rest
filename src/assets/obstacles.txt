@@ -4,6 +4,7 @@ format:
 	sprite: 'obstacle image (uses object key if not set)',
 	health: number | undefined,
 	damage: number | undefined,
+	shadow: false | undefined,
 	start: (scene) => {
 		// effect triggered when obstacle is encountered
 	},
