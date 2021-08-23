@@ -133,6 +133,25 @@ format:
 			}
 		},
 	},
+	bomb: {
+		sprite: 'bomb_c',
+		health: 3,
+		interact(scene) {
+			if (scene.obstacle.countdown === undefined) {
+				scene.obstacle.countdown = 3;
+			}
+			scene.obstacle.countdown -= 1;
+			if (scene.obstacle.countdown) {
+				scene.obstacle.animator.setAnimation(
+					`bomb_${['a', 'b', 'c'][scene.obstacle.countdown - 1]}`
+				);
+			} else {
+				scene.log('The bomb goes off!');
+				scene.obstacle.animator.setAnimation('bomb');
+				scene.front.damage(scene.front.health);
+			}
+		},
+	},
 	dragon: {
 		health: 10,
 		start: async (scene) => {

@@ -46,3 +46,7 @@ textures/dragon_hand.png
 textures/fountain.png
 textures/trap.png
 textures/trap_triggered.png
+textures/bomb.png
+textures/bomb_a.png
+textures/bomb_b.png
+textures/bomb_c.png
