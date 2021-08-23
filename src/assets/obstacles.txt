@@ -182,6 +182,10 @@ format:
 			scene.tween(scene.containerParty.pivot, 'x', 0, 0);
 		},
 		interact: async (scene) => {
+			if (this.health <= 0) {
+				scene.log('"NOOO!!"');
+				return;
+			}
 			if (scene.obstacles.length === 1) {
 				await scene.addObstacle('dragon_hand');
 				scene.log(
