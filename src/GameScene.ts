@@ -40,6 +40,8 @@ export class GameScene {
 
 	shuffle = shuffle;
 
+	tween = TweenManager.tween;
+
 	camp: Camp;
 
 	container = new Container();
