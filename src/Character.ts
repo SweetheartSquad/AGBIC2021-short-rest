@@ -102,9 +102,13 @@ export class Character extends GameObject {
 	}
 
 	damage(damage: number) {
+		if (this.health <= 0) return;
 		this.setHealth(this.health - damage);
 		this.filterOverlay.color = 0xff0000;
 		TweenManager.tween(this.filterOverlay, 'alpha', 0, 200, 1);
+		if (this.health <= 0) {
+			this.display.container.emit('dead');
+		}
 	}
 
 	heal(damage: number) {

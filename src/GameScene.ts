@@ -283,19 +283,6 @@ export class GameScene {
 				front.display.container.scale.y += 0.3;
 				TweenManager.abort(t1);
 				if (obstacle.def.damage) front.damage(obstacle.def.damage);
-				if (front.health <= 0) {
-					removeFromArray(this.party, front);
-					this.party.splice(
-						this.party.findIndex((i) => i.health > 0),
-						0,
-						front
-					);
-					if (!this.front.health) {
-						// TODO: lose state + restart
-						this.clearHand();
-						this.addCard({ name: 'you died', effect() {} });
-					}
-				}
 				if (obstacle.health > 0) {
 					obstacle.damage(1);
 					if (obstacle.health <= 0) {
@@ -498,6 +485,21 @@ export class GameScene {
 		const character = new CharacterPlayer(...options);
 		this.containerParty.addChild(character.display.container);
 		this.party.push(character);
+
+		character.display.container.on('dead', () => {
+			removeFromArray(this.party, character);
+			this.party.splice(
+				this.party.findIndex((i) => i.health > 0),
+				0,
+				character
+			);
+			if (!this.front.health) {
+				// TODO: lose state + restart
+				this.clearHand();
+				this.addCard({ name: 'you died', effect() {} });
+			}
+		});
+
 		return character;
 	}
 
