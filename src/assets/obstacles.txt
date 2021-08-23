@@ -168,20 +168,20 @@ format:
 	},
 	dragon: {
 		health: 10,
-		start: async (scene) => {
+		async start(scene) {
 			await scene.addObstacle('dragon_hand');
 			scene.whiteout();
 			scene.tween(scene.containerParty.scale, 'x', 0.6, 0);
 			scene.tween(scene.containerParty.scale, 'y', 0.6, 0);
 			scene.tween(scene.containerParty.pivot, 'x', -40, 0);
 		},
-		end: (scene) => {
+		end(scene) {
 			scene.whiteout();
 			scene.tween(scene.containerParty.scale, 'x', 1, 0);
 			scene.tween(scene.containerParty.scale, 'y', 1, 0);
 			scene.tween(scene.containerParty.pivot, 'x', 0, 0);
 		},
-		interact: async (scene) => {
+		async interact(scene) {
 			if (this.health <= 0) {
 				scene.log('"NOOO!!"');
 				return;
