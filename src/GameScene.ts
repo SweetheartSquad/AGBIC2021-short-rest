@@ -285,7 +285,7 @@ export class GameScene {
 					obstacle.damage(1);
 					await obstacle.def.interact?.(this);
 					if (obstacle.health <= 0) {
-						this.killObstacle();
+						this.killObstacle(obstacle);
 					}
 				} else {
 					await obstacle.def.interact?.(this);
@@ -335,12 +335,12 @@ export class GameScene {
 		if (!obstacle) return;
 		obstacle.damage(damage);
 		if (obstacle.health <= 0) {
-			this.killObstacle();
+			this.killObstacle(obstacle);
 		}
 	}
 
-	killObstacle() {
-		const { obstacle } = this;
+	killObstacle(target: Obstacle = this.obstacle) {
+		const obstacle = target || this.obstacle;
 		if (!obstacle) return;
 		removeFromArray(this.obstacles, obstacle);
 		obstacle.setHealth(0);
