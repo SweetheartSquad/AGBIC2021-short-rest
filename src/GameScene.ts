@@ -420,6 +420,21 @@ export class GameScene {
 			});
 		}
 	}
+
+	choice(...choices: CardDef[]) {
+		this.pushHand();
+		this.clearHand();
+		choices.forEach((i) => {
+			this.addCard({
+				...i,
+				effect: () => {
+					this.popHand();
+					i.effect(this);
+				},
+			});
+		});
+	}
+
 	clearParty() {
 		this.party.forEach((i) => {
 			i.destroy();
