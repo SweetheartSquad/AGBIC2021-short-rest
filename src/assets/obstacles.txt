@@ -185,15 +185,18 @@ format:
 			if (scene.obstacles.length === 1) {
 				await scene.addObstacle('dragon_hand');
 				scene.log(
-					`"${scene.shuffle(['', 'Gah!', 'Argh!', 'Hrrg!', '*HISS*'])[0]}${
+					`"${[
+						scene.shuffle(['', 'Gah!', 'Argh!', 'Hrrg!', '*HISS*'])[0],
 						scene.shuffle([
 							'',
-							' How dare you!',
-							' You DARE!?',
-							' Insolent!',
-							" I'll get you for that!",
-						])[0]
-					}"`
+							'How dare you!',
+							'You DARE!?',
+							'Insolent!',
+							"I'll get you for that!",
+						])[0],
+					]
+						.filter((i) => i)
+						.join(' ')}"`
 				);
 			}
 		},
