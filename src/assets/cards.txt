@@ -28,13 +28,16 @@ scene.hand.hand // array of card definitions in hand
 // hand
 scene.addCard('name' | { ...unique definition }) // adds card to hand
 scene.addDeck('name' | { ...unique definition }) // adds card to deck
+scene.playCard(card) // plays a card from hand
 scene.clearHand() // clears cards in hand
 scene.pushHand() // saves current card definitions to a stack
 scene.popHand() // pops stack of card definitions and adds each (generally will want to clear hand first)
+scene.loot(...card names | definitions) // gives player a choice of one card to add to their deck
 
 // interaction
 scene.addObstacle('name' | { ...unique definition })
 scene.addParty({ ...unique definition })
+scene.clearParty() // removes all party members
 scene.choice(...card definitions) // helper for presenting choices without tracking state
 scene.killObstacle() // destroys the obstacle in front
 scene.killObstacle(target) // destroys specific obstacle
@@ -45,9 +48,14 @@ scene.log('text') // adds text to action log
 scene.overlay([r,g,b,a], duration) // flashes a colour overlay
 scene.blackout(duration) // shortcut for black overlay
 scene.whiteout(duration) // shortcut for white overlay
+scene.invert(duration) // flashes inverted overlay
 scene.setBg('texture') // sets tiling background
 scene.setFg('texture') // sets tiling foreground
 await scene.delay(duration) // waits before continuing
+
+// audio
+scene.sfx('name', { rate: 1, volume: 1 }) // plays sound effect (rate/volume optional)
+scene.music('name', { rate: 1, volume: 1, fade: 1000 }) // plays looping music, cross-fading with any currently playing music (rate/volume/fade optional)
 
 // progression
 scene.startCamp()
