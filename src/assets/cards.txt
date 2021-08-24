@@ -100,6 +100,7 @@ scene.advance() // basic attack/interaction/movement
 		effect(scene) {
 			scene.screenFilter.enabled = !scene.screenFilter.enabled;
 			scene.addCard('Filter');
+			scene.hand.hand.splice(1, 0, scene.hand.hand.pop()); // keep cards in order
 		},
 	},
 	Scale: {
@@ -111,6 +112,7 @@ scene.advance() // basic attack/interaction/movement
 			}[window.resizer.scaleMode];
 			window.resizer.onResize();
 			scene.addCard('Scale');
+			scene.hand.hand.splice(2, 0, scene.hand.hand.pop()); // keep cards in order
 		},
 	},
 	'Card Throw': {
