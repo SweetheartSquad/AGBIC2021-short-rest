@@ -284,9 +284,6 @@ export class GameScene {
 				if (obstacle.health > 0) {
 					obstacle.damage(1);
 					await obstacle.def.interact?.call(obstacle, this);
-					if (obstacle.health <= 0) {
-						this.killObstacle(obstacle);
-					}
 				} else {
 					await obstacle.def.interact?.call(obstacle, this);
 				}
@@ -334,9 +331,6 @@ export class GameScene {
 		const { obstacle } = this;
 		if (!obstacle) return;
 		obstacle.damage(damage);
-		if (obstacle.health <= 0) {
-			this.killObstacle(obstacle);
-		}
 	}
 
 	killObstacle(target: Obstacle = this.obstacle) {
@@ -520,6 +514,9 @@ export class GameScene {
 		if (start && enemy.def.start) {
 			this.queue.push(async () => enemy.def.start?.(this));
 		}
+		enemy.display.container.on('dead', () => {
+			this.killObstacle(enemy);
+		});
 		return enemy;
 	}
 
