@@ -6,9 +6,8 @@ obstacles.txt
 audio/voiceTwang.mp3
 audio/voiceWhisper.mp3
 textures/camp_bg.png
-textures/camp_unlit.png
-textures/camp_lit1.png
-textures/camp_lit2.png
+textures/camp_bg_lit1.png
+textures/camp_bg_lit2.png
 textures/border.png
 textures/shadow.png
 textures/card.png
