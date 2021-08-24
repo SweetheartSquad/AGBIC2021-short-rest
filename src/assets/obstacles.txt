@@ -154,6 +154,7 @@ format:
 			} else {
 				scene.log('The bomb goes off!');
 				this.animator.setAnimation('bomb');
+				scene.whiteout();
 				scene.front.damage(scene.front.health);
 			}
 		},
