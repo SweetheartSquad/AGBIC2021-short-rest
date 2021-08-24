@@ -14,6 +14,46 @@ format:
 		return true | false;
 	},
 }
+
+scene cheat sheet:
+
+// references
+scene.party // array of party members
+scene.obstacles // array of obstacles
+scene.front // reference to party member in front
+scene.obstacle // reference to obstacle in front
+scene.deck // array of card definitions in deck
+scene.hand.hand // array of card definitions in hand
+
+// hand
+scene.addCard('name' | { ...unique definition }) // adds card to hand
+scene.addDeck('name' | { ...unique definition }) // adds card to deck
+scene.clearHand() // clears cards in hand
+scene.pushHand() // saves current card definitions to a stack
+scene.popHand() // pops stack of card definitions and adds each (generally will want to clear hand first)
+
+// interaction
+scene.addObstacle('name' | { ...unique definition })
+scene.addParty({ ...unique definition })
+scene.choice(...card definitions) // helper for presenting choices without tracking state
+scene.killObstacle() // destroys the obstacle in front
+scene.killObstacle(target) // destroys specific obstacle
+scene.front.damage(1)
+
+// vfx
+scene.log('text') // adds text to action log
+scene.overlay([r,g,b,a], duration) // flashes a colour overlay
+scene.blackout(duration) // shortcut for black overlay
+scene.whiteout(duration) // shortcut for white overlay
+scene.setBg('texture') // sets tiling background
+scene.setFg('texture') // sets tiling foreground
+await scene.delay(duration) // waits before continuing
+
+// progression
+scene.startCamp()
+scene.setLevel(level)
+scene.nextLevel()
+scene.advance() // basic attack/interaction/movement
 */
 (() => ({
 	// menus
