@@ -30,6 +30,7 @@ textures/icon_unknown.png
 textures/icon_cleared.png
 textures/icon_heart.png
 textures/icon_heart_empty.png
+textures/icon_shield.png
 textures/error.png
 textures/treasure.png
 textures/treasure_open.png

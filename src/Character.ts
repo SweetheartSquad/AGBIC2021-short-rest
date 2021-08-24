@@ -26,7 +26,13 @@ export class Character extends GameObject {
 
 	maxHealth: number;
 
+	armour!: number;
+
 	hearts: Sprite[];
+
+	armours: Sprite[] = [];
+
+	containerHealth: Container;
 
 	offset: number = ++offset;
 
@@ -38,10 +44,12 @@ export class Character extends GameObject {
 		spr,
 		health,
 		maxHealth,
+		armour,
 	}: {
 		spr: string;
 		health?: number;
 		maxHealth: number;
+		armour?: number;
 	}) {
 		super();
 		this.maxHealth = maxHealth;
@@ -64,18 +72,19 @@ export class Character extends GameObject {
 		this.display.container.addChild(this.sprOL);
 		this.display.container.addChild(this.sprBody);
 
-		const containerHealth = new Container();
+		this.containerHealth = new Container();
 		this.hearts = [];
 		for (let i = 0; i < maxHealth; ++i) {
 			const sprHeart = new Sprite(resources.icon_heart.texture as Texture);
 			sprHeart.x += (sprHeart.width + 2) * i;
-			containerHealth.addChild(sprHeart);
+			this.containerHealth.addChild(sprHeart);
 			this.hearts.push(sprHeart);
 		}
-		containerHealth.x -= Math.floor(containerHealth.width / 2);
+		this.containerHealth.x -= Math.floor(this.containerHealth.width / 2);
 		this.setHealth(health ?? maxHealth);
-		containerHealth.y = containerHealth.height / 2;
-		this.display.container.addChild(containerHealth);
+		this.setArmour(armour || 0);
+		this.containerHealth.y = this.containerHealth.height / 2;
+		this.display.container.addChild(this.containerHealth);
 		this.init();
 	}
 
@@ -108,9 +117,29 @@ export class Character extends GameObject {
 		});
 	}
 
+	setArmour(armour: number) {
+		this.armour = armour;
+		this.armours.forEach((i) => i.destroy());
+		const base = this.containerHealth.width;
+		this.armours = new Array(armour).fill(0).map((_, idx) => {
+			const sprArmour = new Sprite(resources.icon_shield.texture as Texture);
+			sprArmour.x = base + (sprArmour.width + 2) * idx;
+			this.containerHealth.addChild(sprArmour);
+			return sprArmour;
+		});
+	}
+
+	addArmour(armour: number) {
+		this.setArmour(this.armour + armour);
+	}
+
 	damage(damage: number) {
 		if (this.health <= 0 || damage === 0) return;
-		this.setHealth(this.health - damage);
+		if (this.armour > 0) {
+			this.addArmour(-1);
+		} else {
+			this.setHealth(this.health - damage);
+		}
 		this.filterOverlay.color = 0xff0000;
 		if (this.tweenFilter) TweenManager.finish(this.tweenFilter);
 		this.tweenFilter = TweenManager.tween(
