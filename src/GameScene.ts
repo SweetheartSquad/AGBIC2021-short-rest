@@ -21,6 +21,7 @@ import { Hand } from './Hand';
 import { Level, LevelDef } from './Map';
 import { Obstacle } from './Obstacle';
 import { ScreenFilter } from './ScreenFilter';
+import { Animator } from './Scripts/Animator';
 import { size } from './size';
 import { Tween, TweenManager } from './Tweens';
 import { UIMap } from './UIMap';
@@ -35,7 +36,7 @@ import {
 	wrap,
 } from './utils';
 
-export class GameScene {
+export class GameScene extends GameObject {
 	delay = delay;
 
 	shuffle = shuffle;
@@ -82,6 +83,10 @@ export class GameScene {
 
 	fg: TilingSprite;
 
+	animatorBg: Animator;
+
+	animatorFg: Animator;
+
 	deck: CardDef[] = [];
 
 	areas: LevelDef[] = [];
@@ -103,6 +108,7 @@ export class GameScene {
 	};
 
 	constructor() {
+		super();
 		this.camp = new Camp();
 		this.camp.display.container.visible = false;
 
@@ -116,6 +122,8 @@ export class GameScene {
 			size.x,
 			size.y
 		);
+		this.scripts.push((this.animatorBg = new Animator(this, { spr: this.bg })));
+		this.scripts.push((this.animatorFg = new Animator(this, { spr: this.fg })));
 
 		this.screenFilter = new ScreenFilter();
 		this.screenFilter.uniforms.overlay = [0, 0, 0, 1];
@@ -244,7 +252,11 @@ export class GameScene {
 				!i.def.canPlay || i.def.canPlay(this) ? 1 : 0.8;
 		});
 
+		super.update();
+		const u = this.update;
+		this.update = () => {};
 		GameObject.update();
+		this.update = u;
 		TweenManager.update();
 		this.containerUI.x = this.camera.display.container.pivot.x;
 
@@ -546,11 +558,11 @@ export class GameScene {
 	}
 
 	setBg(bg: string) {
-		this.bg.texture = tex(bg);
+		this.animatorBg.setAnimation(tex(bg).textureCacheIds[0]);
 	}
 
 	setFg(fg: string) {
-		this.fg.texture = tex(fg);
+		this.animatorFg.setAnimation(tex(fg).textureCacheIds[0]);
 	}
 
 	nextLevel() {
