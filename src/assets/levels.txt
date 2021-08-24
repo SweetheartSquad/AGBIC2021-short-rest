@@ -37,6 +37,10 @@ format:
 			},
 			{
 				icon: 'icon_enemy',
+				obstacles: ['skeleton_armoured'],
+			},
+			{
+				icon: 'icon_enemy',
 				obstacles: ['zombie'],
 			},
 			{
