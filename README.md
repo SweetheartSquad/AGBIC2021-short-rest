@@ -19,7 +19,7 @@ npm run build # optimize image assets (slow) + make build
 - [`./src/assets/cards.txt`](./src/assets/cards.txt): card definitions + scene cheat sheet
 - [`./src/assets/obstacles.txt`](./src/assets/obstacles.txt): obstacle definitions
 - [`./src/assets/levels.txt`](./src/assets/levels.txt): level generation
-- [`./src/assets/assets.txt`](./src/assets/assets.txt): list of files to load
+- [`./src/assets.txt`](./src/assets.txt): list of files to load
 
 These are all loaded dynamically at runtime, so you can take a single build and edit them + reload instead of using the dev server.
 
