@@ -5,6 +5,7 @@ cards.txt
 obstacles.txt
 audio/voiceTwang.mp3
 audio/voiceWhisper.mp3
+audio/battle_theme.mp3
 textures/camp_bg1.png
 textures/camp_bg2.png
 textures/camp_bg_lit1.png

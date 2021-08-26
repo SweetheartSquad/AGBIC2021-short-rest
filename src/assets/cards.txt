@@ -73,6 +73,7 @@ scene.advance() // basic attack/interaction/movement
 			scene.addCard('Options');
 			scene.cardSpeed = 1;
 			scene.blackout();
+			scene.music('battle_theme');
 		},
 	},
 	Start: {
