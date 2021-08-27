@@ -553,8 +553,9 @@ export class GameScene extends GameObject {
 		});
 	}
 
-	setLevel(level: number) {
-		this.transition(() => {
+	setLevel(level: number, mid?: Parameters<GameScene['transition']>[0]) {
+		return this.transition(async () => {
+			if (mid) await mid();
 			this.level = level;
 			const areas = Level.getLevel(level)(this);
 			this.setAreas(areas);
@@ -571,71 +572,74 @@ export class GameScene extends GameObject {
 		this.animatorFg.setAnimation(tex(fg).textureCacheIds[0]);
 	}
 
-	nextLevel() {
-		this.setLevel(this.level + 1);
+	nextLevel(mid?: Parameters<GameScene['transition']>[0]) {
+		return this.setLevel(this.level + 1, mid);
 	}
 
 	transition(mid: () => void | Promise<void>) {
-		this.queue.push(async () => {
-			const sprBlack = new Sprite(Texture.WHITE);
-			sprBlack.tint = 0x000000;
-			sprBlack.width = size.x;
-			sprBlack.height = size.y;
-			const gCutout = new Graphics();
-			gCutout.x = size.x / 2;
-			gCutout.y = size.y / 2;
-			sprBlack.mask = gCutout;
-			this.containerUI.addChildAt(
-				sprBlack,
-				this.containerUI.children.length - 1
-			);
-			this.containerUI.addChildAt(
-				gCutout,
-				this.containerUI.children.length - 1
-			);
-
-			const drawCutout = (t: number) => {
-				const [first, ...path] = firePath.map(
-					([x, y]) => [x * t * size.x * 2, y * t * size.x * 2] as const
+		return new Promise<void>((r) => {
+			this.queue.push(async () => {
+				const sprBlack = new Sprite(Texture.WHITE);
+				sprBlack.tint = 0x000000;
+				sprBlack.width = size.x;
+				sprBlack.height = size.y;
+				const gCutout = new Graphics();
+				gCutout.x = size.x / 2;
+				gCutout.y = size.y / 2;
+				sprBlack.mask = gCutout;
+				this.containerUI.addChildAt(
+					sprBlack,
+					this.containerUI.children.length - 1
 				);
-				gCutout.moveTo(...first);
-				path.forEach((i) => {
-					gCutout.lineTo(...i);
+				this.containerUI.addChildAt(
+					gCutout,
+					this.containerUI.children.length - 1
+				);
+
+				const drawCutout = (t: number) => {
+					const [first, ...path] = firePath.map(
+						([x, y]) => [x * t * size.x * 2, y * t * size.x * 2] as const
+					);
+					gCutout.moveTo(...first);
+					path.forEach((i) => {
+						gCutout.lineTo(...i);
+					});
+				};
+
+				const t1 = TweenManager.tween(gCutout.scale, 'x', 1, 500, 1, (t) => {
+					const tt = quadIn(t);
+					gCutout.clear();
+					gCutout.beginFill(0);
+					drawCutout(tt);
+					gCutout.endFill();
+					return 1;
 				});
-			};
+				await delay(500);
 
-			const t1 = TweenManager.tween(gCutout.scale, 'x', 1, 500, 1, (t) => {
-				const tt = quadIn(t);
-				gCutout.clear();
-				gCutout.beginFill(0);
-				drawCutout(tt);
-				gCutout.endFill();
-				return 1;
-			});
-			await delay(500);
+				await mid();
 
-			await mid();
-
-			gCutout.clear();
-			gCutout.beginFill(0);
-			gCutout.drawRect(-size.x, -size.y, size.x * 2, size.y * 2);
-			gCutout.endFill();
-			TweenManager.abort(t1);
-			const t2 = TweenManager.tween(gCutout.scale, 'x', 1, 1000, 1, (t) => {
-				const tt = quadInOut(t);
 				gCutout.clear();
 				gCutout.beginFill(0);
 				gCutout.drawRect(-size.x, -size.y, size.x * 2, size.y * 2);
-				gCutout.beginHole();
-				drawCutout(tt);
-				gCutout.endHole();
 				gCutout.endFill();
-				return 1;
+				TweenManager.abort(t1);
+				const t2 = TweenManager.tween(gCutout.scale, 'x', 1, 1000, 1, (t) => {
+					const tt = quadInOut(t);
+					gCutout.clear();
+					gCutout.beginFill(0);
+					gCutout.drawRect(-size.x, -size.y, size.x * 2, size.y * 2);
+					gCutout.beginHole();
+					drawCutout(tt);
+					gCutout.endHole();
+					gCutout.endFill();
+					return 1;
+				});
+				await delay(1000);
+				TweenManager.abort(t2);
+				gCutout.destroy();
+				sprBlack.destroy();
+				r();
 			});
-			await delay(1000);
-			TweenManager.abort(t2);
-			gCutout.destroy();
-			sprBlack.destroy();
 		});
 	}
 
