@@ -33,6 +33,14 @@ format:
 			},
 			{
 				icon: 'icon_enemy',
+				obstacles: ['rat_small'],
+			},
+			{
+				icon: 'icon_enemy',
+				obstacles: ['rat_big'],
+			},
+			{
+				icon: 'icon_enemy',
 				obstacles: ['skeleton'],
 			},
 			{
