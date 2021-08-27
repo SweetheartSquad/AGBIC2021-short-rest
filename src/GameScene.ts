@@ -13,7 +13,6 @@ import { getAlphaFilter } from './AlphaFilter';
 import { Camera } from './Camera';
 import { Camp } from './Camp';
 import { Card, CardDef } from './Card';
-import { Character } from './Character';
 import { CharacterPlayer } from './CharacterPlayer';
 import { firePath } from './firePath';
 import { filterTextOutline, fontLog } from './font';
@@ -65,7 +64,7 @@ export class GameScene extends GameObject {
 
 	handStack: CardDef[][] = [];
 
-	party: Character[] = [];
+	party: CharacterPlayer[] = [];
 
 	obstacles: Obstacle[] = [];
 
@@ -649,6 +648,12 @@ export class GameScene extends GameObject {
 			this.addCard('Kindle');
 			this.addCard('Continue');
 			this.camp.display.container.visible = true;
+			this.party.forEach(i => {
+				if (!i.health) {
+					i.heal(1);
+					this.log(`${i.name} revived by the fire.`);
+				}
+			});
 		});
 	}
 
