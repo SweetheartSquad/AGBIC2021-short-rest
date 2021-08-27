@@ -40,6 +40,10 @@ format:
 		health: 1,
 		damage: 1,
 	},
+	big_rat: {
+		health: 3,
+		damage: 2,
+	},
 	treasure: {
 		start() {
 			// play a sound?
