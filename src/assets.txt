@@ -41,6 +41,7 @@ textures/skeleton_armoured.png
 textures/bat1.png
 textures/bat2.png
 textures/bat3.png
+textures/small_rat.png
 textures/slime_big.png
 textures/slime_medium.png
 textures/slime_small.png

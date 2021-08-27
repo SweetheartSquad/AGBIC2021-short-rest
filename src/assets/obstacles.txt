@@ -36,6 +36,10 @@ format:
 		health: 1,
 		damage: 1,
 	},
+	small_rat: {
+		health: 1,
+		damage: 1,
+	},
 	treasure: {
 		start() {
 			// play a sound?
