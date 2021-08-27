@@ -648,7 +648,7 @@ export class GameScene extends GameObject {
 			this.addCard('Kindle');
 			this.addCard('Continue');
 			this.camp.display.container.visible = true;
-			this.party.forEach(i => {
+			this.party.forEach((i) => {
 				if (!i.health) {
 					i.heal(1);
 					this.log(`${i.name} revived by the fire.`);
