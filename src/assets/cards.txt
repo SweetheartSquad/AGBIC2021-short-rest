@@ -205,8 +205,6 @@ scene.advance() // basic attack/interaction/movement
 					const positions = ['the lead'];
 					positions[party.length - 1] = 'the back';
 					const embark = () => {
-						scene.camp.display.container.visible = false;
-						scene.camp.douse();
 						scene.clearHand();
 						hand.forEach((i) => {
 							scene.addCard(i);
