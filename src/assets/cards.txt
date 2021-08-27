@@ -158,6 +158,7 @@ scene.advance() // basic attack/interaction/movement
 				scene.addCard({
 					...i,
 					description: `Burn "${i.name}"`,
+					canPlay: undefined,
 					effect: () => {
 						scene.camp.light();
 						scene.log(
