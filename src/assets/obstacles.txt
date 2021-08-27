@@ -36,11 +36,11 @@ format:
 		health: 1,
 		damage: 1,
 	},
-	small_rat: {
+	rat_small: {
 		health: 1,
 		damage: 1,
 	},
-	big_rat: {
+	rat_big: {
 		health: 3,
 		damage: 2,
 	},
