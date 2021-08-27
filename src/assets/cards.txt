@@ -67,8 +67,8 @@ scene.advance() // basic attack/interaction/movement
 	// menus
 	init: {
 		effect(scene) {
-			scene.setBg('bg');
-			scene.setFg('fg');
+			scene.setBg('title');
+			scene.setFg('blank');
 			scene.addCard('Start');
 			scene.addCard('Options');
 			scene.cardSpeed = 1;
@@ -92,6 +92,8 @@ scene.advance() // basic attack/interaction/movement
 			scene.addParty({ name: 'Rogue', spr: 'apple', maxHealth: 2 });
 			scene.addParty({ name: 'Knight', spr: 'onion', maxHealth: 4 });
 			scene.setLevel(0);
+				scene.setBg('bg');
+				scene.setFg('fg');
 		},
 	},
 	Options: {
