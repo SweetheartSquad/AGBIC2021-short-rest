@@ -151,15 +151,19 @@ scene.advance() // basic attack/interaction/movement
 		},
 	},
 	Kindle: {
-		description: 'Burn a card to light the campfire',
+		description: 'Burn a card to light the campfire and heal the party',
 		effect(scene) {
 			scene.clearHand();
 			scene.deck.forEach((i, idx) => {
 				scene.addCard({
 					...i,
-					description: `Burn "${i.name}" to light the campfire`,
+					description: `Burn "${i.name}"`,
 					effect: () => {
 						scene.camp.light();
+						scene.log(
+							`The party basks in the warmth of "${i.name}" and regains their strength.`
+						);
+						scene.party.forEach((i) => i.heal(i.maxHealth));
 						scene.overlay([1, 0.5, 0, 0.5]);
 						scene.deck.splice(idx, 1);
 						scene.clearHand();
