@@ -42,6 +42,7 @@ scene.choice(...card definitions) // helper for presenting choices without track
 scene.killObstacle() // destroys the obstacle in front
 scene.killObstacle(target) // destroys specific obstacle
 scene.front.damage(1)
+scene.shuffle([1,2,3]); // returns a shuffled copy of the provided array
 
 // vfx
 scene.log('text') // adds text to action log
@@ -52,6 +53,7 @@ scene.invert(duration) // flashes inverted overlay
 scene.setBg('texture') // sets tiling background
 scene.setFg('texture') // sets tiling foreground
 await scene.delay(duration) // waits before continuing
+scene.tween(target, property, to, duration, from, ease); // adds a tween
 
 // audio
 scene.sfx('name', { rate: 1, volume: 1 }) // plays sound effect (rate/volume optional)
