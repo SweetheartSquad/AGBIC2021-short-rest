@@ -19,6 +19,7 @@ import { filterTextOutline, fontAnnounce, fontLog } from './font';
 import { game, resources } from './Game';
 import { GameObject } from './GameObject';
 import { Hand } from './Hand';
+import { getInput } from './main';
 import { Level, LevelDef } from './Map';
 import { Obstacle } from './Obstacle';
 import { ScreenFilter } from './ScreenFilter';
@@ -218,6 +219,29 @@ export class GameScene extends GameObject {
 	}
 
 	update(): void {
+		if (!this.busy) {
+			const input = getInput();
+			if (input.interact && this.hand.inspecting) {
+				this.hand.inspecting.display.container.emit('click');
+			} else if (input.justMoved.x !== 0) {
+				if (!this.hand.inspecting) {
+					this.hand.hand[0]?.display.container.emit('mouseover');
+				} else if (input.justMoved.x > 0) {
+					this.hand.hand[
+						(this.hand.hand.indexOf(this.hand.inspecting) + 1) %
+							this.hand.hand.length
+					].display.container.emit('mouseover');
+				} else if (input.justMoved.x < 0) {
+					this.hand.hand[
+						(this.hand.hand.indexOf(this.hand.inspecting) +
+							this.hand.hand.length -
+							1) %
+							this.hand.hand.length
+					].display.container.emit('mouseover');
+				}
+			}
+		}
+
 		const curTime = game.app.ticker.lastTime;
 		this.screenFilter.uniforms.curTime = curTime;
 		this.screenFilter.uniforms.camPos = [
