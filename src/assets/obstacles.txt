@@ -75,12 +75,27 @@ format:
 			// play a sound?
 		},
 		interact(scene) {
-			scene.queue.push(async () => {
-				this.animator.setAnimation('treasure_open');
-				await scene.delay(100);
-				scene.loot(['test', 'test', 'test']); // TODO: loot pools?
-				scene.killObstacle();
-			});
+			scene.log('The party finds a chest!');
+			const o = this;
+			scene.choice(
+				{
+					name: 'Open',
+					effect() {
+						scene.queue.push(async () => {
+							o.animator.setAnimation('treasure_open');
+							await scene.delay(100);
+							scene.loot(['test', 'test', 'test']); // TODO: loot pools?
+							scene.killObstacle(o);
+						});
+					},
+				},
+				{
+					name: "Don't Open",
+					effect() {
+						scene.killObstacle(o);
+					},
+				}
+			);
 		},
 	},
 	slime_big: {
