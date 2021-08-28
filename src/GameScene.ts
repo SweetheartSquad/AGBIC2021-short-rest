@@ -307,7 +307,9 @@ export class GameScene extends GameObject {
 			}
 		}
 
-		this.hand.display.container.interactiveChildren = !this.busy;
+		this.hand.display.container.interactiveChildren =
+			// @ts-ignore
+			this.hand.display.container.accessibleChildren = !this.busy;
 	}
 
 	advance() {
