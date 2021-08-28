@@ -167,11 +167,11 @@ export class GameScene extends GameObject {
 
 		const sprDeckCounter = new Sprite(tex('card_back'));
 		sprDeckCounter.scale.x = sprDeckCounter.scale.y = 0.2;
-		sprDeckCounter.x = size.x - 120;
-		sprDeckCounter.y = size.y - 80;
+		sprDeckCounter.x = 40;
+		sprDeckCounter.y = size.y - 40;
 		const textDeckCounter = new BitmapText('x0', fontLog);
-		textDeckCounter.x = size.x - 80;
-		textDeckCounter.y = size.y - 80;
+		textDeckCounter.x = 40 + sprDeckCounter.width;
+		textDeckCounter.y = size.y - 40;
 		textDeckCounter.filters = [filterTextOutline];
 		sprDeckCounter.anchor.y = textDeckCounter.anchor.y = 0.5;
 
