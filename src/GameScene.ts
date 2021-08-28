@@ -764,6 +764,14 @@ export class GameScene extends GameObject {
 							0.1
 						);
 					});
+
+					inputMenu(
+						focused ? sprs.indexOf(focused) : -1,
+						sprs.map((i) => ({
+							select: () => i.emit('click'),
+							focus: () => i.emit('mouseover'),
+						}))
+					);
 				},
 			};
 			this.camera.scripts.push(wavy);
