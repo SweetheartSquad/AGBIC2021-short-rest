@@ -29,7 +29,7 @@ export class UIMap extends GameObject {
 		this.graphics = new Graphics();
 
 		this.display.container.addChild(this.graphics);
-		this.transform.y = 50;
+		this.transform.y = 60;
 		this.transform.x = size.x / 2;
 		this.init();
 	}

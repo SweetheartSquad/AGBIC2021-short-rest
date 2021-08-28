@@ -99,7 +99,7 @@ export class GameScene extends GameObject {
 
 	position = 0;
 
-	level = 0;
+	level = -1;
 
 	cardSpeed = 0;
 
@@ -182,7 +182,21 @@ export class GameScene extends GameObject {
 			},
 		} as Script);
 
+		const textLvlCounter = new BitmapText('LVL 0', fontLog);
+		textLvlCounter.x = size.x / 2;
+		textLvlCounter.y = 30;
+		textLvlCounter.filters = [filterTextOutline];
+		textLvlCounter.anchor.y = textLvlCounter.anchor.x = 0.5;
+
+		this.scripts.push({
+			update: () => {
+				textLvlCounter.text = `LVL ${this.level}`;
+				textLvlCounter.visible = this.level >= 0;
+			},
+		} as Script);
+
 		this.containerUI.addChild(this.map.display.container);
+		this.containerUI.addChild(textLvlCounter);
 		this.containerUI.addChild(this.camp.display.container);
 		this.containerUI.addChild(this.hand.display.container);
 		this.containerUI.addChild(sprDeckCounter);
