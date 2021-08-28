@@ -15,7 +15,7 @@ import { Camp } from './Camp';
 import { Card, CardDef } from './Card';
 import { CharacterPlayer } from './CharacterPlayer';
 import { firePath } from './firePath';
-import { filterTextOutline, fontLog } from './font';
+import { filterTextOutline, fontAnnounce, fontLog } from './font';
 import { game, resources } from './Game';
 import { GameObject } from './GameObject';
 import { Hand } from './Hand';
@@ -789,6 +789,56 @@ export class GameScene extends GameObject {
 		TweenManager.abort(t3);
 		this.logs.splice(this.logs.indexOf(containerLog), 1);
 		containerLog.destroy({ children: true });
+	}
+
+	async announce(announcement: string, duration = 2000) {
+		const textAnnounce = new BitmapText(wrap(announcement, 20), fontAnnounce);
+		textAnnounce.anchor.x = textAnnounce.anchor.y = 0.5;
+		textAnnounce.x = size.x / 2;
+		textAnnounce.y = size.y / 2;
+		textAnnounce.alpha = 0;
+		textAnnounce.filters = [filterTextOutline, getAlphaFilter()];
+		game.app.stage.addChild(textAnnounce);
+		const t1 = TweenManager.tween(
+			textAnnounce,
+			'alpha',
+			1,
+			200,
+			undefined,
+			quadOut
+		);
+		textAnnounce.pivot.y = -10;
+		const t2 = TweenManager.tween(
+			textAnnounce.pivot,
+			'y',
+			0,
+			400,
+			undefined,
+			quadOut
+		);
+		await this.delay(duration);
+		TweenManager.abort(t1);
+		TweenManager.abort(t2);
+		const t3 = TweenManager.tween(
+			textAnnounce,
+			'alpha',
+			0,
+			200,
+			undefined,
+			quadIn
+		);
+		const t4 = TweenManager.tween(
+			textAnnounce.pivot,
+			'y',
+			10,
+			400,
+			undefined,
+			quadIn
+		);
+		await this.delay(200);
+		TweenManager.abort(t3);
+		TweenManager.abort(t4);
+		textAnnounce.destroy();
 	}
 
 	howl(howl: string) {

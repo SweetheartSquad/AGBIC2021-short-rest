@@ -46,6 +46,7 @@ scene.shuffle([1,2,3]); // returns a shuffled copy of the provided array
 
 // vfx
 scene.log('text') // adds text to action log
+scene.announce('text', 2000) // adds big text (for bosses, etc)
 scene.overlay([r,g,b,a], duration) // flashes a colour overlay
 scene.blackout(duration) // shortcut for black overlay
 scene.whiteout(duration) // shortcut for white overlay

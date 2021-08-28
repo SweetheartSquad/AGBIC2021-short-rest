@@ -7,6 +7,12 @@ export const fontLog: Partial<IBitmapTextStyle> = {
 	align: 'left',
 };
 
+export const fontAnnounce: Partial<IBitmapTextStyle> = {
+	fontName: 'fontfnt',
+	fontSize: 40,
+	align: 'center',
+};
+
 export const fontDescription: Partial<IBitmapTextStyle> = {
 	fontName: 'fontfnt',
 	fontSize: 12,
