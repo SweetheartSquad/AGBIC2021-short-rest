@@ -44,6 +44,32 @@ format:
 		health: 3,
 		damage: 2,
 	},
+	rat_king: {
+		sprite: 'rat_big',
+		health: 3,
+		damage: 2,
+		start(scene) {
+			if (scene.obstacles[0] === this) {
+				scene.announce('The Rat Kings');
+			}
+		},
+		interact() {
+			if (scene.obstacles.length > 1) {
+				scene.log(
+					`"${
+						scene.shuffle([
+							"Don't worry",
+							'Step back',
+							'Step aside',
+							'My turn',
+							'Get behind me',
+						])[0]
+					} king, I got this."`
+				);
+				scene.obstacles.push(scene.obstacles.shift());
+			}
+		},
+	},
 	treasure: {
 		start() {
 			// play a sound?

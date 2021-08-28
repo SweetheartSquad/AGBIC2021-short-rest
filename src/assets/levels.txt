@@ -37,7 +37,7 @@ format:
 			},
 			{
 				icon: 'icon_enemy',
-				obstacles: ['rat_big'],
+				obstacles: ['rat_king', 'rat_king', 'rat_king'],
 			},
 			{
 				icon: 'icon_enemy',
