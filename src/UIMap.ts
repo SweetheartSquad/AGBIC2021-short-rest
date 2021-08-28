@@ -51,12 +51,7 @@ export class UIMap extends GameObject {
 		areas.forEach((i, idx) => {
 			const icon = new Sprite(resources[i].texture as Texture);
 			icon.x =
-				idx > 0
-					? this.sprAreas[idx - 1].x +
-					  this.sprAreas[idx - 1].width / 2 +
-					  icon.width / 2 +
-					  2
-					: 0;
+				idx > 0 ? this.sprAreas[idx - 1].x + this.sprAreas[idx - 1].width : 0;
 			this.display.container.addChild(icon);
 			icon.anchor.y = 0.5;
 			icon.filters = filtersOL;
