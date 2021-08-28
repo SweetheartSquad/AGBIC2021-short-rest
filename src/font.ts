@@ -5,14 +5,12 @@ export const fontLog: Partial<IBitmapTextStyle> = {
 	fontName: 'fontfnt',
 	fontSize: 12,
 	align: 'left',
-	letterSpacing: 0,
 };
 
 export const fontDescription: Partial<IBitmapTextStyle> = {
 	fontName: 'fontfnt',
 	fontSize: 12,
 	align: 'center',
-	letterSpacing: 0,
 };
 
 export const fontName: Partial<IBitmapTextStyle> = {
