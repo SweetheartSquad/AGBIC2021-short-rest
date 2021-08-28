@@ -46,14 +46,21 @@ export class UIMap extends GameObject {
 	setAreas(areas: string[]) {
 		this.areas = areas;
 		this.sprAreas.forEach((i) => i.destroy());
+		this.sprAreas.length = 0;
 		this.graphics.clear();
-		this.sprAreas = areas.map((i, idx) => {
+		areas.forEach((i, idx) => {
 			const icon = new Sprite(resources[i].texture as Texture);
-			icon.x += 50 * idx;
+			icon.x =
+				idx > 0
+					? this.sprAreas[idx - 1].x +
+					  this.sprAreas[idx - 1].width / 2 +
+					  icon.width / 2 +
+					  2
+					: 0;
 			this.display.container.addChild(icon);
 			icon.anchor.y = 0.5;
 			icon.filters = filtersOL;
-			return icon;
+			this.sprAreas.push(icon);
 		});
 		const b = this.display.container.getLocalBounds();
 		this.display.container.pivot.x = this.display.container.width / 2;
