@@ -57,6 +57,11 @@ export class UIMap extends GameObject {
 			icon.filters = filtersOL;
 			this.sprAreas.push(icon);
 		});
+		const r = Math.min(1.05, (size.x * 0.8) / this.display.container.width);
+		this.sprAreas.forEach((i) => {
+			i.x *= r;
+		});
+
 		const b = this.display.container.getLocalBounds();
 		this.display.container.pivot.x = this.display.container.width / 2;
 
