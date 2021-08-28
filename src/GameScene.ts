@@ -752,11 +752,17 @@ export class GameScene extends GameObject {
 				spr.interactive = false;
 				return spr;
 			});
+			let focused: typeof sprs[number];
 			const wavy = {
 				gameObject: this.camera,
 				update: () => {
 					sprs.forEach((i, idx) => {
-						i.pivot.y = Math.sin(game.app.ticker.lastTime / 500 + idx * 2) * 5;
+						i.pivot.y = lerp(
+							i.pivot.y,
+							Math.sin(game.app.ticker.lastTime / 500 + idx * 2) * 5 +
+								(i === focused ? 20 : 0),
+							0.1
+						);
 					});
 				},
 			};
@@ -768,6 +774,9 @@ export class GameScene extends GameObject {
 			});
 			const picked = await new Promise<number>((r) => {
 				sprs.forEach((i, idx) => {
+					i.on('mouseover', () => {
+						focused = i;
+					});
 					i.once('click', () => {
 						TweenManager.tween(i.scale, 'x', 0, 100, 1, quadIn);
 						delay(100).then(() => {
