@@ -83,7 +83,7 @@ export class Hand extends GameObject {
 		const card = new Card(...options);
 		this.hand.push(card);
 		this.display.container.addChild(card.display.container);
-		card.display.container.on('pointerover', () => {
+		card.display.container.on('mouseover', () => {
 			this.inspecting = card;
 			this.display.container.addChild(card.display.container);
 
@@ -100,7 +100,7 @@ export class Hand extends GameObject {
 					: (t) => quadOut(Math.max(0, t - 0.75) * 4)
 			);
 		});
-		card.display.container.on('pointerout', () => {
+		card.display.container.on('mouseout', () => {
 			this.display.container.addChildAt(
 				card.display.container,
 				this.hand.indexOf(card)
