@@ -157,6 +157,7 @@ export class GameScene extends GameObject {
 		this.containerParty.y += 320;
 
 		this.containerObstacle.y += this.containerParty.y;
+		this.containerObstacle.sortableChildren = true;
 		this.containerObstacle.pivot.x -= size.x - 175;
 
 		this.hand.display.container.on('play', (card) => {
