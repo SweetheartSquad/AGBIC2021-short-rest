@@ -23,6 +23,7 @@ import { Level, LevelDef } from './Map';
 import { Obstacle } from './Obstacle';
 import { ScreenFilter } from './ScreenFilter';
 import { Animator } from './Scripts/Animator';
+import { Script } from './Scripts/Script';
 import { size } from './size';
 import { Tween, TweenManager } from './Tweens';
 import { UIMap } from './UIMap';
@@ -164,9 +165,28 @@ export class GameScene extends GameObject {
 			this.playCard(card);
 		});
 
+		const sprDeckCounter = new Sprite(tex('card_back'));
+		sprDeckCounter.scale.x = sprDeckCounter.scale.y = 0.2;
+		sprDeckCounter.x = size.x - 120;
+		sprDeckCounter.y = size.y - 80;
+		const textDeckCounter = new BitmapText('x0', fontLog);
+		textDeckCounter.x = size.x - 80;
+		textDeckCounter.y = size.y - 80;
+		textDeckCounter.filters = [filterTextOutline];
+		sprDeckCounter.anchor.y = textDeckCounter.anchor.y = 0.5;
+
+		this.scripts.push({
+			update: () => {
+				textDeckCounter.text = `x${this.deck.length}`;
+				sprDeckCounter.visible = textDeckCounter.visible = !!this.deck.length;
+			},
+		} as Script);
+
 		this.containerUI.addChild(this.map.display.container);
 		this.containerUI.addChild(this.camp.display.container);
 		this.containerUI.addChild(this.hand.display.container);
+		this.containerUI.addChild(sprDeckCounter);
+		this.containerUI.addChild(textDeckCounter);
 		this.containerUI.addChild(border);
 
 		this.container.addChild(this.bg);
