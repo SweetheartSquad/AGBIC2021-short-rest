@@ -155,6 +155,9 @@ scene.advance() // basic attack/interaction/movement
 	},
 	Kindle: {
 		description: 'Burn a card to light the campfire and heal the party',
+		canPlay(scene) {
+			return scene.deck.length > 0;
+		},
 		effect(scene) {
 			scene.clearHand();
 			scene.deck.forEach((i, idx) => {
