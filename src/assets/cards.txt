@@ -622,4 +622,20 @@ scene.advance() // basic attack/interaction/movement
 			scene.kick(5);
 		},
 	},
+	'Leech Wand': {
+		description: 'Steal 1HP from enemy',
+		canPlay(scene) {
+			return scene.enemy;
+		},
+		effect(scene) {
+			scene.obstacle.damage(1, true);
+			scene.front.heal(1);
+			scene.kick(-5);
+			scene.overlay([1, 0, 0, 0.1]);
+			scene.delay(200).then(() => {
+				scene.kick(5);
+				scene.overlay([0, 1, 0, 0.1]);
+			});
+		},
+	},
 }))();
