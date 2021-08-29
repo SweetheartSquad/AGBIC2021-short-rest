@@ -67,3 +67,4 @@ textures/bomb_c.png
 textures/jester1.png
 textures/jester2.png
 textures/kangaroo.png
+textures/mushroom.png
