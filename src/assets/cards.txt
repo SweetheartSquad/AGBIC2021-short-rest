@@ -327,4 +327,97 @@ scene.advance() // basic attack/interaction/movement
 			});
 		},
 	},
+	Slash: {
+		description: 'The Knight slashes for 1 damage',
+		canPlay(scene) {
+			return scene.enemy && scene.enemy('Knight');
+		},
+		effect(scene) {
+			scene.obstacle.damage(1);
+			scene.kick(-5);
+		},
+	},
+	'Twin Daggers': {
+		description: 'The Rogue throws two daggers, each dealing 1 damage',
+		canPlay(scene) {
+			return scene.enemy && scene.party('Rogue');
+		},
+		effect(scene) {
+			scene.obstacle.damage(1);
+			scene.kick(-5);
+			scene.delay(100).then(() => {
+				if (scene.enemy) {
+					scene.kick(-5);
+					scene.obstacle.damage(1);
+				}
+			});
+		},
+	},
+	'Magic Blast': {
+		description: 'The Mage fires a blast, dealing 2 damage',
+		canPlay(scene) {
+			return scene.enemy && scene.party('Mage');
+		},
+		effect(scene) {
+			scene.obstacle.damage(2);
+			scene.kick(-5);
+			scene.overlay([1, 0, 1, 0.5]);
+		},
+	},
+	Bonk: {
+		description: 'Bonk an enemy for 1 damage',
+		canPlay(scene) {
+			return scene.enemy;
+		},
+		effect(scene) {
+			scene.obstacle.damage(1);
+			scene.kick(-5);
+		},
+	},
+	'Death from the Shadows': {
+		description: 'The Rogue kills an enemy',
+		canPlay(scene) {
+			return scene.enemy && scene.alive('Rogue');
+		},
+		effect(scene) {
+			scene.kick(-50);
+			scene.killObstacle();
+			scene.blackout();
+		},
+	},
+	Exorcise: {
+		description: 'The Priest destroys all undead enemies',
+		canPlay(scene) {
+			return scene.enemy && scene.alive('Priest');
+		},
+		effect(scene) {
+			const undead = ['skeleton', 'skeleton_armoured', 'zombie', 'necromancer'];
+			scene.shake(5, 1000);
+			scene.whiteout(1000);
+			scene.obstacles
+				.filter((i) => undead.includes(i.def.name))
+				.forEach((i) => {
+					i.damage(i.maxHealth, true);
+				});
+		},
+	},
+	'Vision of Death': {
+		description: 'The Mage kills everything in sight',
+		canPlay(scene) {
+			return scene.alive('Mage');
+		},
+		effect(scene) {
+			scene.obstacles.slice().forEach((i) => {
+				i.damage(i.maxHealth, true);
+			});
+			const mageIndex = scene.party.findIndex((i) => i.name === 'Mage');
+			scene.party.slice(mageIndex + 1).forEach((i) => {
+				i.damage(i.maxHealth);
+				scene.log(`${i.name} is caught in the line of sight!`);
+			});
+			scene.shake(5, 1000);
+			scene.kick(-50);
+			scene.overlay([1, 0, 1, 0.5], 1000);
+		},
+	},
 }))();
