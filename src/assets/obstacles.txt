@@ -166,6 +166,7 @@ format:
 	},
 	slime_small: {
 		health: 1,
+		damage: 1,
 	},
 	fountain: {
 		interact(scene) {
