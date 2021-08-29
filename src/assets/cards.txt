@@ -24,6 +24,8 @@ scene.front // reference to party member in front
 scene.obstacle // reference to obstacle in front
 scene.deck // array of card definitions in deck
 scene.hand.hand // array of card definitions in hand
+scene.enemy // whether there is an enemy to target
+scene.alive('Name') // whether a party member is alive
 
 // hand
 scene.addCard('name' | { ...unique definition }) // adds card to hand

@@ -78,6 +78,14 @@ export class GameScene extends GameObject {
 		return this.obstacles[this.obstacles.length - 1] as Maybe<Obstacle>;
 	}
 
+	get enemy() {
+		return !!this.obstacle?.health;
+	}
+
+	alive(name: string) {
+		return this.party.some((i) => i.name === name && i.health);
+	}
+
 	map: UIMap = new UIMap();
 
 	logs: Container[] = [];
