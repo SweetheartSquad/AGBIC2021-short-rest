@@ -264,6 +264,68 @@ format:
 			);
 		},
 	},
+	fortune_teller: {
+		interact(scene) {
+			const o = this;
+			// TODO: full readings
+			const readings = scene.shuffle([
+				{
+					card: 'test',
+					reading:
+						'"A test reading! An omen of having a TODO you forgot to address."',
+				},
+				{
+					card: 'test',
+					reading:
+						'"A test reading! An omen of having a TODO you forgot to address."',
+				},
+				{
+					card: 'kill',
+					reading: '"Death! A bad omen, but likely not your own."',
+				},
+			]);
+			const numReadings = 3;
+			scene.log('"Welcome! Would you like a reading?"');
+			scene.choice(
+				{
+					name: 'Okay',
+					effect() {
+						scene.queue.push(async () => {
+							scene.log('"Alright, let me just shuffle here..."');
+							await scene.delay(2000);
+						});
+						for (let i = 0; i < numReadings; ++i) {
+							scene.queue.push(async () => {
+								scene.log('"Let\'s see..."');
+								await scene.delay(1000);
+							});
+							const reading = readings.pop();
+							scene.loot([reading.card]);
+							scene.queue.push(async () => {
+								scene.log('"Hmm..."');
+								await scene.delay(1000);
+								scene.log(reading.reading);
+								await scene.delay(2000);
+							});
+						}
+						scene.queue.push(async () => {
+							scene.log('"That\'s all for now."');
+							await scene.delay(1000);
+							scene.log('"Good luck!"');
+							scene.killObstacle(o);
+						});
+					},
+				},
+				{
+					name: 'No thanks',
+					effect() {
+						scene.log('"Your loss!"');
+						scene.killObstacle(o);
+					},
+				}
+			);
+		},
+	},
 	trap: {
 		async interact(scene) {
 			if (scene.front.name === 'Rogue') {
