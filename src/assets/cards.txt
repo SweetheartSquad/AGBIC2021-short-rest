@@ -567,4 +567,18 @@ scene.advance() // basic attack/interaction/movement
 			scene.blackout();
 		},
 	},
+	'Bitter Tears': {
+		description:
+			'The Knight sacrifices themselves and deals their health as damage',
+		canPlay(scene) {
+			return scene.enemy && scene.alive('Knight');
+		},
+		effect(scene) {
+			const knight = scene.party.find((i) => i.name === 'Knight');
+			scene.obstacle.damage(knight.health);
+			knight.damage(knight.health, true);
+			scene.shake();
+			scene.kick(-5);
+		},
+	},
 }))();
