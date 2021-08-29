@@ -23,7 +23,7 @@ export class Card extends GameObject {
 		if (!Card.cards) {
 			Card.cards = evalFn(resources.cards.data);
 			Object.entries(Card.cards).forEach(([name, card]) => {
-				(card as CardDef).name = name;
+				(card as CardDef).name = (card as CardDef).name || name;
 				(card as CardDef).description = card?.description || ' ';
 			});
 		}
