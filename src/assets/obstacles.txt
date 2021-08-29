@@ -96,6 +96,15 @@ format:
 			}
 		},
 	},
+	jester: {
+		health: 2,
+		damage: 1,
+		interact(scene) {
+			if (!this.health) return;
+			scene.log('The party gets all mixed up trying to follow the jester!');
+			scene.party = scene.shuffle(scene.party);
+		},
+	},
 	treasure: {
 		start() {
 			// play a sound?

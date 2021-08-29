@@ -63,3 +63,5 @@ textures/bomb_a.png
 textures/bomb_b.png
 textures/bomb_c.png
 textures/zombie.png
+textures/jester1.png
+textures/jester2.png
