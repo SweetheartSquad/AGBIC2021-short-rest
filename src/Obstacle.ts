@@ -7,6 +7,7 @@ import { TweenManager } from './Tweens';
 import { evalFn } from './utils';
 
 type ObstacleDef = {
+	name?: string;
 	health?: number;
 	armour?: number;
 	damage?: number;
@@ -23,6 +24,11 @@ export class Obstacle extends Character {
 	static getObstacle(def: string | ObstacleDef) {
 		if (!Obstacle.obstacles) {
 			Obstacle.obstacles = evalFn(resources.obstacles.data);
+			Object.entries(Obstacle.obstacles).forEach(([name, obstacle]) => {
+				(obstacle as ObstacleDef).name = (obstacle as ObstacleDef).name || name;
+				(obstacle as ObstacleDef).sprite =
+					(obstacle as ObstacleDef).sprite || (obstacle as ObstacleDef).name;
+			});
 		}
 		return (
 			(typeof def === 'string' ? Obstacle.obstacles[def] : def) || {
