@@ -28,6 +28,7 @@ textures/icon_attention.png
 textures/icon_camp.png
 textures/icon_door.png
 textures/icon_enemy.png
+textures/icon_boss.png
 textures/icon_treasure.png
 textures/icon_unknown.png
 textures/icon_cleared.png
