@@ -420,6 +420,18 @@ scene.advance() // basic attack/interaction/movement
 			scene.overlay([1, 0, 1, 0.5], 1000);
 		},
 	},
+	'Portable Mulligan': {
+		description: 'Replace all cards in your hand with new ones from your deck',
+		effect(scene) {
+			const cards = scene.hand.hand.length - 1; // -1 for advance
+			const draw = scene.shuffle(scene.deck.slice());
+			scene.clearHand();
+			for (let i = 0; i < cards && draw.length; ++i) {
+				scene.addCard(draw.pop());
+			}
+			scene.addCard('Advance');
+		},
+	},
 	'Charm Creature': {
 		description: 'The Priest sways a creature to switch sides',
 		canPlay(scene) {
