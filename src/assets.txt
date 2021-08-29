@@ -52,6 +52,8 @@ textures/slime_small.png
 textures/dragon.png
 textures/dragon_hand.png
 textures/fountain.png
+textures/potion.png
+textures/potion_empty.png
 textures/trap.png
 textures/trap_triggered.png
 textures/bomb.png
