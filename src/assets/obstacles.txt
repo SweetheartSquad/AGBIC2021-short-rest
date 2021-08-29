@@ -103,6 +103,7 @@ format:
 			if (!this.health) return;
 			scene.log('The party gets all mixed up trying to follow the jester!');
 			scene.party = scene.shuffle(scene.party);
+			scene.party.sort((a, b) => (a.health > 0) - (b.health > 0));
 		},
 	},
 	treasure: {
