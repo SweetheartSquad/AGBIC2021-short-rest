@@ -558,9 +558,12 @@ export class GameScene extends GameObject {
 			const slot = this.party.findIndex((i) => i.health > 0);
 			this.party.splice(slot >= 0 ? slot : this.party.length, 0, character);
 			if (!this.front.health) {
-				// TODO: lose state + restart
 				this.clearHand();
-				this.addCard({ name: 'you died', effect() {} });
+				// TODO: sfx?
+				this.announce('YOU DIED', 3000);
+				this.invert(3000);
+				this.addCard('Start');
+				(this.hand.hand[0].sprCard.children[1] as BitmapText).text = 'Restart';
 			}
 		});
 
