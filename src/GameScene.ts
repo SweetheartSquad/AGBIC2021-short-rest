@@ -75,7 +75,7 @@ export class GameScene extends GameObject {
 	}
 
 	get obstacle() {
-		return this.obstacles[this.obstacles.length - 1];
+		return this.obstacles[this.obstacles.length - 1] as Maybe<Obstacle>;
 	}
 
 	map: UIMap = new UIMap();
@@ -397,7 +397,7 @@ export class GameScene extends GameObject {
 		obstacle.damage(damage);
 	}
 
-	killObstacle(target: Obstacle = this.obstacle) {
+	killObstacle(target?: Obstacle) {
 		const obstacle = target || this.obstacle;
 		if (!obstacle) return;
 		removeFromArray(this.obstacles, obstacle);
