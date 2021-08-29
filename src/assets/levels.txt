@@ -12,115 +12,97 @@ format:
 	}]
 }
 */
-(() => ({
-	0: (scene) => {
-		scene.log('bwahaha welcome to the dungeon');
-		scene.delay(1000).then(() => {
-			scene.log(
-				'this is like a cutscene but you can ignore it and keep moving'
-			);
-		});
-		const areas = [
-			{
-				icon: 'icon_camp',
-			},
-		];
-		// TODO: real level generation
-		areas.push(
-			{
-				icon: 'icon_enemy',
-				obstacles: ['bat'],
-			},
-			{
-				icon: 'icon_enemy',
-				obstacles: ['rat_small'],
-			},
-			{
-				icon: 'icon_enemy',
-				obstacles: ['rat_king', 'rat_king', 'rat_king'],
-			},
-			{
-				icon: 'icon_enemy',
-				obstacles: ['skeleton'],
-			},
-			{
-				icon: 'icon_enemy',
-				obstacles: ['skeleton_armoured'],
-			},
-			{
-				icon: 'icon_enemy',
-				obstacles: ['zombie'],
-			},
-			{
-				icon: 'icon_enemy',
-				obstacles: ['bomb'],
-			},
-			{
-				icon: 'icon_unknown',
-				obstacles: ['fountain_healing'],
-			},
-			{
-				icon: 'icon_unknown',
-				obstacles: ['fountain_poison'],
-			},
-			{
-				icon: 'icon_unknown',
-				obstacles: ['trap'],
-			},
-			{
-				icon: 'icon_enemy',
-				obstacles: ['slime_big'],
-			},
-			{
-				icon: 'icon_enemy',
-			scene.setBg('bg_alternate');
-				obstacles: ['dragon'],
-			}
-		);
-		areas.push({
-			icon: 'icon_enemy',
-			obstacles: [
+(() => {
+	const basic = [['bat'], ['rat_small'], ['slime_small']];
+	const tough = [
+		['bat', 'bat'],
+		['rat_small', 'bat'],
+		['bat', 'rat_small'],
+		['rat_small', 'rat_small'],
+		['skeleton'],
+		['skeleton_armoured'],
+		['rat_big'],
+		['zombie'],
+		['slime_medium'],
+		['bomb'],
+	];
+	const encounter = [
+		['fountain'],
+		['treasure'],
+		['potion'],
+		['fortune_teller'],
+		['mini_camp'],
+		['trap'],
+	];
+	const minibosses = [
+		['mushroom'],
+		['skeleton', 'necromancer'],
+		['rat_king', 'rat_king', 'rat_king'],
+		['slime_big'],
+	];
+	return {
+		0: (scene) => {
+			scene.log('bwahaha welcome to the dungeon');
+			scene.delay(1000).then(() => {
+				scene.log(
+					'this is like a cutscene but you can ignore it and keep moving'
+				);
+			});
+			const areas = [
 				{
-					sprite: 'treasure',
-					health: 1,
-					start() {
-						scene.log('Test log');
-					},
-					interact() {
-						scene.log(
-							'A really long log to test the text wrapping and automatic shifting of different log lines'
-						);
-						scene.log('Another log right after');
-					},
+					icon: 'icon_camp',
 				},
-				'treasure',
-			],
-		});
-		areas.push({
-			icon: 'icon_door',
-			obstacles: ['door'],
-		});
-		return areas;
-	},
-	1: (scene) => {
-		const areas = [
-			{
-				icon: 'icon_camp',
-			},
-		];
-		areas.push({
-			icon: 'icon_door',
-			obstacles: ['door'],
-		});
-		return areas;
-	},
-	2: (scene) => {
-		const areas = [
-			{
-				icon: 'icon_camp',
-			},
-		];
-		// TODO: endgame
-		return areas;
-	},
-}))();
+			];
+			// TODO: real level generation
+			areas.push(
+				{
+					icon: 'icon_enemy',
+					obstacles: scene.shuffle(basic)[0],
+				},
+				{
+					icon: 'icon_enemy',
+					obstacles: scene.shuffle(tough)[0],
+				},
+				{
+					icon: 'icon_unknown',
+					obstacles: scene.shuffle(encounter)[0],
+				},
+				{
+					icon: 'icon_boss',
+					obstacles: scene.shuffle(minibosses)[0],
+				}
+			);
+			areas.push({
+				icon: 'icon_door',
+				obstacles: ['door'],
+			});
+			return areas;
+		},
+		1: (scene) => {
+			scene.setBg('bg_alternate');
+			const areas = [
+				{
+					icon: 'icon_camp',
+				},
+			];
+			areas.push({
+				icon: 'icon_boss',
+				obstacles: ['dragon'],
+			});
+			areas.push({
+				icon: 'icon_door',
+				obstacles: ['door'],
+			});
+			return areas;
+		},
+		2: (scene) => {
+			const areas = [
+				{
+					icon: 'icon_camp',
+				},
+			];
+			// TODO: endgame
+			return areas;
+		},
+	};
+})();
