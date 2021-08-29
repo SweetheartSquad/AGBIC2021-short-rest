@@ -308,6 +308,7 @@ export class GameScene extends GameObject {
 		this.update = u;
 		TweenManager.update();
 		this.containerUI.x = this.camera.display.container.pivot.x;
+		this.containerUI.y = this.camera.display.container.pivot.y;
 
 		if (!this.busy && this.queue.length) {
 			this.busy = true;
@@ -992,5 +993,10 @@ export class GameScene extends GameObject {
 			1,
 			quadIn
 		);
+	}
+
+	kick(x = 0, y = 0) {
+		this.camera.display.container.pivot.x += x;
+		this.camera.display.container.pivot.y += y;
 	}
 }
