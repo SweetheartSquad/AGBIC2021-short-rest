@@ -522,6 +522,7 @@ scene.advance() // basic attack/interaction/movement
 			const knight = scene.party.find((i) => i.name === 'Knight');
 			knight.damage(1, true);
 			knight.addArmour(2);
+			scene.overlay([0.5, 0.5, 0.5, 0.5]);
 		},
 	},
 	Impenetrable: {
@@ -532,6 +533,7 @@ scene.advance() // basic attack/interaction/movement
 		effect(scene) {
 			const knight = scene.party.find((i) => i.name === 'Knight');
 			knight.addArmour(1);
+			scene.overlay([0.5, 0.5, 0.5, 0.5]);
 		},
 	},
 	'Shield Spell': {
@@ -541,6 +543,7 @@ scene.advance() // basic attack/interaction/movement
 		},
 		effect(scene) {
 			scene.front.addArmour(1);
+			scene.overlay([1, 0, 1, 0.5]);
 		},
 	},
 	'Holy Barrier': {
@@ -550,6 +553,7 @@ scene.advance() // basic attack/interaction/movement
 		},
 		effect(scene) {
 			scene.front.addArmour(1);
+			scene.whiteout();
 		},
 	},
 	Stealth: {
@@ -560,6 +564,7 @@ scene.advance() // basic attack/interaction/movement
 		effect(scene) {
 			const rogue = scene.party.find((i) => i.name === 'Rogue');
 			rogue.addArmour(1);
+			scene.blackout();
 		},
 	},
 }))();
