@@ -491,4 +491,26 @@ scene.advance() // basic attack/interaction/movement
 			scene.overlay([1, 0, 1]);
 		},
 	},
+	'Invoke Augur': {
+		description: 'The Priest prompts an encounter in an empty room',
+		canPlay(scene) {
+			return !scene.obstacle;
+		},
+		effect(scene) {
+			const result = scene.shuffle([
+				['fountain'],
+				['treasure'],
+				['potion'],
+				['fortune_teller'],
+				['skeleton', 'A bad omen...'],
+				['zombie', 'A bad omen...'],
+				['skeleton_armoured', 'A bad omen...'],
+			])[0];
+			scene.whiteout();
+			scene.addObstacle(result[0]);
+			if (result[1]) {
+				scene.log(result[1]);
+			}
+		},
+	},
 }))();
