@@ -122,19 +122,23 @@ format:
 		damage: 1,
 	},
 	slime_big: {
-		health: 3,
+		health: 2,
 		damage: 1,
-		end(scene) {
-			scene.addObstacle('slime_medium');
-			scene.addObstacle('slime_medium');
+		interact(scene) {
+			if (scene.front.name === 'Knight' || scene.front.name === 'Rogue') {
+				scene.log('The blade splits the slime in two!');
+				scene.addObstacle('slime_medium');
+			}
 		},
 	},
 	slime_medium: {
-		health: 1,
+		health: 2,
 		damage: 1,
-		end(scene) {
-			scene.addObstacle('slime_small');
-			scene.addObstacle('slime_small');
+		interact(scene) {
+			if (scene.front.name === 'Knight' || scene.front.name === 'Rogue') {
+				scene.log('The blade splits the slime in two!');
+				scene.addObstacle('slime_small');
+			}
 		},
 	},
 	slime_small: {
