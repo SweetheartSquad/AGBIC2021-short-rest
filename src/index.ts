@@ -90,7 +90,7 @@ function play(): void {
 			} catch (error) {
 				fail({
 					message: 'Something went wrong',
-					error,
+					error: error as Error,
 				});
 			} finally {
 				clearInterval(interval);
