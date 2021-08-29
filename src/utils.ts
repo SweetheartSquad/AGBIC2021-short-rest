@@ -129,18 +129,21 @@ export function wrap(str: string, max: number) {
 	let w = '';
 	const rows = [];
 	for (let i = 0; i < words.length; ++i) {
-		if (
-			s.length + w.length + words[i].trim().length > max ||
-			words[i] === '\n'
-		) {
+		const word = words[i];
+		if (word.length > max) {
+			words.splice(i, 1, `${word.slice(0, max - 1)}-`, word.slice(max - 1));
+			--i;
+			continue;
+		}
+		if (s.length + w.length + word.trim().length > max || word === '\n') {
 			rows.push(s);
 			s = '';
 			w = '';
 		}
-		if (words[i].trim() === '') {
-			w += words[i].replace('\n', '');
+		if (word.trim() === '') {
+			w += word.replace('\n', '');
 		} else {
-			s += w + words[i];
+			s += w + word;
 			w = '';
 		}
 	}
