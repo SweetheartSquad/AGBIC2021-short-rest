@@ -304,7 +304,7 @@ scene.advance() // basic attack/interaction/movement
 		effect(scene) {
 			scene.killObstacle();
 		},
-		canPlay: (scene) => scene.obstacle && scene.obstacle.health,
+		canPlay: (scene) => scene.enemy,
 	},
 	shuffle: {
 		description: 'Shuffles party',
