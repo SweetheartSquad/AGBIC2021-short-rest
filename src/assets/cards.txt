@@ -420,4 +420,39 @@ scene.advance() // basic attack/interaction/movement
 			scene.overlay([1, 0, 1, 0.5], 1000);
 		},
 	},
+	'Charm Creature': {
+		description: 'The Priest sways a creature to switch sides',
+		canPlay(scene) {
+			return scene.enemy && scene.alive('Priest');
+		},
+		effect(scene) {
+			const o = scene.obstacle;
+			// TODO: limit charmable creatures
+			const p = scene.addParty({
+				name: `Friendly ${o.def.name}`,
+				spr: o.def.sprite,
+				maxHealth: o.maxHealth,
+				health: o.health,
+				temporary: true,
+			});
+			p.sprBody.scale.x = -1;
+			p.sprOL.scale.x = -1;
+			scene.killObstacle(o);
+		},
+	},
+	'Summon Fire Sprite': {
+		description: 'The Mage Summons a 1HP creature to fight alongside the party',
+		canPlay(scene) {
+			return scene.alive('Mage');
+		},
+		effect(scene) {
+			scene.addParty({
+				name: 'Fire Sprite',
+				spr: 'icon_camp',
+				maxHealth: 1,
+				temporary: true,
+			});
+			scene.whiteout();
+		},
+	},
 }))();
