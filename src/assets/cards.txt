@@ -581,4 +581,35 @@ scene.advance() // basic attack/interaction/movement
 			scene.kick(-5);
 		},
 	},
+	Equalize: {
+		description:
+			'The Priest heals everyone to match whoever has the highest health',
+		canPlay(scene) {
+			return scene.alive('Priest');
+		},
+		effect(scene) {
+			const all = scene.party.concat(scene.obstacles);
+			const health = all.sort((a, b) => b.health - a.health)[0].health;
+			all.forEach((i) => {
+				if (i.health) i.heal(Math.max(0, health - i.health));
+			});
+			scene.overlay([0, 1, 0], 1000);
+		},
+	},
+	Downsize: {
+		description:
+			'The Mage damages everyone to match whoever has the lowest health',
+		canPlay(scene) {
+			return scene.alive('Mage');
+		},
+		effect(scene) {
+			const all = scene.party.concat(scene.obstacles);
+			const health = all.sort((a, b) => a.health - b.health)[0].health;
+			all.forEach((i) => {
+				i.damage(Math.max(0, i.health - health));
+			});
+			scene.overlay([1, 0, 1], 1000);
+			scene.shake(5, 1000);
+		},
+	},
 }))();
