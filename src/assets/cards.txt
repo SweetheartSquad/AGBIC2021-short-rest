@@ -513,4 +513,15 @@ scene.advance() // basic attack/interaction/movement
 			}
 		},
 	},
+	'Layers of Steel': {
+		description: 'The Knight takes 1 damage and gains 2 armour',
+		canPlay(scene) {
+			return scene.alive('Knight');
+		},
+		effect(scene) {
+			const knight = scene.party.find((i) => i.name === 'Knight');
+			knight.damage(1, true);
+			knight.addArmour(2);
+		},
+	},
 }))();
