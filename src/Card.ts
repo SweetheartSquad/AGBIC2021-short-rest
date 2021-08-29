@@ -45,7 +45,7 @@ export class Card extends GameObject {
 		sprImg.anchor.x = sprImg.anchor.y = 0.5;
 		sprImg.y = -50;
 		const textName = new BitmapText(wrap(d.name, 8), fontName);
-		textName.y += 51;
+		textName.y += 47;
 		textName.anchor.x = textName.anchor.y = 0.5;
 		textName.x = 0;
 		textName.tint = 0x33252b;
