@@ -133,9 +133,9 @@ export class Character extends GameObject {
 		this.setArmour(this.armour + armour);
 	}
 
-	damage(damage: number) {
+	damage(damage: number, ignoreArmour = false) {
 		if (this.health <= 0 || damage === 0) return;
-		if (this.armour > 0) {
+		if (!ignoreArmour && this.armour > 0) {
 			this.addArmour(-1);
 		} else {
 			this.setHealth(this.health - damage);
