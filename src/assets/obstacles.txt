@@ -191,6 +191,10 @@ format:
 	slime_big: {
 		health: 2,
 		damage: 1,
+		start(scene) {
+			// TODO: better name
+			scene.announce('Big Slime');
+		},
 		interact(scene) {
 			if (scene.front.name === 'Knight' || scene.front.name === 'Rogue') {
 				scene.log('The blade splits the slime in two!');
