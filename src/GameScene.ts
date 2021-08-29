@@ -995,6 +995,24 @@ export class GameScene extends GameObject {
 		);
 	}
 
+	shake(intensity = 5, duration = 200) {
+		TweenManager.tween(
+			this.camera.display.container,
+			'alpha',
+			1,
+			duration,
+			undefined,
+			(t) => {
+				const tt = quadOut(1 - t);
+				this.camera.display.container.pivot.y =
+					this.camera.targetPivot.y + randRange(intensity, -intensity) * tt;
+				this.camera.display.container.pivot.x =
+					this.camera.targetPivot.x + randRange(intensity, -intensity) * tt;
+				return 0;
+			}
+		);
+	}
+
 	kick(x = 0, y = 0) {
 		this.camera.display.container.pivot.x += x;
 		this.camera.display.container.pivot.y += y;

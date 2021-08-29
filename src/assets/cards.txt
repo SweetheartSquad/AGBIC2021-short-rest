@@ -52,6 +52,7 @@ scene.blackout(duration) // shortcut for black overlay
 scene.whiteout(duration) // shortcut for white overlay
 scene.invert(duration) // flashes inverted overlay
 scene.kick(50,50) // kicks camera
+scene.shake(50,200) // shakes camera
 scene.setBg('texture') // sets tiling background
 scene.setFg('texture') // sets tiling foreground
 await scene.delay(duration) // waits before continuing
