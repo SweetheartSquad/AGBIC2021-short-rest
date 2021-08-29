@@ -165,6 +165,60 @@ format:
 			);
 		},
 	},
+	mini_camp: {
+		sprite: 'icon_camp',
+		interact(scene) {
+			const o = this;
+			const hand = scene.hand.hand.slice();
+			scene.log("The party finds the remnants of another party's camp.");
+			scene.choice(
+				{
+					name: 'Kindle',
+					description:
+						'Burn a card from your hand to revive fallen party members.',
+					canPlay() {
+						return hand.length > 1;
+					},
+					effect() {
+						scene.clearHand();
+						hand.slice(0, -1).forEach((i, idx) => {
+							scene.addCard({
+								...i.def,
+								description: `Burn "${i.def.name}"`,
+								canPlay: undefined,
+								effect: () => {
+									scene.camp.light();
+									scene.log(
+										`The party burns "${i.def.name}" along with the rest of the fire.`
+									);
+									scene.party.forEach((p) => {
+										if (!p.health) {
+											p.heal(1);
+											scene.log(`${p.name} revived.`);
+										}
+									});
+									scene.overlay([1, 0.5, 0, 0.5]);
+									scene.deck = scene.deck.filter((d) => d.def === i.def);
+									hand.splice(idx, 1);
+									scene.clearHand();
+									hand.forEach((c) => {
+										scene.addCard(c.def);
+									});
+									scene.killObstacle(o);
+								},
+							});
+						});
+					},
+				},
+				{
+					name: 'Leave it alone',
+					effect() {
+						scene.killObstacle(o);
+					},
+				}
+			);
+		},
+	},
 	trap: {
 		async interact(scene) {
 			if (scene.front.name === 'Rogue') {
