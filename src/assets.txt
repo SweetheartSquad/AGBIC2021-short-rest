@@ -41,6 +41,7 @@ textures/mimic.png
 textures/door.png
 textures/skeleton.png
 textures/skeleton_armoured.png
+textures/zombie.png
 textures/bat1.png
 textures/bat2.png
 textures/bat3.png
@@ -62,7 +63,6 @@ textures/bomb.png
 textures/bomb_a.png
 textures/bomb_b.png
 textures/bomb_c.png
-textures/zombie.png
 textures/jester1.png
 textures/jester2.png
 textures/kangaroo.png
