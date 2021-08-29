@@ -26,11 +26,23 @@ format:
 	skeleton: {
 		health: 3,
 		damage: 1,
+		interact(scene) {
+			if (scene.front.name === 'Priest') {
+				scene.log('The Priest banishes the skeleton!');
+				this.damage(3);
+			}
+		},
 	},
 	skeleton_armoured: {
 		health: 3,
 		armour: 1,
 		damage: 1,
+		interact(scene) {
+			if (scene.front.name === 'Priest') {
+				scene.log('The Priest banishes the skeleton!');
+				this.damage(3);
+			}
+		},
 	},
 	bat: {
 		health: 1,
