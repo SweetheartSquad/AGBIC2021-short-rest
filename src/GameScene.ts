@@ -771,7 +771,7 @@ export class GameScene extends GameObject {
 					spr.interactive = false;
 					return spr;
 				});
-				let focused: typeof sprs[number];
+				let focused: typeof sprs[number] | undefined;
 				const wavy = {
 					gameObject: this.camera,
 					update: () => {
@@ -803,6 +803,11 @@ export class GameScene extends GameObject {
 					sprs.forEach((i, idx) => {
 						i.on('mouseover', () => {
 							focused = i;
+						});
+						i.on('mouseout', () => {
+							setTimeout(() => {
+								if (focused === i) focused = undefined;
+							});
 						});
 						i.once('click', () => {
 							TweenManager.tween(i.scale, 'x', 0, 100, 1, quadIn);
