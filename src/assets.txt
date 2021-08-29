@@ -42,6 +42,7 @@ textures/door.png
 textures/skeleton.png
 textures/skeleton_armoured.png
 textures/zombie.png
+textures/necromancer.png
 textures/bat1.png
 textures/bat2.png
 textures/bat3.png

@@ -58,6 +58,25 @@ format:
 			}
 		},
 	},
+	necromancer: {
+		health: 4,
+		damage: 1,
+		start(scene) {
+			// TODO: better name?
+			scene.announce('The Necromancer');
+		},
+		interact(scene) {
+			if (!this.health) return;
+			if (scene.obstacles.length === 1) {
+				scene.log('The necromancer raises a skeletal minion!');
+				scene.addObstacle('skeleton');
+				scene.obstacles.reverse();
+			} else {
+				scene.log('The necromancer retreats behind their minion.');
+				scene.obstacles.reverse();
+			}
+		},
+	},
 	bat: {
 		health: 1,
 		damage: 1,
