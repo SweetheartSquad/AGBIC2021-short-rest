@@ -555,7 +555,7 @@ scene.advance() // basic attack/interaction/movement
 	Stealth: {
 		description: 'The Rogue gains 1 armour',
 		canPlay(scene) {
-			return scene.alive('Stealth');
+			return scene.alive('Rogue');
 		},
 		effect(scene) {
 			const rogue = scene.party.find((i) => i.name === 'Rogue');
