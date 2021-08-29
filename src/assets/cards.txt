@@ -524,4 +524,42 @@ scene.advance() // basic attack/interaction/movement
 			knight.addArmour(2);
 		},
 	},
+	Impenetrable: {
+		description: 'The Knight gains 1 armour',
+		canPlay(scene) {
+			return scene.alive('Knight');
+		},
+		effect(scene) {
+			const knight = scene.party.find((i) => i.name === 'Knight');
+			knight.addArmour(1);
+		},
+	},
+	'Shield Spell': {
+		description: 'The Mage grants 1 armour to party lead',
+		canPlay(scene) {
+			return scene.alive('Mage');
+		},
+		effect(scene) {
+			scene.front.addArmour(1);
+		},
+	},
+	'Holy Barrier': {
+		description: 'The Priest grants 1 armour to party lead',
+		canPlay(scene) {
+			return scene.alive('Priest');
+		},
+		effect(scene) {
+			scene.front.addArmour(1);
+		},
+	},
+	Stealth: {
+		description: 'The Rogue gains 1 armour',
+		canPlay(scene) {
+			return scene.alive('Stealth');
+		},
+		effect(scene) {
+			const rogue = scene.party.find((i) => i.name === 'Rogue');
+			rogue.addArmour(1);
+		},
+	},
 }))();
