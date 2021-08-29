@@ -3,12 +3,19 @@ import { Character } from './Character';
 export class CharacterPlayer extends Character {
 	name: string;
 
+	temporary: boolean;
+
 	constructor({
 		name,
+		temporary = false,
 		...options
-	}: ConstructorParameters<typeof Character>[0] & { name: string }) {
+	}: ConstructorParameters<typeof Character>[0] & {
+		name: string;
+		temporary?: boolean;
+	}) {
 		super(options);
 		this.name = name;
+		this.temporary = temporary;
 	}
 
 	update() {

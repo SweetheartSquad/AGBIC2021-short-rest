@@ -563,6 +563,12 @@ export class GameScene extends GameObject {
 
 		character.display.container.on('dead', () => {
 			removeFromArray(this.party, character);
+			if (character.temporary) {
+				this.whiteout();
+				this.log(`${character.name} perished!`);
+				character.destroy();
+				return;
+			}
 			const slot = this.party.findIndex((i) => i.health > 0);
 			this.party.splice(slot >= 0 ? slot : this.party.length, 0, character);
 			if (!this.front.health) {
