@@ -721,104 +721,107 @@ export class GameScene extends GameObject {
 	}
 
 	loot(cards: Parameters<GameScene['addCard']>[0][]) {
-		if (cards.length <= 0) return;
-		this.queue.push(async () => {
-			const sprs = cards.map((i, idx) => {
-				const def = Card.getCard(i);
-				const spr = Card.getCardSpr(def);
-				spr.texture = resources.card_back.texture as Texture;
-				spr.children.forEach((c) => {
-					c.visible = false;
-				});
-				spr.anchor.x = spr.anchor.y = 0.5;
-				this.containerUI.addChild(spr);
-				spr.x = size.x / 2;
-				spr.y = size.y / 2;
-				spr.alpha = 0;
-				spr.filters = [getAlphaFilter()];
-				btn(spr, def.name, def.description);
-				TweenManager.tween(
-					spr,
-					'x',
-					size.x / 2 +
-						(cards.length > 1
-							? (idx / (cards.length - 1) - 0.5) * 2 * spr.width
-							: 0),
-					500,
-					undefined,
-					quadOut
-				);
-				TweenManager.tween(spr, 'y', size.y / 2, 500, undefined, quadOut);
-				TweenManager.tween(spr, 'alpha', 1, 200, undefined, quadOut);
-				spr.interactive = false;
-				return spr;
-			});
-			let focused: typeof sprs[number];
-			const wavy = {
-				gameObject: this.camera,
-				update: () => {
-					sprs.forEach((i, idx) => {
-						i.pivot.y = lerp(
-							i.pivot.y,
-							Math.sin(game.app.ticker.lastTime / 500 + idx * 2) * 5 +
-								(i === focused ? 20 : 0),
-							0.1
-						);
+		if (cards.length <= 0) return Promise.resolve();
+		return new Promise<void>((looted) => {
+			this.queue.push(async () => {
+				const sprs = cards.map((i, idx) => {
+					const def = Card.getCard(i);
+					const spr = Card.getCardSpr(def);
+					spr.texture = resources.card_back.texture as Texture;
+					spr.children.forEach((c) => {
+						c.visible = false;
 					});
-
-					inputMenu(
-						focused ? sprs.indexOf(focused) : -1,
-						sprs.map((i) => ({
-							select: () => i.emit('click'),
-							focus: () => i.emit('mouseover'),
-						}))
+					spr.anchor.x = spr.anchor.y = 0.5;
+					this.containerUI.addChild(spr);
+					spr.x = size.x / 2;
+					spr.y = size.y / 2;
+					spr.alpha = 0;
+					spr.filters = [getAlphaFilter()];
+					btn(spr, def.name, def.description);
+					TweenManager.tween(
+						spr,
+						'x',
+						size.x / 2 +
+							(cards.length > 1
+								? (idx / (cards.length - 1) - 0.5) * 2 * spr.width
+								: 0),
+						500,
+						undefined,
+						quadOut
 					);
-				},
-			};
-			this.camera.scripts.push(wavy);
-			await delay(500);
+					TweenManager.tween(spr, 'y', size.y / 2, 500, undefined, quadOut);
+					TweenManager.tween(spr, 'alpha', 1, 200, undefined, quadOut);
+					spr.interactive = false;
+					return spr;
+				});
+				let focused: typeof sprs[number];
+				const wavy = {
+					gameObject: this.camera,
+					update: () => {
+						sprs.forEach((i, idx) => {
+							i.pivot.y = lerp(
+								i.pivot.y,
+								Math.sin(game.app.ticker.lastTime / 500 + idx * 2) * 5 +
+									(i === focused ? 20 : 0),
+								0.1
+							);
+						});
 
-			sprs.forEach((i) => {
-				i.interactive = true;
-			});
-			const picked = await new Promise<number>((r) => {
-				sprs.forEach((i, idx) => {
-					i.on('mouseover', () => {
-						focused = i;
-					});
-					i.once('click', () => {
-						TweenManager.tween(i.scale, 'x', 0, 100, 1, quadIn);
-						delay(100).then(() => {
-							TweenManager.tween(i.scale, 'x', 1, 300, 0, elasticOut);
-							i.texture = resources.card.texture as Texture;
-							i.children.forEach((c) => {
-								c.visible = true;
-							});
-							i.once('click', () => {
-								r(idx);
+						inputMenu(
+							focused ? sprs.indexOf(focused) : -1,
+							sprs.map((i) => ({
+								select: () => i.emit('click'),
+								focus: () => i.emit('mouseover'),
+							}))
+						);
+					},
+				};
+				this.camera.scripts.push(wavy);
+				await delay(500);
+
+				sprs.forEach((i) => {
+					i.interactive = true;
+				});
+				const picked = await new Promise<number>((r) => {
+					sprs.forEach((i, idx) => {
+						i.on('mouseover', () => {
+							focused = i;
+						});
+						i.once('click', () => {
+							TweenManager.tween(i.scale, 'x', 0, 100, 1, quadIn);
+							delay(100).then(() => {
+								TweenManager.tween(i.scale, 'x', 1, 300, 0, elasticOut);
+								i.texture = resources.card.texture as Texture;
+								i.children.forEach((c) => {
+									c.visible = true;
+								});
+								i.once('click', () => {
+									r(idx);
+								});
 							});
 						});
 					});
 				});
-			});
-			removeFromArray(this.camera.scripts, wavy);
-			this.addDeck(cards[picked]);
-			sprs.forEach((i, idx) => {
-				i.interactive = false;
-				const t1 = TweenManager.tween(i, 'alpha', 0, 500, undefined, quadIn);
-				const t2 = TweenManager.tween(
-					i,
-					'y',
-					idx === picked ? size.y * 2 : 0,
-					500,
-					undefined,
-					idx === picked ? quadOut : backIn
-				);
-				delay(500).then(() => {
-					i.destroy();
-					TweenManager.abort(t1);
-					TweenManager.abort(t2);
+				removeFromArray(this.camera.scripts, wavy);
+				this.addDeck(cards[picked]);
+				sprs.forEach((i, idx) => {
+					i.interactive = false;
+					const t1 = TweenManager.tween(i, 'alpha', 0, 500, undefined, quadIn);
+					const t2 = TweenManager.tween(
+						i,
+						'y',
+						idx === picked ? size.y * 2 : 0,
+						500,
+						undefined,
+						idx === picked ? quadOut : backIn
+					);
+					delay(500).then(() => {
+						i.destroy();
+						TweenManager.abort(t1);
+						TweenManager.abort(t2);
+					});
 				});
+				looted();
 			});
 		});
 	}
