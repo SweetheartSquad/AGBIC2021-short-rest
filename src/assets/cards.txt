@@ -612,4 +612,14 @@ scene.advance() // basic attack/interaction/movement
 			scene.shake(5, 1000);
 		},
 	},
+	Confuse: {
+		description: 'The Priest causes an enemy to damage themselves',
+		canPlay(scene) {
+			return scene.enemy && scene.alive('Priest');
+		},
+		effect(scene) {
+			scene.obstacle.damage(scene.obstacle.def.damage);
+			scene.kick(5);
+		},
+	},
 }))();
