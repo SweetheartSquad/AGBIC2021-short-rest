@@ -128,47 +128,30 @@ format:
 	slime_small: {
 		health: 1,
 	},
-	fountain_healing: {
-		sprite: 'fountain',
+	fountain: {
 		interact(scene) {
 			scene.log('The party considers slaking their thirst.');
 			scene.choice(
 				{
 					name: 'Slake',
 					effect() {
-						scene.party.forEach((i) => {
-							if (i.health > 0) {
-								i.heal(i.maxHealth);
-							}
-						});
-						scene.overlay([0, 0.8, 1, 0.6], 500);
-						scene.log('The party drinks, and feels refreshed.');
-						scene.killObstacle();
-					},
-				},
-				{
-					name: "Don't Slake",
-					effect() {
-						scene.log('The party suppresses their thirst.');
-						scene.killObstacle();
-					},
-				}
-			);
-		},
-	},
-	fountain_poison: {
-		sprite: 'fountain',
-		interact(scene) {
-			scene.log('The party considers slaking their thirst.');
-			scene.choice(
-				{
-					name: 'Slake',
-					effect() {
-						scene.party.forEach((i) => {
-							i.damage(1);
-						});
-						scene.overlay([0.6, 0.8, 0, 0.6], 500);
-						scene.log('The party drinks, and retches moments later.');
+						if (Math.random() > 0.5) {
+							// poison
+							scene.party.forEach((i) => {
+								i.damage(1);
+							});
+							scene.overlay([0.6, 0.8, 0, 0.6], 500);
+							scene.log('The party drinks, and retches moments later.');
+						} else {
+							// healing
+							scene.party.forEach((i) => {
+								if (i.health > 0) {
+									i.heal(i.maxHealth);
+								}
+							});
+							scene.overlay([0, 0.8, 1, 0.6], 500);
+							scene.log('The party drinks, and feels refreshed.');
+						}
 						scene.killObstacle();
 					},
 				},
