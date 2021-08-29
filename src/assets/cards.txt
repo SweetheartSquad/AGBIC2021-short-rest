@@ -467,4 +467,28 @@ scene.advance() // basic attack/interaction/movement
 			scene.whiteout();
 		},
 	},
+	'Poly Morph': {
+		description: 'The Mage transforms a creature into another',
+		canPlay(scene) {
+			return scene.enemy && scene.alive('Mage');
+		},
+		effect(scene) {
+			// TODO: polymorph targets
+			const result = scene.shuffle([
+				'rat_small',
+				'slime_small',
+				'bat',
+				'rat_small',
+				'slime_small',
+				'bat',
+				'skeleton',
+				'zombie',
+				'bomb',
+			])[0];
+			scene.log(`${scene.obstacle.def.name} morphed into a ${result}!`);
+			scene.killObstacle();
+			scene.addObstacle(result);
+			scene.overlay([1, 0, 1]);
+		},
+	},
 }))();
