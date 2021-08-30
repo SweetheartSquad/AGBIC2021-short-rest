@@ -24,6 +24,7 @@ format:
 		},
 	},
 	skeleton: {
+		name: 'Skelly',
 		health: 3,
 		damage: 1,
 		interact(scene) {
@@ -34,6 +35,7 @@ format:
 		},
 	},
 	skeleton_armoured: {
+		name: 'Armoured Skelly',
 		health: 3,
 		armour: 1,
 		damage: 1,
@@ -45,6 +47,7 @@ format:
 		},
 	},
 	zombie: {
+		name: 'Zombie',
 		health: 3,
 		async interact(scene) {
 			if (scene.front.name === 'Priest') {
@@ -59,6 +62,7 @@ format:
 		},
 	},
 	necromancer: {
+		name: 'The Necromancer',
 		health: 4,
 		damage: 1,
 		start(scene) {
@@ -78,18 +82,22 @@ format:
 		},
 	},
 	bat: {
+		name: 'Eyebat',
 		health: 1,
 		damage: 1,
 	},
 	rat_small: {
+		name: 'Rat',
 		health: 1,
 		damage: 1,
 	},
 	rat_big: {
+		name: 'Big Rat',
 		health: 3,
 		damage: 2,
 	},
 	rat_king: {
+		name: 'Rat King',
 		sprite: 'rat_big',
 		health: 3,
 		damage: 2,
@@ -116,6 +124,7 @@ format:
 		},
 	},
 	jester: {
+		name: 'Jester',
 		health: 2,
 		damage: 1,
 		interact(scene) {
@@ -126,6 +135,7 @@ format:
 		},
 	},
 	kangaroo: {
+		// TODO: name
 		health: 2,
 		damage: 1,
 		interact(scene) {
@@ -138,6 +148,7 @@ format:
 		},
 	},
 	mushroom: {
+		name: 'A Fun Guy',
 		health: 3,
 		start(scene) {
 			// TODO: better name
@@ -185,10 +196,12 @@ format:
 		},
 	},
 	mimic: {
+		name: 'Mimic',
 		health: 2,
 		damage: 1,
 	},
 	slime_big: {
+		name: 'Big Slime',
 		health: 2,
 		damage: 1,
 		start(scene) {
@@ -203,6 +216,7 @@ format:
 		},
 	},
 	slime_medium: {
+		name: 'Slime',
 		health: 2,
 		damage: 1,
 		interact(scene) {
@@ -213,6 +227,7 @@ format:
 		},
 	},
 	slime_small: {
+		name: 'Small Slime',
 		health: 1,
 		damage: 1,
 	},
@@ -306,6 +321,7 @@ format:
 		},
 	},
 	potion_mimic: {
+		name: 'Potion Mimic',
 		health: 2,
 		damage: 1,
 	},
@@ -463,10 +479,12 @@ format:
 		},
 	},
 	dragon: {
+		name: 'The Dragon',
 		health: 10,
 		async start(scene) {
 			await scene.addObstacle('dragon_hand');
 			scene.whiteout();
+			scene.announce('The Dragon');
 			scene.tween(scene.containerParty.scale, 'x', 0.6, 0);
 			scene.tween(scene.containerParty.scale, 'y', 0.6, 0);
 			scene.tween(scene.containerParty.pivot, 'x', -40, 0);
@@ -500,6 +518,7 @@ format:
 		},
 	},
 	dragon_hand: {
+		name: "Dragon's Hand",
 		sprite: 'dragon_hand',
 		health: 1,
 		shadow: false,
