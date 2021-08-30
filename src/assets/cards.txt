@@ -343,7 +343,7 @@ scene.advance() // basic attack/interaction/movement
 	Slash: {
 		description: 'The Knight slashes for 1 damage',
 		canPlay(scene) {
-			return scene.enemy && scene.enemy('Knight');
+			return scene.enemy && scene.alive('Knight');
 		},
 		effect(scene) {
 			scene.obstacle.damage(1);
@@ -353,7 +353,7 @@ scene.advance() // basic attack/interaction/movement
 	'Twin Daggers': {
 		description: 'The Rogue throws two daggers, each dealing 1 damage',
 		canPlay(scene) {
-			return scene.enemy && scene.party('Rogue');
+			return scene.enemy && scene.alive('Rogue');
 		},
 		effect(scene) {
 			scene.obstacle.damage(1);
@@ -369,7 +369,7 @@ scene.advance() // basic attack/interaction/movement
 	'Magic Blast': {
 		description: 'The Mage fires a blast, dealing 2 damage',
 		canPlay(scene) {
-			return scene.enemy && scene.party('Mage');
+			return scene.enemy && scene.alive('Mage');
 		},
 		effect(scene) {
 			scene.obstacle.damage(2);
