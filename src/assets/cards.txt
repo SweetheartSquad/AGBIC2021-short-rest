@@ -547,6 +547,7 @@ scene.advance() // basic attack/interaction/movement
 				maxHealth: o.maxHealth,
 				health: o.health,
 				temporary: true,
+				damage: o.def.damage,
 			});
 			p.sprBody.scale.x = -1;
 			p.sprOL.scale.x = -1;
