@@ -391,7 +391,7 @@ scene.advance() // basic attack/interaction/movement
 	Teleport: {
 		description: 'Mage teleports party to next area',
 		canPlay(scene) {
-			return scene.position < scene.areas.length - 1;
+			return scene.position < scene.areas.length - 1 && scene.alive('Mage');
 		},
 		effect(scene) {
 			scene.setPosition(scene.position + 1);
