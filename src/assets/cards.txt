@@ -292,7 +292,6 @@ scene.advance() // basic attack/interaction/movement
 			scene.clearHand();
 			scene.addCard('test');
 			scene.addCard('shuffle');
-			scene.addCard('Full Heal');
 			scene.addCard('refresh');
 			scene.addCard('Advance');
 		},
@@ -311,12 +310,34 @@ scene.advance() // basic attack/interaction/movement
 			} while (scene.party.every((i, idx) => i === original[idx]));
 		},
 	},
-	'Full Heal': {
-		description: 'Fully heals party',
+	'Labelled Potion': {
+		description: 'Heal lead',
+		effect(scene) {
+			scene.front.heal(scene.front.maxHealth);
+		},
+	},
+	'Absolve Death': {
+		description: 'The Priest revives fallen party members',
+		canPlay(scene) {
+			return scene.alive('Priest');
+		},
 		effect(scene) {
 			scene.party.forEach((i) => {
-				i.heal(i.maxHealth);
+				if (!i.health) i.heal(1);
 			});
+			scene.overlay([0, 1, 0]);
+		},
+	},
+	'Blessed Rain': {
+		description: 'The Priest heals everyone',
+		canPlay(scene) {
+			return scene.alive('Priest');
+		},
+		effect(scene) {
+			scene.party.concat(scene.obstacles).forEach((i) => {
+				if (i.health) i.heal(i.maxHealth);
+			});
+			scene.overlay([0, 1, 0]);
 		},
 	},
 	Slash: {
@@ -612,6 +633,19 @@ scene.advance() // basic attack/interaction/movement
 		effect(scene) {
 			scene.obstacle.damage(scene.obstacle.def.damage);
 			scene.kick(5);
+		},
+	},
+	'Life Link Locket': {
+		description: 'Swap lead and enemy HP',
+		canPlay(scene) {
+			return scene.enemy;
+		},
+		effect(scene) {
+			const a = scene.front.health;
+			const b = scene.obstacle.health;
+			scene.front.setHealth(b);
+			scene.obstacle.setHealth(a);
+			scene.invert();
 		},
 	},
 	'Leech Wand': {
