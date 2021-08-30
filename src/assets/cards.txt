@@ -360,7 +360,7 @@ scene.advance() // basic attack/interaction/movement
 			scene.kick(-5);
 			scene.delay(100).then(() => {
 				if (scene.enemy) {
-					scene.kick(-5);
+					scene.kick(-10);
 					scene.obstacle.damage(1);
 				}
 			});
