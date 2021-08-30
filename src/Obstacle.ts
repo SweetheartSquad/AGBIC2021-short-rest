@@ -27,7 +27,7 @@ export class Obstacle extends Character {
 			Object.entries(Obstacle.obstacles).forEach(([name, obstacle]) => {
 				(obstacle as ObstacleDef).name = (obstacle as ObstacleDef).name || name;
 				(obstacle as ObstacleDef).sprite =
-					(obstacle as ObstacleDef).sprite || (obstacle as ObstacleDef).name;
+					(obstacle as ObstacleDef).sprite || name;
 			});
 		}
 		return (
