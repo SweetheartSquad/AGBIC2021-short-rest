@@ -5,17 +5,22 @@ export class CharacterPlayer extends Character {
 
 	temporary: boolean;
 
+	damageOutput: number;
+
 	constructor({
 		name,
+		damage = 1,
 		temporary = false,
 		...options
 	}: ConstructorParameters<typeof Character>[0] & {
 		name: string;
+		damage?: number;
 		temporary?: boolean;
 	}) {
 		super(options);
 		this.name = name;
 		this.temporary = temporary;
+		this.damageOutput = damage;
 	}
 
 	update() {

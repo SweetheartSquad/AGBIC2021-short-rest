@@ -354,7 +354,7 @@ export class GameScene extends GameObject {
 				front.display.container.scale.y += 0.3;
 				TweenManager.abort(t1);
 				if (obstacle.health > 0) {
-					obstacle.damage(1);
+					obstacle.damage(front.damageOutput);
 					await obstacle.def.interact?.call(obstacle, this);
 				} else {
 					await obstacle.def.interact?.call(obstacle, this);
