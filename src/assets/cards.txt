@@ -582,7 +582,7 @@ scene.advance() // basic attack/interaction/movement
 	},
 	'Bitter Tears': {
 		description:
-			'The Knight sacrifices themselves and deals their health as damage',
+			'The Knight sacrifices themselves and deals their HP as damage',
 		canPlay(scene) {
 			return scene.enemy && scene.alive('Knight');
 		},
@@ -596,7 +596,7 @@ scene.advance() // basic attack/interaction/movement
 	},
 	Equalize: {
 		description:
-			'The Priest heals everyone to match whoever has the highest health',
+			'The Priest heals everyone to match whoever has the highest HP',
 		canPlay(scene) {
 			return scene.alive('Priest');
 		},
@@ -610,8 +610,7 @@ scene.advance() // basic attack/interaction/movement
 		},
 	},
 	Downsize: {
-		description:
-			'The Mage damages everyone to match whoever has the lowest health',
+		description: 'The Mage damages everyone to match whoever has the lowest HP',
 		canPlay(scene) {
 			return scene.alive('Mage');
 		},
