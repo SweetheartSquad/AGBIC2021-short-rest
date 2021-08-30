@@ -34,4 +34,13 @@ export class CharacterPlayer extends Character {
 			this.sprBody.tint = 0xffffff;
 		}
 	}
+
+	damage(damage: number, ignoreArmour = false) {
+		if (damage === 0) return;
+		if (this.health <= 0) {
+			this.display.container.emit('dead');
+			return;
+		}
+		super.damage(damage, ignoreArmour);
+	}
 }
