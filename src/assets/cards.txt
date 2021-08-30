@@ -638,4 +638,17 @@ scene.advance() // basic attack/interaction/movement
 			});
 		},
 	},
+	Weaken: {
+		description: 'The Priest reduces enemy damage to 1',
+		canPlay(scene) {
+			return scene.enemy && scene.alive('Priest');
+		},
+		effect(scene) {
+			scene.obstacle.def = {
+				...scene.obstacle.def,
+				damage: 1,
+			};
+			scene.whiteout();
+		},
+	},
 }))();
