@@ -291,20 +291,12 @@ scene.advance() // basic attack/interaction/movement
 		effect(scene) {
 			scene.clearHand();
 			scene.addCard('test');
-			scene.addCard('kill');
 			scene.addCard('shuffle');
 			scene.addCard('Full Heal');
 			scene.addCard('refresh');
 			scene.addCard('Advance');
 		},
 		canPlay: () => true,
-	},
-	kill: {
-		description: 'Destroys opponent',
-		effect(scene) {
-			scene.killObstacle();
-		},
-		canPlay: (scene) => scene.enemy,
 	},
 	shuffle: {
 		description: 'Shuffles party',
