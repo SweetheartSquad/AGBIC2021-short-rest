@@ -97,7 +97,12 @@ scene.advance() // basic attack/interaction/movement
 				scene.addCard('Advance');
 				scene.addParty({ name: 'Mage', spr: 'frog', maxHealth: 2 });
 				scene.addParty({ name: 'Priest', spr: 'cat', maxHealth: 3 });
-				scene.addParty({ name: 'Rogue', spr: 'apple', maxHealth: 2 });
+				scene.addParty({
+					name: 'Rogue',
+					spr: 'apple',
+					maxHealth: 2,
+					damage: 2,
+				});
 				scene.addParty({ name: 'Knight', spr: 'onion', maxHealth: 4 });
 				scene.setBg('bg');
 				scene.setFg('fg');
