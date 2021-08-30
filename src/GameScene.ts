@@ -363,40 +363,7 @@ export class GameScene extends GameObject {
 			});
 			return;
 		}
-		this.queue.push(async () => {
-			this.position += 1;
-			this.map.setPosition(this.position);
-			TweenManager.tween(
-				this.camera.targetPivot,
-				'x',
-				size.x * this.position,
-				500,
-				undefined,
-				quadOut
-			);
-			TweenManager.tween(
-				this.containerParty,
-				'x',
-				size.x * this.position,
-				1500,
-				undefined,
-				quadInOut
-			);
-			this.containerObstacle.x = size.x * this.position;
-			const area = this.areas[this.position];
-			area?.obstacles
-				?.slice()
-				.reverse()
-				.forEach((i) => {
-					this.addObstacle(i, false);
-				});
-			await delay(500);
-			this.party.forEach((i) => {
-				i.transform.x = 0;
-			});
-			await delay(1000);
-			await Promise.all(this.obstacles.map((i) => i.def?.start?.call(i, this)));
-		});
+		this.setPosition(this.position + 1);
 	}
 
 	damageObstacle(damage: number) {
@@ -601,23 +568,64 @@ export class GameScene extends GameObject {
 		return enemy;
 	}
 
-	setAreas(areas: GameScene['areas']) {
+	setPosition(position: number) {
+		const prev = this.position;
 		this.obstacles.forEach((i) => i.destroy());
 		this.obstacles.length = 0;
+		this.position = position;
+		this.map.setPosition(this.position);
+		if (this.position <= prev) {
+			this.camera.display.container.pivot.x =
+				this.camera.targetPivot.x =
+				this.containerParty.x =
+				this.containerObstacle.x =
+					size.x * this.position;
+			this.party.forEach((i) => {
+				i.transform.x = 0;
+			});
+		} else {
+			this.queue.push(async () => {
+				TweenManager.tween(
+					this.camera.targetPivot,
+					'x',
+					size.x * this.position,
+					500,
+					undefined,
+					quadOut
+				);
+				TweenManager.tween(
+					this.containerParty,
+					'x',
+					size.x * this.position,
+					1500,
+					undefined,
+					quadInOut
+				);
+				this.containerObstacle.x = size.x * this.position;
+				const area = this.areas[this.position];
+				area?.obstacles
+					?.slice()
+					.reverse()
+					.forEach((i) => {
+						this.addObstacle(i, false);
+					});
+				await delay(500);
+				this.party.forEach((i) => {
+					i.transform.x = 0;
+				});
+				await delay(1000);
+				await Promise.all(
+					this.obstacles.map((i) => i.def?.start?.call(i, this))
+				);
+			});
+		}
+	}
+
+	setAreas(areas: GameScene['areas']) {
 		this.areas = areas;
 		this.map.setAreas(areas.map((i) => i.icon));
-		this.position = 0;
-		this.map.setPosition(this.position);
 		this.bg.width = this.fg.width = size.x * areas.length;
-
-		this.camera.display.container.pivot.x =
-			this.camera.targetPivot.x =
-			this.containerParty.x =
-			this.containerObstacle.x =
-				size.x * this.position;
-		this.party.forEach((i) => {
-			i.transform.x = 0;
-		});
+		this.setPosition(0);
 	}
 
 	setLevel(level: number, mid?: Parameters<GameScene['transition']>[0]) {
