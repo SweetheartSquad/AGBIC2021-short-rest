@@ -377,6 +377,17 @@ scene.advance() // basic attack/interaction/movement
 			);
 		},
 	},
+	Snooze: {
+		description: 'Retreat to previous campfire',
+		effect(scene) {
+			scene.kick(-5);
+			scene.log('Party escaped!');
+			scene.startCamp();
+			scene.queue.push(async () => {
+				scene.level -= 1;
+			});
+		},
+	},
 	'Labelled Potion': {
 		description: 'Heal lead',
 		effect(scene) {
