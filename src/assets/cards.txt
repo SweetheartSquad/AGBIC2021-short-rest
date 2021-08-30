@@ -291,13 +291,12 @@ scene.advance() // basic attack/interaction/movement
 		effect(scene) {
 			scene.clearHand();
 			scene.addCard('test');
-			scene.addCard('shuffle');
 			scene.addCard('refresh');
 			scene.addCard('Advance');
 		},
 		canPlay: () => true,
 	},
-	shuffle: {
+	Shuffle: {
 		description: 'Shuffles party',
 		effect(scene) {
 			const original = scene.party.slice();
@@ -308,6 +307,74 @@ scene.advance() // basic attack/interaction/movement
 					return Math.random() - 0.5;
 				});
 			} while (scene.party.every((i, idx) => i === original[idx]));
+		},
+	},
+	Reversal: {
+		description: 'Reverse party',
+		effect(scene) {
+			scene.party.reverse().sort((a, b) => {
+				if (a.health <= 0 && b.health > 0) return -1;
+				if (a.health > 0 && b.health <= 0) return 1;
+				return 0;
+			});
+		},
+	},
+	'Death Step': {
+		description: 'Puts dead party member in lead',
+		canPlay(scene) {
+			return scene.party.some((i) => !i.health);
+		},
+		effect(scene) {
+			const index = scene.party.findIndex((i) => !i.health);
+			const p = scene.party.splice(index, 1);
+			scene.party.push(p[0]);
+			scene.blackout();
+			scene.shake(5, 500);
+		},
+	},
+	'Staunch Defender': {
+		description: 'The Knight takes the lead',
+		canPlay(scene) {
+			return scene.alive('Knight') && scene.front.name !== 'Knight';
+		},
+		effect(scene) {
+			const index = scene.party.findIndex((i) => i.name === 'Knight');
+			const p = scene.party.splice(index, 1);
+			scene.party.push(p[0]);
+		},
+	},
+	"Coward's Plan": {
+		description: 'Sends party member with lowest HP to the back',
+		canPlay(scene) {
+			return scene.party.filter((i) => i.health).length >= 2;
+		},
+		effect(scene) {
+			const weakest = scene.party
+				.slice()
+				.sort((a, b) => a.health - b.health)[0];
+			const index = scene.party.indexOf(weakest);
+			const p = scene.party.splice(index, 1);
+			scene.party.unshift(p[0]);
+		},
+	},
+	'Tactical Grace': {
+		description: 'Select a party member to place in the lead',
+		canPlay(scene) {
+			return scene.party.filter((i) => i.health).length >= 2;
+		},
+		effect(scene) {
+			scene.choice(
+				...scene.party
+					.filter((i) => i.health)
+					.map((i, idx) => ({
+						name: i.name,
+						description: `Place ${i.name} in the lead`,
+						effect() {
+							const p = scene.party.splice(idx, 1);
+							scene.party.push(p[0]);
+						},
+					}))
+			);
 		},
 	},
 	'Labelled Potion': {
