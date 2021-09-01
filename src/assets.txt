@@ -49,6 +49,9 @@ textures/bat2.png
 textures/bat3.png
 textures/rat_small.png
 textures/rat_big.png
+textures/Rat King A.png
+textures/Rat King B.png
+textures/Rat King C.png
 textures/slime_big.png
 textures/slime_medium.png
 textures/slime_small.png

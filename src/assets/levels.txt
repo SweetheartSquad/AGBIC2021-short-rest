@@ -37,7 +37,7 @@ format:
 	const minibosses = [
 		['mushroom'],
 		['skeleton', 'necromancer'],
-		['rat_king', 'rat_king', 'rat_king'],
+		['Rat King A', 'Rat King B', 'Rat King C'],
 		['slime_big'],
 	];
 	return {
