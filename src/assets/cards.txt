@@ -301,6 +301,13 @@ scene.advance() // basic attack/interaction/movement
 		},
 		canPlay: () => true,
 	},
+	Kindling: {
+		description: "This isn't good for much, but it is flammable.",
+		canPlay() {
+			return false;
+		},
+		effect() {},
+	},
 	Shuffle: {
 		description: 'Shuffles party',
 		effect(scene) {
