@@ -584,9 +584,11 @@ scene.advance() // basic attack/interaction/movement
 				'zombie',
 				'bomb',
 			])[0];
-			scene.log(`${scene.obstacle.def.name} morphed into a ${result}!`);
+			const from = scene.obstacle.def.name;
 			scene.killObstacle();
-			scene.addObstacle(result);
+			const o = scene.addObstacle(result);
+			const to = o.def.name;
+			scene.log(`${scene.obstacle.def.name} morphed into a ${to}!`);
 			scene.overlay([1, 0, 1]);
 		},
 	},
