@@ -17,602 +17,651 @@ format:
 	},
 }
 */
-(() => ({
-	door: {
-		interact(scene) {
-			if (!this.open) {
-				this.open = true;
-				this.animator.setAnimation('door_open');
-			} else {
-				scene.startCamp();
-			}
-		},
-	},
-	skeleton: {
-		name: 'Skelly',
-		health: 3,
-		damage: 1,
-		interact(scene) {
-			if (scene.front.name === 'Priest') {
-				scene.log('The Priest banishes the skeleton!');
-				this.damage(3);
-			}
-		},
-	},
-	skeleton_armoured: {
-		name: 'Armoured Skelly',
-		health: 3,
-		armour: 1,
-		damage: 1,
-		interact(scene) {
-			if (scene.front.name === 'Priest') {
-				scene.log('The Priest banishes the skeleton!');
-				this.damage(3);
-			}
-		},
-	},
-	zombie: {
-		name: 'Zombie',
-		health: 3,
-		damage: 1,
-		async interact(scene) {
-			if (scene.front.name === 'Priest') {
-				scene.log('The Priest banishes the zombie!');
-				this.damage(3);
-			} else if (this.health <= 0) {
-				if (Math.random() > 0.5) {
-					scene.log('The zombie got back up!');
-					this.heal(3);
+(() => {
+	const cardsAll = [
+		'Kindling',
+		'Shuffle',
+		'Reversal',
+		'Death Step',
+		'Staunch Defender',
+		"Coward's Plan",
+		'Tactical Grace',
+		'Snooze',
+		'Teleport',
+		'Labelled Portion',
+		'Absolve Death',
+		'Blessed Rain',
+		'Slash',
+		'Twin Daggers',
+		'Magic Blast',
+		'Bonk',
+		'Death from the Shadows',
+		'Exorcise',
+		'Vision of Death',
+		'Portable Mulligan',
+		'Charm Creature',
+		'Summon Fire Sprite',
+		'Poly Morph',
+		'Invoke Augur',
+		'Layers of Steel',
+		'Impenetrable',
+		'Shield Spell',
+		'Holy Barrier',
+		'Stealth',
+		'Bitter Tears',
+		'Equalize',
+		'Downsize',
+		'Confuse',
+		'Life Link Locket',
+		'Leech Wand',
+		'Weaken',
+	];
+	return {
+		door: {
+			interact(scene) {
+				if (!this.open) {
+					this.open = true;
+					this.animator.setAnimation('door_open');
+				} else {
+					scene.startCamp();
 				}
-			}
+			},
 		},
-	},
-	necromancer: {
-		name: 'The Necromancer',
-		health: 4,
-		damage: 1,
-		start(scene) {
-			// TODO: better name?
-			scene.announce('The Necromancer');
+		skeleton: {
+			name: 'Skelly',
+			health: 3,
+			damage: 1,
+			interact(scene) {
+				if (scene.front.name === 'Priest') {
+					scene.log('The Priest banishes the skeleton!');
+					this.damage(3);
+				}
+			},
 		},
-		interact(scene) {
-			if (!this.health) return;
-			if (scene.obstacles.length === 1) {
-				scene.log('The necromancer raises a skeletal minion!');
+		skeleton_armoured: {
+			name: 'Armoured Skelly',
+			health: 3,
+			armour: 1,
+			damage: 1,
+			interact(scene) {
+				if (scene.front.name === 'Priest') {
+					scene.log('The Priest banishes the skeleton!');
+					this.damage(3);
+				}
+			},
+		},
+		zombie: {
+			name: 'Zombie',
+			health: 3,
+			damage: 1,
+			async interact(scene) {
+				if (scene.front.name === 'Priest') {
+					scene.log('The Priest banishes the zombie!');
+					this.damage(3);
+				} else if (this.health <= 0) {
+					if (Math.random() > 0.5) {
+						scene.log('The zombie got back up!');
+						this.heal(3);
+					}
+				}
+			},
+		},
+		necromancer: {
+			name: 'The Necromancer',
+			health: 4,
+			damage: 1,
+			start(scene) {
+				// TODO: better name?
+				scene.announce('The Necromancer');
 				scene.addObstacle('skeleton');
-				scene.obstacles.reverse();
-			} else {
-				scene.log('The necromancer retreats behind their minion.');
-				scene.obstacles.reverse();
-			}
-		},
-	},
-	bat: {
-		name: 'Eyebat',
-		health: 1,
-		damage: 1,
-	},
-	rat_small: {
-		name: 'Rat',
-		health: 1,
-		damage: 1,
-	},
-	rat_big: {
-		name: 'Big Rat',
-		health: 3,
-		damage: 1,
-	},
-	'Rat King A': {
-		name: 'Rat King',
-		health: 3,
-		damage: 1,
-		start(scene) {
-			if (scene.obstacle === this) {
-				scene.announce('The Rat Kings');
-			}
-		},
-		interact() {
-			if (scene.obstacles.length > 1) {
-				scene.log(
-					`"${
-						scene.shuffle([
-							"Don't worry",
-							'Step back',
-							'Step aside',
-							'My turn',
-							'Get behind me',
-						])[0]
-					} king, I got this."`
-				);
-				scene.obstacles.push(scene.obstacles.shift());
-			}
-		},
-		end(scene) {
-			if (scene.obstacles.length > 0) {
-				scene.log('"King! No!! You\'ll pay for that!!!"');
-				scene.overlay([1, 0, 0]);
-				scene.obstacle.sprBody.tint = 0xff0000;
-				scene.obstacle.def = {
-					...scene.obstacle.def,
-					damage: scene.obstacle.def.damage + 1,
-				};
-			}
-		},
-	},
-	'Rat King B': {
-		name: 'Rat King',
-		health: 3,
-		damage: 1,
-		start(scene) {
-			if (scene.obstacle === this) {
-				scene.announce('The Rat Kings');
-			}
-		},
-		interact() {
-			if (scene.obstacles.length > 1) {
-				scene.log(
-					`"${
-						scene.shuffle([
-							"Don't worry",
-							'Step back',
-							'Step aside',
-							'My turn',
-							'Get behind me',
-						])[0]
-					} king, I got this."`
-				);
-				scene.obstacles.push(scene.obstacles.shift());
-			}
-		},
-		end(scene) {
-			if (scene.obstacles.length > 0) {
-				scene.log('"King! No!! You\'ll pay for that!!!"');
-				scene.overlay([1, 0, 0]);
-				scene.obstacle.sprBody.tint = 0xff0000;
-				scene.obstacle.def = {
-					...scene.obstacle.def,
-					damage: scene.obstacle.def.damage + 1,
-				};
-			}
-		},
-	},
-	'Rat King C': {
-		name: 'Rat King',
-		health: 3,
-		damage: 1,
-		start(scene) {
-			if (scene.obstacle === this) {
-				scene.announce('The Rat Kings');
-			}
-		},
-		interact() {
-			if (scene.obstacles.length > 1) {
-				scene.log(
-					`"${
-						scene.shuffle([
-							"Don't worry",
-							'Step back',
-							'Step aside',
-							'My turn',
-							'Get behind me',
-						])[0]
-					} king, I got this."`
-				);
-				scene.obstacles.push(scene.obstacles.shift());
-			}
-		},
-		end(scene) {
-			if (scene.obstacles.length > 0) {
-				scene.log('"King! No!! You\'ll pay for that!!!"');
-				scene.overlay([1, 0, 0]);
-				scene.obstacle.sprBody.tint = 0xff0000;
-				scene.obstacle.def = {
-					...scene.obstacle.def,
-					damage: scene.obstacle.def.damage + 1,
-				};
-			}
-		},
-	},
-	jester: {
-		name: 'Jester',
-		health: 2,
-		damage: 1,
-		interact(scene) {
-			if (!this.health) return;
-			scene.log('The party gets all mixed up trying to follow the jester!');
-			scene.party = scene.shuffle(scene.party);
-			scene.party.sort((a, b) => (a.health > 0) - (b.health > 0));
-		},
-	},
-	kangaroo: {
-		// TODO: name
-		health: 2,
-		damage: 1,
-		interact(scene) {
-			if (!this.health) return;
-			const slot = scene.party.findIndex((i) => i.health > 0);
-			if (slot >= 0) {
-				scene.log(`${scene.front.name} gets pushed back!`);
-				scene.party.splice(slot, 0, scene.party.pop());
-			}
-		},
-	},
-	mushroom: {
-		name: 'A Fun Guy',
-		health: 3,
-		start(scene) {
-			// TODO: better name
-			scene.announce('A Fun Guy');
-		},
-		interact(scene) {
-			scene.log('The mushroom released poisonous spores!');
-			scene.party.forEach((i) => i.damage(1));
-			scene.overlay([0.6, 0.8, 0, 0.6], 1000);
-		},
-	},
-	treasure: {
-		start() {
-			// play a sound?
-		},
-		interact(scene) {
-			scene.log('The party finds a chest!');
-			const o = this;
-			scene.choice(
-				{
-					name: 'Open',
-					effect() {
-						scene.queue.push(async () => {
-							o.animator.setAnimation('treasure_open');
-							await scene.delay(100);
-							if (Math.random() < 1.1 - scene.level * 0.1) {
-								scene.loot(['test', 'test', 'test']); // TODO: loot pools?
-								scene.killObstacle(o);
-							} else {
-								scene.killObstacle(o);
-								scene.log('The chest bursts to life and attacks!');
-								scene.front.damage(1);
-								scene.addObstacle('mimic');
-							}
-						});
-					},
-				},
-				{
-					name: "Don't Open",
-					effect() {
-						scene.killObstacle(o);
-					},
+				scene.log('"hee hee hee"');
+			},
+			interact(scene) {
+				if (!this.health) return;
+				if (scene.obstacles.length === 1) {
+					scene.log('The necromancer raises another skeletal minion!');
+					scene.addObstacle('skeleton');
+					scene.obstacles.reverse();
+				} else {
+					scene.log('The necromancer cowers behind their minion.');
+					scene.obstacles.reverse();
 				}
-			);
+			},
 		},
-	},
-	mimic: {
-		name: 'Mimic',
-		health: 2,
-		damage: 1,
-	},
-	slime_big: {
-		name: 'Big Slime',
-		health: 5,
-		damage: 1,
-		start(scene) {
-			// TODO: better name
-			scene.announce('Big Slime');
+		bat: {
+			name: 'Eyebat',
+			health: 1,
+			damage: 1,
 		},
-		interact(scene) {
-			if (scene.front.name === 'Knight' || scene.front.name === 'Rogue') {
-				scene.log('The blade splits the slime in two!');
-				scene.addObstacle('slime_medium');
-			}
+		rat_small: {
+			name: 'Rat',
+			health: 1,
+			damage: 1,
 		},
-	},
-	slime_medium: {
-		name: 'Slime',
-		health: 2,
-		damage: 1,
-		interact(scene) {
-			if (scene.front.name === 'Knight' || scene.front.name === 'Rogue') {
-				scene.log('The blade splits the slime in two!');
-				scene.addObstacle('slime_small');
-			}
+		rat_big: {
+			name: 'Big Rat',
+			health: 3,
+			damage: 1,
 		},
-	},
-	slime_small: {
-		name: 'Small Slime',
-		health: 1,
-		damage: 1,
-	},
-	fountain: {
-		interact(scene) {
-			scene.log('The party considers slaking their thirst.');
-			scene.choice(
-				{
-					name: 'Slake',
-					effect() {
-						if (Math.random() > 0.5) {
-							// poison
-							scene.party.forEach((i) => {
-								i.damage(1);
-							});
-							scene.overlay([0.6, 0.8, 0, 0.6], 500);
-							scene.log('The party drinks, and retches moments later.');
-						} else {
-							// healing
-							scene.party.forEach((i) => {
-								if (i.health > 0) {
-									i.heal(i.maxHealth);
+		'Rat King A': {
+			name: 'Rat King',
+			health: 3,
+			damage: 1,
+			start(scene) {
+				if (scene.obstacle === this) {
+					scene.announce('The Rat Kings');
+				}
+			},
+			interact() {
+				if (scene.obstacles.length > 1) {
+					scene.log(
+						`"${
+							scene.shuffle([
+								"Don't worry",
+								'Step back',
+								'Step aside',
+								'My turn',
+								'Get behind me',
+							])[0]
+						} king, I got this."`
+					);
+					scene.obstacles.push(scene.obstacles.shift());
+				}
+			},
+			end(scene) {
+				if (scene.obstacles.length > 0) {
+					scene.log('"King! No!! You\'ll pay for that!!!"');
+					scene.overlay([1, 0, 0]);
+					scene.obstacle.sprBody.tint = 0xff0000;
+					scene.obstacle.def = {
+						...scene.obstacle.def,
+						damage: scene.obstacle.def.damage + 1,
+					};
+				}
+			},
+		},
+		'Rat King B': {
+			name: 'Rat King',
+			health: 3,
+			damage: 1,
+			start(scene) {
+				if (scene.obstacle === this) {
+					scene.announce('The Rat Kings');
+				}
+			},
+			interact() {
+				if (scene.obstacles.length > 1) {
+					scene.log(
+						`"${
+							scene.shuffle([
+								"Don't worry",
+								'Step back',
+								'Step aside',
+								'My turn',
+								'Get behind me',
+							])[0]
+						} king, I got this."`
+					);
+					scene.obstacles.push(scene.obstacles.shift());
+				}
+			},
+			end(scene) {
+				if (scene.obstacles.length > 0) {
+					scene.log('"King! No!! You\'ll pay for that!!!"');
+					scene.overlay([1, 0, 0]);
+					scene.obstacle.sprBody.tint = 0xff0000;
+					scene.obstacle.def = {
+						...scene.obstacle.def,
+						damage: scene.obstacle.def.damage + 1,
+					};
+				}
+			},
+		},
+		'Rat King C': {
+			name: 'Rat King',
+			health: 3,
+			damage: 1,
+			start(scene) {
+				if (scene.obstacle === this) {
+					scene.announce('The Rat Kings');
+				}
+			},
+			interact() {
+				if (scene.obstacles.length > 1) {
+					scene.log(
+						`"${
+							scene.shuffle([
+								"Don't worry",
+								'Step back',
+								'Step aside',
+								'My turn',
+								'Get behind me',
+							])[0]
+						} king, I got this."`
+					);
+					scene.obstacles.push(scene.obstacles.shift());
+				}
+			},
+			end(scene) {
+				if (scene.obstacles.length > 0) {
+					scene.log('"King! No!! You\'ll pay for that!!!"');
+					scene.overlay([1, 0, 0]);
+					scene.obstacle.sprBody.tint = 0xff0000;
+					scene.obstacle.def = {
+						...scene.obstacle.def,
+						damage: scene.obstacle.def.damage + 1,
+					};
+				}
+			},
+		},
+		jester: {
+			name: 'Jester',
+			health: 2,
+			damage: 1,
+			interact(scene) {
+				if (!this.health) return;
+				scene.log('The party gets all mixed up trying to follow the jester!');
+				scene.party = scene.shuffle(scene.party);
+				scene.party.sort((a, b) => (a.health > 0) - (b.health > 0));
+			},
+		},
+		kangaroo: {
+			// TODO: name
+			health: 2,
+			damage: 1,
+			interact(scene) {
+				if (!this.health) return;
+				const slot = scene.party.findIndex((i) => i.health > 0);
+				if (slot >= 0) {
+					scene.log(`${scene.front.name} gets pushed back!`);
+					scene.party.splice(slot, 0, scene.party.pop());
+				}
+			},
+		},
+		mushroom: {
+			name: 'A Fun Guy',
+			health: 3,
+			start(scene) {
+				// TODO: better name
+				scene.announce('A Fun Guy');
+			},
+			interact(scene) {
+				scene.log('The mushroom released poisonous spores!');
+				scene.party.forEach((i) => i.damage(1));
+				scene.overlay([0.6, 0.8, 0, 0.6], 1000);
+			},
+		},
+		treasure: {
+			start() {
+				// play a sound?
+			},
+			interact(scene) {
+				scene.log('The party finds a chest!');
+				const o = this;
+				scene.choice(
+					{
+						name: 'Open',
+						effect() {
+							scene.queue.push(async () => {
+								o.animator.setAnimation('treasure_open');
+								await scene.delay(100);
+								if (Math.random() < 1.1 - scene.level * 0.1) {
+									const numCards =
+										scene.level >= 3 && Math.random() > 0.5 ? 2 : 3;
+									// TODO: loot pools?
+									scene.loot(
+										new Array(numCards)
+											.fill()
+											.map(() => scene.shuffle(cardsAll)[0])
+									);
+									scene.killObstacle(o);
+								} else {
+									scene.killObstacle(o);
+									scene.log('The chest bursts to life and attacks!');
+									scene.front.damage(1);
+									scene.addObstacle('mimic');
 								}
 							});
-							scene.overlay([0, 0.8, 1, 0.6], 500);
-							scene.log('The party drinks, and feels refreshed.');
-						}
-						scene.killObstacle();
+						},
 					},
-				},
-				{
-					name: "Don't Slake",
-					effect() {
-						scene.log('The party suppresses their thirst.');
-						scene.killObstacle();
-					},
-				}
-			);
+					{
+						name: "Don't Open",
+						effect() {
+							scene.killObstacle(o);
+						},
+					}
+				);
+			},
 		},
-	},
-	potion: {
-		interact(scene) {
-			const o = this;
-			scene.log(
-				`${scene.front.name} finds a bottle filled with ${
-					scene.shuffle([
-						'mysterious',
-						'strange',
-						'glowing',
-						'weird',
-						'murky',
-					])[0]
-				} liquid.`
-			);
-			scene.choice(
-				{
-					name: 'Quaff',
-					effect() {
-						o.animator.setAnimation('potion_empty');
+		mimic: {
+			name: 'Mimic',
+			health: 2,
+			damage: 1,
+		},
+		slime_big: {
+			name: 'Big Slime',
+			health: 5,
+			damage: 1,
+			start(scene) {
+				// TODO: better name
+				scene.announce('Big Slime');
+			},
+			interact(scene) {
+				if (scene.front.name === 'Knight' || scene.front.name === 'Rogue') {
+					scene.log('The blade splits the slime in two!');
+					scene.addObstacle('slime_medium');
+				}
+			},
+		},
+		slime_medium: {
+			name: 'Slime',
+			health: 2,
+			damage: 1,
+			interact(scene) {
+				if (scene.front.name === 'Knight' || scene.front.name === 'Rogue') {
+					scene.log('The blade splits the slime in two!');
+					scene.addObstacle('slime_small');
+				}
+			},
+		},
+		slime_small: {
+			name: 'Small Slime',
+			health: 1,
+			damage: 1,
+		},
+		fountain: {
+			interact(scene) {
+				scene.log('The party considers slaking their thirst.');
+				scene.choice(
+					{
+						name: 'Slake',
+						effect() {
+							if (Math.random() > 0.5) {
+								// poison
+								scene.party.forEach((i) => {
+									i.damage(1);
+								});
+								scene.overlay([0.6, 0.8, 0, 0.6], 500);
+								scene.log('The party drinks, and retches moments later.');
+							} else {
+								// healing
+								scene.party.forEach((i) => {
+									if (i.health > 0) {
+										i.heal(i.maxHealth);
+									}
+								});
+								scene.overlay([0, 0.8, 1, 0.6], 500);
+								scene.log('The party drinks, and feels refreshed.');
+							}
+							scene.killObstacle();
+						},
+					},
+					{
+						name: "Don't Slake",
+						effect() {
+							scene.log('The party suppresses their thirst.');
+							scene.killObstacle();
+						},
+					}
+				);
+			},
+		},
+		potion: {
+			interact(scene) {
+				const o = this;
+				scene.log(
+					`${scene.front.name} finds a bottle filled with ${
+						scene.shuffle([
+							'mysterious',
+							'strange',
+							'glowing',
+							'weird',
+							'murky',
+						])[0]
+					} liquid.`
+				);
+				scene.choice(
+					{
+						name: 'Quaff',
+						effect() {
+							o.animator.setAnimation('potion_empty');
 
-						if (Math.random() < 0.1) {
-							scene.killObstacle(o);
-							scene.log('The bottle bursts to life and attacks!');
-							scene.front.damage(1);
-							scene.addObstacle('potion_mimic');
-						} else if (Math.random() < 0.5) {
-							// poison
-							scene.front.damage(1);
-							scene.overlay([0.6, 0.8, 0, 0.6], 500);
-							scene.log('They drink, and retch moments later.');
-							scene.killObstacle(o);
-						} else {
-							// healing
-							scene.party.forEach((i) => {
-								scene.front.heal(i.maxHealth);
-							});
-							scene.overlay([0, 0.8, 1, 0.6], 500);
-							scene.log('They drink, and feel refreshed.');
-							scene.killObstacle(o);
-						}
+							if (Math.random() < 0.1) {
+								scene.killObstacle(o);
+								scene.log('The bottle bursts to life and attacks!');
+								scene.front.damage(1);
+								scene.addObstacle('potion_mimic');
+							} else if (Math.random() < 0.5) {
+								// poison
+								scene.front.damage(1);
+								scene.overlay([0.6, 0.8, 0, 0.6], 500);
+								scene.log('They drink, and retch moments later.');
+								scene.killObstacle(o);
+							} else {
+								// healing
+								scene.party.forEach((i) => {
+									scene.front.heal(i.maxHealth);
+								});
+								scene.overlay([0, 0.8, 1, 0.6], 500);
+								scene.log('They drink, and feel refreshed.');
+								scene.killObstacle(o);
+							}
+						},
 					},
-				},
-				{
-					name: 'Discard',
-					effect() {
-						scene.log('They toss it away.');
-						scene.killObstacle();
-					},
-				}
-			);
+					{
+						name: 'Discard',
+						effect() {
+							scene.log('They toss it away.');
+							scene.killObstacle();
+						},
+					}
+				);
+			},
 		},
-	},
-	potion_mimic: {
-		name: 'Potion Mimic',
-		health: 2,
-		damage: 1,
-	},
-	mini_camp: {
-		sprite: 'icon_camp',
-		interact(scene) {
-			const o = this;
-			const hand = scene.hand.hand.slice();
-			scene.log("The party finds the remnants of another party's camp.");
-			scene.choice(
-				{
-					name: 'Kindle',
-					description:
-						'Burn a card from your hand to revive fallen party members.',
-					canPlay() {
-						return hand.length > 1;
-					},
-					effect() {
-						scene.clearHand();
-						hand.slice(0, -1).forEach((i, idx) => {
-							scene.addCard({
-								...i.def,
-								description: `Burn "${i.def.name}"`,
-								canPlay: undefined,
-								effect: () => {
-									scene.camp.light();
-									scene.log(
-										`The party burns "${i.def.name}" along with the rest of the fire.`
-									);
-									scene.party.forEach((p) => {
-										if (!p.health) {
-											p.heal(1);
-											scene.log(`${p.name} revived.`);
-										}
-									});
-									scene.overlay([1, 0.5, 0, 0.5]);
-									scene.deck = scene.deck.filter((d) => d.def === i.def);
-									hand.splice(idx, 1);
-									scene.clearHand();
-									hand.forEach((c) => {
-										scene.addCard(c.def);
-									});
-									scene.killObstacle(o);
-								},
-							});
-						});
-					},
-				},
-				{
-					name: 'Leave it alone',
-					effect() {
-						scene.killObstacle(o);
-					},
-				}
-			);
+		potion_mimic: {
+			name: 'Potion Mimic',
+			health: 2,
+			damage: 1,
 		},
-	},
-	fortune_teller: {
-		interact(scene) {
-			const o = this;
-			// TODO: full readings
-			const readings = scene.shuffle([
-				{
-					card: 'test',
-					reading:
-						'"A test reading! An omen of having a TODO you forgot to address."',
-				},
-				{
-					card: 'test',
-					reading:
-						'"A test reading! An omen of having a TODO you forgot to address."',
-				},
-				{
-					card: 'kill',
-					reading: '"Death! A bad omen, but likely not your own."',
-				},
-			]);
-			const numReadings = 3;
-			scene.log('"Welcome! Would you like a reading?"');
-			scene.choice(
-				{
-					name: 'Okay',
-					effect() {
-						scene.queue.push(async () => {
-							scene.log('"Alright, let me just shuffle here..."');
-							await scene.delay(2000);
-						});
-						for (let i = 0; i < numReadings; ++i) {
-							scene.queue.push(async () => {
-								scene.log('"Let\'s see..."');
-								await scene.delay(1000);
+		mini_camp: {
+			sprite: 'icon_camp',
+			interact(scene) {
+				const o = this;
+				const hand = scene.hand.hand.slice();
+				scene.log("The party finds the remnants of another party's camp.");
+				scene.choice(
+					{
+						name: 'Kindle',
+						description:
+							'Burn a card from your hand to revive fallen party members.',
+						canPlay() {
+							return hand.length > 1;
+						},
+						effect() {
+							scene.clearHand();
+							hand.slice(0, -1).forEach((i, idx) => {
+								scene.addCard({
+									...i.def,
+									description: `Burn "${i.def.name}"`,
+									canPlay: undefined,
+									effect: () => {
+										scene.camp.light();
+										scene.log(
+											`The party burns "${i.def.name}" along with the rest of the fire.`
+										);
+										scene.party.forEach((p) => {
+											if (!p.health) {
+												p.heal(1);
+												scene.log(`${p.name} revived.`);
+											}
+										});
+										scene.overlay([1, 0.5, 0, 0.5]);
+										scene.deck = scene.deck.filter((d) => d.def === i.def);
+										hand.splice(idx, 1);
+										scene.clearHand();
+										hand.forEach((c) => {
+											scene.addCard(c.def);
+										});
+										scene.killObstacle(o);
+									},
+								});
 							});
-							const reading = readings.pop();
-							scene.loot([reading.card]);
+						},
+					},
+					{
+						name: 'Leave it alone',
+						effect() {
+							scene.killObstacle(o);
+						},
+					}
+				);
+			},
+		},
+		fortune_teller: {
+			interact(scene) {
+				const o = this;
+				// TODO: full readings
+				const readings = scene.shuffle([
+					{
+						card: scene.shuffle(cardsAll)[0],
+						reading:
+							'"A test reading! An omen of having a TODO you forgot to address."',
+					},
+					{
+						card: scene.shuffle(cardsAll)[0],
+						reading:
+							'"A test reading! An omen of having a TODO you forgot to address."',
+					},
+					{
+						card: scene.shuffle(cardsAll)[0],
+						reading: '"Death! A bad omen, but likely not your own."',
+					},
+				]);
+				const numReadings = 3;
+				scene.log('"Welcome! Would you like a reading?"');
+				scene.choice(
+					{
+						name: 'Okay',
+						effect() {
 							scene.queue.push(async () => {
-								scene.log('"Hmm..."');
-								await scene.delay(1000);
-								scene.log(reading.reading);
+								scene.log('"Alright, let me just shuffle here..."');
 								await scene.delay(2000);
 							});
-						}
-						scene.queue.push(async () => {
-							scene.log('"That\'s all for now."');
-							await scene.delay(1000);
-							scene.log('"Good luck!"');
+							for (let i = 0; i < numReadings; ++i) {
+								scene.queue.push(async () => {
+									scene.log('"Let\'s see..."');
+									await scene.delay(1000);
+								});
+								const reading = readings.pop();
+								scene.loot([reading.card]);
+								scene.queue.push(async () => {
+									scene.log('"Hmm..."');
+									await scene.delay(1000);
+									scene.log(reading.reading);
+									await scene.delay(2000);
+								});
+							}
+							scene.queue.push(async () => {
+								scene.log('"That\'s all for now."');
+								await scene.delay(1000);
+								scene.log('"Good luck!"');
+								scene.killObstacle(o);
+							});
+						},
+					},
+					{
+						name: 'No thanks',
+						effect() {
+							scene.log('"Your loss!"');
 							scene.killObstacle(o);
-						});
-					},
-				},
-				{
-					name: 'No thanks',
-					effect() {
-						scene.log('"Your loss!"');
-						scene.killObstacle(o);
-					},
+						},
+					}
+				);
+			},
+		},
+		trap: {
+			async interact(scene) {
+				if (scene.front.name === 'Rogue') {
+					scene.log('The Rogue disables the trap.');
+					this.transform.y += 10;
+					await scene.delay(200);
+					scene.killObstacle();
+				} else {
+					scene.log('A trap is sprung!');
+					this.animator.setAnimation('trap_triggered');
+					this.transform.y += 10;
+					scene.front.damage(4);
+					await scene.delay(200);
+					scene.killObstacle();
 				}
-			);
+			},
 		},
-	},
-	trap: {
-		async interact(scene) {
-			if (scene.front.name === 'Rogue') {
-				scene.log('The Rogue disables the trap.');
-				this.transform.y += 10;
-				await scene.delay(200);
-				scene.killObstacle();
-			} else {
-				scene.log('A trap is sprung!');
-				this.animator.setAnimation('trap_triggered');
-				this.transform.y += 10;
-				scene.front.damage(4);
-				await scene.delay(200);
-				scene.killObstacle();
-			}
+		bomb: {
+			sprite: 'bomb_c',
+			health: 3,
+			interact(scene) {
+				if (this.countdown === undefined) {
+					this.countdown = 3;
+				}
+				this.countdown -= 1;
+				if (this.countdown) {
+					this.animator.setAnimation(
+						`bomb_${['a', 'b', 'c'][this.countdown - 1]}`
+					);
+				} else {
+					scene.log('The bomb goes off!');
+					this.animator.setAnimation('bomb');
+					scene.whiteout();
+					scene.front.damage(scene.front.health);
+				}
+			},
 		},
-	},
-	bomb: {
-		sprite: 'bomb_c',
-		health: 3,
-		interact(scene) {
-			if (this.countdown === undefined) {
-				this.countdown = 3;
-			}
-			this.countdown -= 1;
-			if (this.countdown) {
-				this.animator.setAnimation(
-					`bomb_${['a', 'b', 'c'][this.countdown - 1]}`
-				);
-			} else {
-				scene.log('The bomb goes off!');
-				this.animator.setAnimation('bomb');
-				scene.whiteout();
-				scene.front.damage(scene.front.health);
-			}
-		},
-	},
-	dragon: {
-		name: 'The Dragon',
-		health: 10,
-		damage: 1,
-		async start(scene) {
-			await scene.addObstacle('dragon_hand');
-			scene.whiteout();
-			scene.announce('The Dragon');
-			scene.tween(scene.containerParty.scale, 'x', 0.6, 0);
-			scene.tween(scene.containerParty.scale, 'y', 0.6, 0);
-			scene.tween(scene.containerParty.pivot, 'x', -40, 0);
-		},
-		end(scene) {
-			scene.log('"NOOO!!"');
-			scene.whiteout();
-			scene.tween(scene.containerParty.scale, 'x', 1, 0);
-			scene.tween(scene.containerParty.scale, 'y', 1, 0);
-			scene.tween(scene.containerParty.pivot, 'x', 0, 0);
-		},
-		async interact(scene) {
-			if (!this.health) return;
-			if (scene.obstacles.length === 1) {
+		dragon: {
+			name: 'The Dragon',
+			health: 10,
+			damage: 1,
+			async start(scene) {
 				await scene.addObstacle('dragon_hand');
-				scene.log(
-					`"${[
-						scene.shuffle(['', 'Gah!', 'Argh!', 'Hrrg!', '*HISS*'])[0],
-						scene.shuffle([
-							'',
-							'How dare you!',
-							'You DARE!?',
-							'Insolent!',
-							"I'll get you for that!",
-						])[0],
-					]
-						.filter((i) => i)
-						.join(' ')}"`
-				);
-			}
+				scene.whiteout();
+				scene.announce('The Dragon');
+				scene.tween(scene.containerParty.scale, 'x', 0.6, 0);
+				scene.tween(scene.containerParty.scale, 'y', 0.6, 0);
+				scene.tween(scene.containerParty.pivot, 'x', -40, 0);
+			},
+			end(scene) {
+				scene.log('"NOOO!!"');
+				scene.whiteout();
+				scene.tween(scene.containerParty.scale, 'x', 1, 0);
+				scene.tween(scene.containerParty.scale, 'y', 1, 0);
+				scene.tween(scene.containerParty.pivot, 'x', 0, 0);
+			},
+			async interact(scene) {
+				if (!this.health) return;
+				if (scene.obstacles.length === 1) {
+					await scene.addObstacle('dragon_hand');
+					scene.log(
+						`"${[
+							scene.shuffle(['', 'Gah!', 'Argh!', 'Hrrg!', '*HISS*'])[0],
+							scene.shuffle([
+								'',
+								'How dare you!',
+								'You DARE!?',
+								'Insolent!',
+								"I'll get you for that!",
+							])[0],
+						]
+							.filter((i) => i)
+							.join(' ')}"`
+					);
+				}
+			},
 		},
-	},
-	dragon_hand: {
-		name: "Dragon's Hand",
-		sprite: 'dragon_hand',
-		health: 1,
-		damage: 2,
-		shadow: false,
-	},
-}))();
+		dragon_hand: {
+			name: "Dragon's Hand",
+			sprite: 'dragon_hand',
+			health: 1,
+			damage: 2,
+			shadow: false,
+		},
+	};
+})();

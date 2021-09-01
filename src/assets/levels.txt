@@ -38,7 +38,20 @@ format:
 		['rat_big'],
 		['zombie'],
 		['slime_medium'],
-		['bomb'],
+	];
+	const annoying = [['jester'], ['kangaroo'], ['bomb']];
+	const tougher = [
+		['skeleton', 'skeleton_armoured', 'skeleton'],
+		['skeleton_armoured', 'skeleton_armoured'],
+		['bat', 'skeleton', 'bat'],
+		['bat', 'skeleton_armoured', 'bat'],
+		['zombie', 'zombie', 'zombie'],
+		['zombie', 'skeleton', 'zombie'],
+		['zombie', 'skeleton_armoured', 'zombie'],
+		['jester', 'bomb'],
+		['jester', 'slime_medium', 'potion'],
+		['rat_small', 'rat_big', 'rat_small'],
+		['slime_small', 'skeleton_armoured', 'slime_small'],
 	];
 	const encounter = [
 		['fountain'],
@@ -48,16 +61,17 @@ format:
 		['mini_camp'],
 		['trap'],
 	];
+	const restore = [['fountain'], ['potion']];
 	const minibosses = [
 		['mushroom'],
-		['skeleton', 'necromancer'],
+		['necromancer'],
 		['Rat King A', 'Rat King B', 'Rat King C'],
 		['slime_big'],
 	];
-	let minibossOrder;
+	let minibossOrder = minibosses.slice();
 	return {
 		0: (scene) => {
-			minibossOrder = scene.shuffle(minibosses.slice());
+			minibossOrder = scene.shuffle(minibosses);
 			scene.setBg('bg_forest');
 			scene.setFg('fg');
 			scene.addCard('Advance');
@@ -211,7 +225,7 @@ format:
 				]),
 				Math.random() > 0.5 && {
 					icon: 'icon_unknown',
-					obstacles: [scene.shuffle(['fountain', 'potion'])[0]],
+					obstacles: scene.shuffle(restore)[0],
 				},
 				Math.random() > 0.5 && {
 					icon: 'icon_enemy',
@@ -222,6 +236,10 @@ format:
 				{
 					icon: 'icon_boss',
 					obstacles: minibossOrder.pop(),
+				},
+				{
+					icon: 'icon_treasure',
+					obstacles: ['treasure'],
 				},
 				{
 					icon: 'icon_door',
@@ -239,7 +257,7 @@ format:
 			areas.push(
 				{
 					icon: 'icon_enemy',
-					obstacles: scene.shuffle(basic)[0],
+					obstacles: scene.shuffle(tough)[0],
 				},
 				...scene.shuffle([
 					{
@@ -248,21 +266,59 @@ format:
 					},
 					{
 						icon: 'icon_enemy',
+						obstacles: scene.shuffle(basic)[0],
+					},
+					Math.random() > 0.5 && {
+						icon: 'icon_enemy',
 						obstacles: scene.shuffle(tough)[0],
 					},
 					Math.random() > 0.5 && {
 						icon: 'icon_enemy',
 						obstacles: scene.shuffle(basic)[0],
 					},
+					Math.random() > 0.5 && {
+						icon: 'icon_enemy',
+						obstacles: scene.shuffle(annoying)[0],
+					},
 				]),
 				Math.random() > 0.5 && {
 					icon: 'icon_unknown',
-					obstacles: [scene.shuffle(['fountain', 'potion'])[0]],
+					obstacles: [scene.shuffle(encounter)[0]],
 				},
 				Math.random() > 0.5 && {
 					icon: 'icon_enemy',
 					obstacles: scene.shuffle(basic)[0],
-				}
+				},
+				{
+					icon: 'icon_treasure',
+					obstacles: ['treasure'],
+				},
+				Math.random() > 0.5 && {
+					icon: 'icon_enemy',
+					obstacles: scene.shuffle(tough)[0],
+				},
+				Math.random() > 0.5 && {
+					icon: 'icon_enemy',
+					obstacles: scene.shuffle(tougher)[0],
+				},
+				...scene.shuffle([
+					{
+						icon: 'icon_unknown',
+						obstacles: ['trap'],
+					},
+					{
+						icon: 'icon_unknown',
+						obstacles: scene.shuffle(restore)[0],
+					},
+					Math.random() > 0.5 && {
+						icon: 'icon_enemy',
+						obstacles: scene.shuffle(basic)[0],
+					},
+					{
+						icon: 'icon_enemy',
+						obstacles: scene.shuffle(tough)[0],
+					},
+				])
 			);
 			areas.push(
 				{
@@ -270,11 +326,15 @@ format:
 					obstacles: minibossOrder.pop(),
 				},
 				{
-					icon: 'icon_camp',
+					icon: 'icon_treasure',
+					obstacles: ['treasure'],
+				},
+				{
+					icon: 'icon_door',
 					obstacles: ['door'],
 				}
 			);
-			return areas;
+			return areas.filter((i) => i);
 		},
 		3: (scene) => {
 			const areas = [
@@ -285,30 +345,76 @@ format:
 			areas.push(
 				{
 					icon: 'icon_enemy',
-					obstacles: scene.shuffle(basic)[0],
+					obstacles: scene.shuffle(tougher)[0],
 				},
 				...scene.shuffle([
 					{
 						icon: 'icon_unknown',
-						obstacles: ['treasure'],
+						obstacles: scene.shuffle(encounter)[0],
 					},
 					{
+						icon: 'icon_unknown',
+						obstacles: scene.shuffle(encounter)[0],
+					},
+					Math.random() > 0.5 && {
+						icon: 'icon_enemy',
+						obstacles: scene.shuffle(tougher)[0],
+					},
+					Math.random() > 0.5 && {
 						icon: 'icon_enemy',
 						obstacles: scene.shuffle(tough)[0],
 					},
 					Math.random() > 0.5 && {
 						icon: 'icon_enemy',
-						obstacles: scene.shuffle(basic)[0],
+						obstacles: scene.shuffle(tough)[0],
+					},
+					Math.random() > 0.5 && {
+						icon: 'icon_enemy',
+						obstacles: scene.shuffle(annoying)[0],
+					},
+					Math.random() > 0.5 && {
+						icon: 'icon_enemy',
+						obstacles: scene.shuffle(annoying)[0],
+					},
+					{
+						icon: 'icon_enemy',
+						obstacles: scene.shuffle(tough)[0],
 					},
 				]),
-				Math.random() > 0.5 && {
-					icon: 'icon_unknown',
-					obstacles: [scene.shuffle(['fountain', 'potion'])[0]],
+				{
+					icon: 'icon_enemy',
+					obstacles: scene.shuffle(basic)[0],
 				},
 				Math.random() > 0.5 && {
 					icon: 'icon_enemy',
+					obstacles: scene.shuffle(tougher)[0],
+				},
+				Math.random() > 0.25 && {
+					icon: 'icon_enemy',
 					obstacles: scene.shuffle(basic)[0],
-				}
+				},
+				...scene.shuffle([
+					{
+						icon: 'icon_unknown',
+						obstacles: scene.shuffle(encounter)[0],
+					},
+					Math.random() > 0.5 && {
+						icon: 'icon_enemy',
+						obstacles: scene.shuffle(basic)[0],
+					},
+					Math.random() > 0.5 && {
+						icon: 'icon_enemy',
+						obstacles: scene.shuffle(tough)[0],
+					},
+					Math.random() > 0.5 && {
+						icon: 'icon_enemy',
+						obstacles: scene.shuffle(tougher)[0],
+					},
+					Math.random() > 0.5 && {
+						icon: 'icon_enemy',
+						obstacles: scene.shuffle(annoying)[0],
+					},
+				])
 			);
 			areas.push(
 				{
@@ -316,11 +422,15 @@ format:
 					obstacles: minibossOrder.pop(),
 				},
 				{
-					icon: 'icon_camp',
+					icon: 'icon_treasure',
+					obstacles: ['treasure'],
+				},
+				{
+					icon: 'icon_door',
 					obstacles: ['door'],
 				}
 			);
-			return areas;
+			return areas.filter((i) => i);
 		},
 		4: (scene) => {
 			scene.setBg('bg_alternate');
@@ -335,8 +445,16 @@ format:
 					obstacles: ['dragon'],
 				},
 				{
-					icon: 'icon_door',
-					obstacles: ['door'],
+					icon: 'icon_unknown',
+					obstacles: [
+						{
+							name: 'end',
+							interact(scene) {
+								// TODO: endgame
+								scene.log('The End!');
+							},
+						},
+					],
 				}
 			);
 			return areas;
