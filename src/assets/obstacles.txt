@@ -263,7 +263,7 @@ format:
 						scene.queue.push(async () => {
 							o.animator.setAnimation('treasure_open');
 							await scene.delay(100);
-							if (Math.random() < 0.9) {
+							if (Math.random() < 1.1 - scene.level * 0.1) {
 								scene.loot(['test', 'test', 'test']); // TODO: loot pools?
 								scene.killObstacle(o);
 							} else {
