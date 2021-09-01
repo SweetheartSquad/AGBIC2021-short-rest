@@ -170,7 +170,7 @@ scene.advance() // basic attack/interaction/movement
 						scene.clearHand();
 						scene.addCard({
 							name: 'Kindle',
-							description: 'Campfire already kindled.',
+							description: 'Campfire already kindled',
 							canPlay() {
 								return false;
 							},
@@ -287,7 +287,7 @@ scene.advance() // basic attack/interaction/movement
 		canPlay: () => true,
 	},
 	Kindling: {
-		description: "Not good for much, but at least it's flammable.",
+		description: "Not good for much, but at least it's flammable",
 		canPlay() {
 			return false;
 		},
