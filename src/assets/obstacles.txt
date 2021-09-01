@@ -20,7 +20,12 @@ format:
 (() => ({
 	door: {
 		interact(scene) {
-			scene.startCamp();
+			if (!this.open) {
+				this.open = true;
+				this.animator.setAnimation('door_open');
+			} else {
+				scene.startCamp();
+			}
 		},
 	},
 	skeleton: {
