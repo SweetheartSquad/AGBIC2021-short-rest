@@ -291,7 +291,7 @@ format:
 	},
 	slime_big: {
 		name: 'Big Slime',
-		health: 2,
+		health: 5,
 		damage: 1,
 		start(scene) {
 			// TODO: better name
