@@ -42,12 +42,130 @@ format:
 	];
 	return {
 		0: (scene) => {
-			scene.log('bwahaha welcome to the dungeon');
-			scene.delay(1000).then(() => {
-				scene.log(
-					'this is like a cutscene but you can ignore it and keep moving'
-				);
+			scene.setBg('bg_forest');
+			scene.setFg('fg');
+			scene.addCard('Advance');
+			scene.addParty({ name: 'Mage', spr: 'frog', maxHealth: 2 });
+			scene.addParty({ name: 'Priest', spr: 'cat', maxHealth: 3 });
+			scene.addParty({
+				name: 'Rogue',
+				spr: 'apple',
+				maxHealth: 2,
+				damage: 2,
 			});
+			scene.addParty({ name: 'Knight', spr: 'onion', maxHealth: 4 });
+
+			if (scene.started) {
+				// skip tutorial
+				scene.log('wow look at us skipping the tutorial areas');
+				return [
+					{
+						icon: 'icon_cleared',
+					},
+					{
+						icon: 'icon_door',
+						obstacles: ['door'],
+					},
+				];
+			}
+			scene.started = true;
+			scene.log('Wow look at us travelling through a forest');
+			return [
+				{
+					icon: 'icon_unknown',
+				},
+				{
+					icon: 'icon_unknown',
+					obstacles: [
+						{
+							sprite: 'blank',
+							start(scene) {
+								scene.log('We are totally outside a dungeon');
+								scene.killObstacle();
+							},
+						},
+					],
+				},
+				{
+					icon: 'icon_enemy',
+					obstacles: [
+						{
+							sprite: 'error',
+							health: 1,
+							damage: 1,
+							start(scene) {
+								scene.log('Hello i am a tutorial enemy, kill me plz');
+							},
+							end(scene) {
+								scene.log('i hurt you but died, goodbye');
+							},
+						},
+					],
+				},
+				{
+					icon: 'icon_unknown',
+					obstacles: [
+						{
+							sprite: 'error',
+							start(scene) {
+								scene.log('Hello i am a card tutorial, try to hit me');
+							},
+							interact(scene) {
+								if (this.interacted) {
+									scene.log(
+										'hello i am hint text telling you to use the card, not advance'
+									);
+								} else {
+									this.interacted = true;
+									scene.addCard({
+										name: 'tutorial heal',
+										effect(scene) {
+											scene.front.heal(1);
+											scene.killObstacle();
+											scene.log(
+												'good job i am saying goodbye and getting out of the way'
+											);
+										},
+									});
+									scene.log('hello i am telling you to heal yourself');
+								}
+							},
+						},
+					],
+				},
+				{
+					icon: 'icon_door',
+					obstacles: [
+						{
+							sprite: 'blank',
+							start() {
+								scene.log(
+									"oh what's this a door? surely it could not be the entrance to a dungeon and perhaps our last chance to take a short rest"
+								);
+								scene.killObstacle();
+							},
+						},
+						'door',
+					],
+				},
+			];
+		},
+		1: (scene) => {
+			scene.setBg('bg');
+			scene.setFg('fg');
+			scene
+				.delay(1000)
+				.then(() => {
+					scene.log('A resounding voice echoes around you:');
+					return scene.delay(1000);
+				})
+				.then(() => {
+					scene.log(
+						`"BWAHAHA!! WELCOME... TO YOUR ${
+							scene.shuffle(['DOOM', 'DEATH', 'DEMISE', 'DOWNFALL'])[0]
+						}!!!"`
+					);
+				});
 			const areas = [
 				{
 					icon: 'icon_camp',
@@ -78,7 +196,7 @@ format:
 			});
 			return areas;
 		},
-		1: (scene) => {
+		2: (scene) => {
 			scene.setBg('bg_alternate');
 			const areas = [
 				{
@@ -95,7 +213,7 @@ format:
 			});
 			return areas;
 		},
-		2: (scene) => {
+		3: (scene) => {
 			const areas = [
 				{
 					icon: 'icon_camp',
