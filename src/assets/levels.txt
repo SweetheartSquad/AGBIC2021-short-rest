@@ -54,8 +54,10 @@ format:
 		['Rat King A', 'Rat King B', 'Rat King C'],
 		['slime_big'],
 	];
+	let minibossOrder;
 	return {
 		0: (scene) => {
+			minibossOrder = scene.shuffle(minibosses.slice());
 			scene.setBg('bg_forest');
 			scene.setFg('fg');
 			scene.addCard('Advance');
@@ -188,46 +190,62 @@ format:
 					icon: 'icon_camp',
 				},
 			];
-			// TODO: real level generation
 			areas.push(
 				{
 					icon: 'icon_enemy',
 					obstacles: scene.shuffle(basic)[0],
 				},
-				{
-					icon: 'icon_enemy',
-					obstacles: scene.shuffle(tough)[0],
-				},
-				{
+				...scene.shuffle([
+					{
+						icon: 'icon_unknown',
+						obstacles: ['treasure'],
+					},
+					{
+						icon: 'icon_enemy',
+						obstacles: scene.shuffle(tough)[0],
+					},
+					Math.random() > 0.5 && {
+						icon: 'icon_enemy',
+						obstacles: scene.shuffle(basic)[0],
+					},
+				]),
+				Math.random() > 0.5 && {
 					icon: 'icon_unknown',
-					obstacles: scene.shuffle(encounter)[0],
+					obstacles: [scene.shuffle(['fountain', 'potion'])[0]],
 				},
-				{
-					icon: 'icon_boss',
-					obstacles: scene.shuffle(minibosses)[0],
+				Math.random() > 0.5 && {
+					icon: 'icon_enemy',
+					obstacles: scene.shuffle(basic)[0],
 				}
 			);
-			areas.push({
-				icon: 'icon_door',
-				obstacles: ['door'],
-			});
-			return areas;
+			areas.push(
+				{
+					icon: 'icon_boss',
+					obstacles: minibossOrder.pop(),
+				},
+				{
+					icon: 'icon_door',
+					obstacles: ['door'],
+				}
+			);
+			return areas.filter((i) => i);
 		},
 		2: (scene) => {
-			scene.setBg('bg_alternate');
 			const areas = [
 				{
 					icon: 'icon_camp',
 				},
 			];
-			areas.push({
-				icon: 'icon_boss',
-				obstacles: ['dragon'],
-			});
-			areas.push({
-				icon: 'icon_door',
-				obstacles: ['door'],
-			});
+			areas.push(
+				{
+					icon: 'icon_boss',
+					obstacles: minibossOrder.pop(),
+				},
+				{
+					icon: 'icon_camp',
+					obstacles: ['door'],
+				}
+			);
 			return areas;
 		},
 		3: (scene) => {
@@ -236,7 +254,53 @@ format:
 					icon: 'icon_camp',
 				},
 			];
-			// TODO: endgame
+			areas.push(
+				{
+					icon: 'icon_boss',
+					obstacles: minibossOrder.pop(),
+				},
+				{
+					icon: 'icon_camp',
+					obstacles: ['door'],
+				}
+			);
+			return areas;
+		},
+		4: (scene) => {
+			const areas = [
+				{
+					icon: 'icon_camp',
+				},
+			];
+			areas.push(
+				{
+					icon: 'icon_boss',
+					obstacles: minibossOrder.pop(),
+				},
+				{
+					icon: 'icon_camp',
+					obstacles: ['door'],
+				}
+			);
+			return areas;
+		},
+		5: (scene) => {
+			scene.setBg('bg_alternate');
+			const areas = [
+				{
+					icon: 'icon_camp',
+				},
+			];
+			areas.push(
+				{
+					icon: 'icon_boss',
+					obstacles: ['dragon'],
+				},
+				{
+					icon: 'icon_door',
+					obstacles: ['door'],
+				}
+			);
 			return areas;
 		},
 	};
