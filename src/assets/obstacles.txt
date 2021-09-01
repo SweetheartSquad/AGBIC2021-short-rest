@@ -94,14 +94,14 @@ format:
 	rat_big: {
 		name: 'Big Rat',
 		health: 3,
-		damage: 2,
+		damage: 1,
 	},
 	'Rat King A': {
 		name: 'Rat King',
 		health: 3,
-		damage: 2,
+		damage: 1,
 		start(scene) {
-			if (scene.obstacles[0] === this) {
+			if (scene.obstacle === this) {
 				scene.announce('The Rat Kings');
 			}
 		},
@@ -119,15 +119,26 @@ format:
 					} king, I got this."`
 				);
 				scene.obstacles.push(scene.obstacles.shift());
+			}
+		},
+		end(scene) {
+			if (scene.obstacles.length > 0) {
+				scene.log('"King! No!! You\'ll pay for that!!!"');
+				scene.overlay([1, 0, 0]);
+				scene.obstacle.sprBody.tint = 0xff0000;
+				scene.obstacle.def = {
+					...scene.obstacle.def,
+					damage: scene.obstacle.def.damage + 1,
+				};
 			}
 		},
 	},
 	'Rat King B': {
 		name: 'Rat King',
 		health: 3,
-		damage: 2,
+		damage: 1,
 		start(scene) {
-			if (scene.obstacles[0] === this) {
+			if (scene.obstacle === this) {
 				scene.announce('The Rat Kings');
 			}
 		},
@@ -145,15 +156,26 @@ format:
 					} king, I got this."`
 				);
 				scene.obstacles.push(scene.obstacles.shift());
+			}
+		},
+		end(scene) {
+			if (scene.obstacles.length > 0) {
+				scene.log('"King! No!! You\'ll pay for that!!!"');
+				scene.overlay([1, 0, 0]);
+				scene.obstacle.sprBody.tint = 0xff0000;
+				scene.obstacle.def = {
+					...scene.obstacle.def,
+					damage: scene.obstacle.def.damage + 1,
+				};
 			}
 		},
 	},
 	'Rat King C': {
 		name: 'Rat King',
 		health: 3,
-		damage: 2,
+		damage: 1,
 		start(scene) {
-			if (scene.obstacles[0] === this) {
+			if (scene.obstacle === this) {
 				scene.announce('The Rat Kings');
 			}
 		},
@@ -171,6 +193,17 @@ format:
 					} king, I got this."`
 				);
 				scene.obstacles.push(scene.obstacles.shift());
+			}
+		},
+		end(scene) {
+			if (scene.obstacles.length > 0) {
+				scene.log('"King! No!! You\'ll pay for that!!!"');
+				scene.overlay([1, 0, 0]);
+				scene.obstacle.sprBody.tint = 0xff0000;
+				scene.obstacle.def = {
+					...scene.obstacle.def,
+					damage: scene.obstacle.def.damage + 1,
+				};
 			}
 		},
 	},
