@@ -132,6 +132,7 @@ format:
 									);
 								} else {
 									this.interacted = true;
+									scene.clearHand();
 									scene.addCard({
 										name: 'tutorial heal',
 										effect(scene) {
@@ -142,6 +143,7 @@ format:
 											);
 										},
 									});
+									scene.addCard('Advance');
 									scene.log('hello i am telling you to heal yourself');
 								}
 							},
