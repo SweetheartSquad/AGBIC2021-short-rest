@@ -13,6 +13,20 @@ format:
 }
 */
 (() => {
+	// cards
+	const initialDeck = [
+		'Kindling',
+		'Shuffle',
+		'Snooze',
+		'Labelled Potion',
+		'Slash',
+		'Twin Daggers',
+		'Magic Blast',
+		'Bonk',
+		'Holy Barrier',
+	];
+
+	// obstacles
 	const basic = [['bat'], ['rat_small'], ['slime_small']];
 	const tough = [
 		['bat', 'bat'],
@@ -54,6 +68,7 @@ format:
 				damage: 2,
 			});
 			scene.addParty({ name: 'Knight', spr: 'onion', maxHealth: 4 });
+			initialDeck.forEach((i) => scene.addDeck(i));
 
 			if (scene.started) {
 				// skip tutorial
