@@ -78,3 +78,6 @@ textures/cards/Shuffle.png
 textures/cards/Slash.png
 textures/cards/Absolve Death.png
 textures/cards/Options.png
+textures/cards/Coward's Plan.png
+textures/cards/Teleport.png
+textures/cards/Magic Blast.png
