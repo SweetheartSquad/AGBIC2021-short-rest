@@ -82,3 +82,6 @@ textures/cards/Coward's Plan.png
 textures/cards/Teleport.png
 textures/cards/Magic Blast.png
 textures/cards/Shield Spell.png
+textures/cards/Advance.png
+textures/cards/Kindle.png
+textures/cards/Portable Mulligan.png
