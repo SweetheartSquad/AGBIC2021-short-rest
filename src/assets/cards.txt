@@ -226,54 +226,40 @@ scene.advance() // basic attack/interaction/movement
 				description: 'Prepare party to embark into the dungeon with this hand',
 				effect(scene) {
 					scene.clearHand();
-					const party = scene.party.slice();
-					const order = [];
-					const positions = ['the lead'];
-					positions[party.length - 1] = 'the back';
-					const embark = () => {
-						scene.nextLevel(() => {
-							scene.clearHand();
-							hand.forEach((i) => {
-								scene.addCard(i);
-							});
-							scene.addCard('Advance');
-						});
+					const getPartySprite = (name) => {
+						if (['Rogue', 'Knight', 'Mage', 'Priest'].includes(name)) {
+							return name;
+						}
+						return 'blank';
 					};
 
 					// party order selection
 					const partyOrder = () => {
-						if (party.length > 0) {
-							scene.clearHand();
-							party.forEach((i) => {
-								const idx = scene.party.length - party.length;
-								const position = positions[idx] || `position ${idx + 1}`;
-								scene.addCard({
-									name: i.name,
-									description: `Put ${i.name} in ${position}`,
-									effect: () => {
-										party.splice(party.indexOf(i), 1);
-										order.push(i);
-										partyOrder();
-									},
-								});
+						scene.clearHand();
+						scene.party.forEach((i, idx) => {
+							scene.addCard({
+								name: i.name,
+								sprite: getPartySprite(i.name),
+								description: `Put ${i.name} in the lead`,
+								effect: () => {
+									scene.party.push(scene.party.splice(idx, 1)[0]);
+									partyOrder();
+								},
 							});
-							if (party.length === scene.party.length) {
-								scene.addCard({
-									name: 'Embark',
-									sprite: 'Slash',
-									description:
-										'Embark into the dungeon without changing party order',
-									effect: embark,
-								});
-							}
-							return;
-						}
-						scene.party = order.reverse();
+						});
 						scene.addCard({
 							name: 'Embark',
 							sprite: 'Slash',
 							description: 'Embark into the dungeon',
-							effect: embark,
+							effect() {
+								scene.nextLevel(() => {
+									scene.clearHand();
+									hand.forEach((i) => {
+										scene.addCard(i);
+									});
+									scene.addCard('Advance');
+								});
+							},
 						});
 					};
 					partyOrder();
