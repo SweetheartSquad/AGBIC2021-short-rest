@@ -279,6 +279,7 @@ scene.advance() // basic attack/interaction/movement
 	},
 	// gameplay
 	Kindling: {
+		sprite: 'Kindle',
 		description: "Not good for much, but at least it's flammable",
 		canPlay() {
 			return false;
