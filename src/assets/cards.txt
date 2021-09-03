@@ -84,6 +84,7 @@ scene.advance() // basic attack/interaction/movement
 		},
 	},
 	Start: {
+		sprite: 'Slash',
 		description: 'Start a new game',
 		async effect(scene) {
 			await scene.setLevel(0, () => {
@@ -105,6 +106,7 @@ scene.advance() // basic attack/interaction/movement
 		},
 	},
 	Filter: {
+		sprite: 'Options',
 		description: 'Enables/disables post-processing filter',
 		effect(scene) {
 			scene.screenFilter.enabled = !scene.screenFilter.enabled;
@@ -113,6 +115,7 @@ scene.advance() // basic attack/interaction/movement
 		},
 	},
 	Scale: {
+		sprite: 'Options',
 		description: 'Enables/disables pixel-perfect scaling',
 		effect(scene) {
 			window.resizer.scaleMode = {
@@ -125,6 +128,7 @@ scene.advance() // basic attack/interaction/movement
 		},
 	},
 	'Card Throw': {
+		sprite: 'Options',
 		description: 'Enables/disables card play animation',
 		effect(scene) {
 			scene.cardSpeed = scene.cardSpeed ? 0 : 1;
@@ -132,6 +136,7 @@ scene.advance() // basic attack/interaction/movement
 		},
 	},
 	Back: {
+		sprite: "Coward's Plan",
 		description: 'Back to main menu',
 		effect(scene) {
 			scene.clearHand();
@@ -190,6 +195,7 @@ scene.advance() // basic attack/interaction/movement
 		},
 	},
 	Continue: {
+		sprite: 'Shuffle',
 		description: 'Prepare cards to embark into the dungeon',
 		effect(scene) {
 			scene.clearHand();
@@ -212,6 +218,7 @@ scene.advance() // basic attack/interaction/movement
 			});
 			scene.addCard({
 				name: 'Continue',
+				sprite: 'Shuffle',
 				description: 'Prepare party to embark into the dungeon with this hand',
 				effect(scene) {
 					scene.clearHand();
@@ -249,6 +256,7 @@ scene.advance() // basic attack/interaction/movement
 							if (party.length === scene.party.length) {
 								scene.addCard({
 									name: 'Continue',
+									sprite: 'Slash',
 									description:
 										'Embark into the dungeon without changing party order',
 									effect: embark,
@@ -259,6 +267,7 @@ scene.advance() // basic attack/interaction/movement
 						scene.party = order.reverse();
 						scene.addCard({
 							name: 'Continue',
+							sprite: 'Slash',
 							description: 'Embark into the dungeon',
 							effect: embark,
 						});
@@ -290,6 +299,7 @@ scene.advance() // basic attack/interaction/movement
 		},
 	},
 	Reversal: {
+		sprite: 'Shuffle',
 		description: 'Reverse party',
 		effect(scene) {
 			scene.party.reverse().sort((a, b) => {
@@ -300,6 +310,7 @@ scene.advance() // basic attack/interaction/movement
 		},
 	},
 	'Death Step': {
+		sprite: 'Shuffle',
 		description: 'Puts dead party member in lead',
 		canPlay(scene) {
 			return scene.party.some((i) => !i.health);
@@ -313,6 +324,7 @@ scene.advance() // basic attack/interaction/movement
 		},
 	},
 	'Staunch Defender': {
+		sprite: 'Shuffle',
 		description: 'The Knight takes the lead',
 		canPlay(scene) {
 			return scene.alive('Knight') && scene.front.name !== 'Knight';
@@ -338,6 +350,7 @@ scene.advance() // basic attack/interaction/movement
 		},
 	},
 	'Tactical Grace': {
+		sprite: 'Shuffle',
 		description: 'Select a party member to place in the lead',
 		canPlay(scene) {
 			return scene.party.filter((i) => i.health).length >= 2;
@@ -358,6 +371,7 @@ scene.advance() // basic attack/interaction/movement
 		},
 	},
 	Snooze: {
+		sprite: "Coward's Plan",
 		description: 'Retreat to previous campfire',
 		effect(scene) {
 			scene.kick(-5);
@@ -379,6 +393,7 @@ scene.advance() // basic attack/interaction/movement
 		},
 	},
 	'Labelled Potion': {
+		sprite: 'Absolve Death',
 		description: 'Heal lead',
 		effect(scene) {
 			scene.front.heal(scene.front.maxHealth);
@@ -397,6 +412,7 @@ scene.advance() // basic attack/interaction/movement
 		},
 	},
 	'Blessed Rain': {
+		sprite: 'Absolve Death',
 		description: 'The Priest heals everyone',
 		canPlay(scene) {
 			return scene.alive('Priest');
@@ -419,6 +435,7 @@ scene.advance() // basic attack/interaction/movement
 		},
 	},
 	'Twin Daggers': {
+		sprite: 'Slash',
 		description: 'The Rogue throws two daggers, each dealing 1 damage',
 		canPlay(scene) {
 			return scene.enemy && scene.alive('Rogue');
@@ -446,6 +463,7 @@ scene.advance() // basic attack/interaction/movement
 		},
 	},
 	Bonk: {
+		sprite: 'Slash',
 		description: 'Bonk an enemy for 1 damage',
 		canPlay(scene) {
 			return scene.enemy;
@@ -456,6 +474,7 @@ scene.advance() // basic attack/interaction/movement
 		},
 	},
 	'Death from the Shadows': {
+		sprite: 'Slash',
 		description: 'The Rogue kills an enemy',
 		canPlay(scene) {
 			return scene.enemy && scene.alive('Rogue');
@@ -467,6 +486,7 @@ scene.advance() // basic attack/interaction/movement
 		},
 	},
 	Exorcise: {
+		sprite: 'Absolve Death',
 		description: 'The Priest destroys all undead enemies',
 		canPlay(scene) {
 			return scene.enemy && scene.alive('Priest');
@@ -483,6 +503,7 @@ scene.advance() // basic attack/interaction/movement
 		},
 	},
 	'Vision of Death': {
+		sprite: 'Magic Blast',
 		description: 'The Mage kills everything in sight',
 		canPlay(scene) {
 			return scene.alive('Mage');
@@ -514,6 +535,7 @@ scene.advance() // basic attack/interaction/movement
 		},
 	},
 	'Charm Creature': {
+		sprite: 'Magic Blast',
 		description: 'The Priest sways a creature to switch sides',
 		canPlay(scene) {
 			return scene.enemy && scene.alive('Priest');
@@ -535,6 +557,7 @@ scene.advance() // basic attack/interaction/movement
 		},
 	},
 	'Summon Fire Sprite': {
+		sprite: 'Absolve Death',
 		description: 'The Mage Summons a 1HP creature to fight alongside the party',
 		canPlay(scene) {
 			return scene.alive('Mage');
@@ -550,6 +573,7 @@ scene.advance() // basic attack/interaction/movement
 		},
 	},
 	'Poly Morph': {
+		sprite: 'Magic Blast',
 		description: 'The Mage transforms a creature into another',
 		canPlay(scene) {
 			return scene.enemy && scene.alive('Mage');
@@ -576,6 +600,7 @@ scene.advance() // basic attack/interaction/movement
 		},
 	},
 	'Invoke Augur': {
+		sprite: 'Magic Blast',
 		description: 'The Priest prompts an encounter in an empty room',
 		canPlay(scene) {
 			return !scene.obstacle;
@@ -598,6 +623,7 @@ scene.advance() // basic attack/interaction/movement
 		},
 	},
 	'Layers of Steel': {
+		sprite: 'Shield Spell',
 		description: 'The Knight takes 1 damage and gains 2 armour',
 		canPlay(scene) {
 			return scene.alive('Knight');
@@ -610,6 +636,7 @@ scene.advance() // basic attack/interaction/movement
 		},
 	},
 	Impenetrable: {
+		sprite: 'Shield Spell',
 		description: 'The Knight gains 1 armour',
 		canPlay(scene) {
 			return scene.alive('Knight');
@@ -631,6 +658,7 @@ scene.advance() // basic attack/interaction/movement
 		},
 	},
 	'Holy Barrier': {
+		sprite: 'Shield Spell',
 		description: 'The Priest grants 1 armour to party lead',
 		canPlay(scene) {
 			return scene.alive('Priest');
@@ -641,6 +669,7 @@ scene.advance() // basic attack/interaction/movement
 		},
 	},
 	Stealth: {
+		sprite: "Coward's Plan",
 		description: 'The Rogue gains 1 armour',
 		canPlay(scene) {
 			return scene.alive('Rogue');
@@ -652,6 +681,7 @@ scene.advance() // basic attack/interaction/movement
 		},
 	},
 	'Bitter Tears': {
+		sprite: 'Magic Blast',
 		description:
 			'The Knight sacrifices themselves and deals their HP as damage',
 		canPlay(scene) {
@@ -666,6 +696,7 @@ scene.advance() // basic attack/interaction/movement
 		},
 	},
 	Equalize: {
+		sprite: 'Absolve Death',
 		description:
 			'The Priest heals everyone to match whoever has the highest HP',
 		canPlay(scene) {
@@ -681,6 +712,7 @@ scene.advance() // basic attack/interaction/movement
 		},
 	},
 	Downsize: {
+		sprite: 'Magic Blast',
 		description: 'The Mage damages everyone to match whoever has the lowest HP',
 		canPlay(scene) {
 			return scene.alive('Mage');
@@ -696,6 +728,7 @@ scene.advance() // basic attack/interaction/movement
 		},
 	},
 	Confuse: {
+		sprite: 'Magic Blast',
 		description: 'The Priest causes an enemy to damage themselves',
 		canPlay(scene) {
 			return scene.enemy && scene.alive('Priest');
@@ -706,6 +739,7 @@ scene.advance() // basic attack/interaction/movement
 		},
 	},
 	'Life Link Locket': {
+		sprite: 'Magic Blast',
 		description: 'Swap lead and enemy HP',
 		canPlay(scene) {
 			return scene.enemy;
@@ -719,6 +753,7 @@ scene.advance() // basic attack/interaction/movement
 		},
 	},
 	'Leech Wand': {
+		sprite: 'Magic Blast',
 		description: 'Steal 1HP from enemy',
 		canPlay(scene) {
 			return scene.enemy;
@@ -735,6 +770,7 @@ scene.advance() // basic attack/interaction/movement
 		},
 	},
 	Weaken: {
+		sprite: 'Magic Blast',
 		description: 'The Priest reduces enemy damage to 1',
 		canPlay(scene) {
 			return scene.enemy && scene.alive('Priest');
