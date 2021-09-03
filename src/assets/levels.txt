@@ -284,7 +284,7 @@ format:
 				]),
 				Math.random() > 0.5 && {
 					icon: 'icon_unknown',
-					obstacles: [scene.shuffle(encounter)[0]],
+					obstacles: scene.shuffle(encounter)[0],
 				},
 				Math.random() > 0.5 && {
 					icon: 'icon_enemy',
