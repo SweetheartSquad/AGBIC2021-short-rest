@@ -974,12 +974,6 @@ export class GameScene extends GameObject {
 			fade = 1000,
 		}: { rate?: number; volume?: number; fade?: number } = {}
 	) {
-		const howl = this.howl(music);
-		if (!howl) return undefined;
-		const id = howl.play();
-		howl.rate(rate, id);
-		howl.loop(true, id);
-		howl.fade(0, volume, fade, id);
 		const playing = this.musicPlaying;
 		if (playing) {
 			playing.howl.fade(playing.volume, 0, fade, playing.id);
@@ -987,6 +981,14 @@ export class GameScene extends GameObject {
 				playing.howl.stop(playing.id);
 			});
 		}
+		this.musicPlaying = undefined;
+		if (!music) return undefined;
+		const howl = this.howl(music);
+		if (!howl) return undefined;
+		const id = howl.play();
+		howl.rate(rate, id);
+		howl.loop(true, id);
+		howl.fade(0, volume, fade, id);
 		this.musicPlaying = {
 			howl,
 			id,
