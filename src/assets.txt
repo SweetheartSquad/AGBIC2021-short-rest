@@ -81,3 +81,4 @@ textures/cards/Options.png
 textures/cards/Coward's Plan.png
 textures/cards/Teleport.png
 textures/cards/Magic Blast.png
+textures/cards/Shield Spell.png
