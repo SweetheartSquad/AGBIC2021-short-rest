@@ -580,6 +580,7 @@ scene.advance() // basic attack/interaction/movement
 				name: `Friendly ${o.def.name}`,
 				spr: o.def.sprite,
 				maxHealth: o.maxHealth,
+				armour: o.armour,
 				health: o.health,
 				temporary: true,
 				damage: o.def.damage,
