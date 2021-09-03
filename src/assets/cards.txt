@@ -180,7 +180,7 @@ scene.advance() // basic attack/interaction/movement
 								return false;
 							},
 						});
-						scene.addCard('Continue');
+						scene.addCard('Shuffle Cards');
 					},
 				});
 			});
