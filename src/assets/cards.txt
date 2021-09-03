@@ -215,6 +215,7 @@ scene.advance() // basic attack/interaction/movement
 							description: "Can't mulligan a card twice",
 							canPlay: () => false,
 						});
+						scene.hand.hand.splice(idx, 0, scene.hand.hand.pop());
 					},
 					canPlay: () => deck.length > 0,
 				});
