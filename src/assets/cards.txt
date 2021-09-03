@@ -233,8 +233,7 @@ scene.advance() // basic attack/interaction/movement
 		description: 'Prepare cards to embark into the dungeon',
 		effect(scene) {
 			scene.clearHand();
-			const deck = scene.deck.slice();
-			scene.shuffle(deck);
+			const deck = scene.shuffle(scene.deck);
 			const hand = deck.splice(0, 5);
 			hand.forEach((i, idx) => {
 				scene.addCard({
