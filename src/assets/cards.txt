@@ -234,35 +234,45 @@ scene.advance() // basic attack/interaction/movement
 					};
 
 					// party order selection
-					const partyOrder = () => {
-						scene.clearHand();
-						scene.party.forEach((i, idx) => {
-							scene.addCard({
-								name: i.name,
-								sprite: getPartySprite(i.name),
-								description: `Put ${i.name} in the lead`,
-								effect: () => {
-									scene.party.push(scene.party.splice(idx, 1)[0]);
-									partyOrder();
-								},
-							});
-						});
+					const putInLead = (i) => {
+						const idx = scene.party.indexOf(i);
+						const newIdx = scene.party.length - 1;
+						scene.party.push(scene.party.splice(idx, 1)[0]);
 						scene.addCard({
-							name: 'Embark',
-							sprite: 'Slash',
-							description: 'Embark into the dungeon',
+							name: i.name,
+							sprite: getPartySprite(i.name),
+							description: `Put ${i.name} in the lead`,
 							effect() {
-								scene.nextLevel(() => {
-									scene.clearHand();
-									hand.forEach((i) => {
-										scene.addCard(i);
-									});
-									scene.addCard('Advance');
-								});
+								putInLead(i);
 							},
 						});
+						scene.hand.hand.splice(newIdx, 0, scene.hand.hand.pop());
 					};
-					partyOrder();
+					scene.clearHand();
+					scene.party.forEach((i, idx) => {
+						scene.addCard({
+							name: i.name,
+							sprite: getPartySprite(i.name),
+							description: `Put ${i.name} in the lead`,
+							effect() {
+								putInLead(i);
+							},
+						});
+					});
+					scene.addCard({
+						name: 'Embark',
+						sprite: 'Slash',
+						description: 'Embark into the dungeon',
+						effect() {
+							scene.nextLevel(() => {
+								scene.clearHand();
+								hand.forEach((i) => {
+									scene.addCard(i);
+								});
+								scene.addCard('Advance');
+							});
+						},
+					});
 				},
 			});
 		},
