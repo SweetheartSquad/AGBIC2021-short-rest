@@ -483,7 +483,9 @@ export class GameScene extends GameObject {
 		const { def } = card;
 		if (def.canPlay && !def.canPlay(this)) return;
 		const sprCard = Card.getCardSpr(def);
-		(sprCard.children[1] as BitmapText).text = (card.sprCard.children[1] as BitmapText).text;
+		(sprCard.children[1] as BitmapText).text = (
+			card.sprCard.children[1] as BitmapText
+		).text;
 		sprCard.anchor.x = sprCard.anchor.y = 0.5;
 		sprCard.x = card.transform.x;
 		sprCard.y = card.transform.y;
