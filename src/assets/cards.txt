@@ -78,6 +78,7 @@ scene.advance() // basic attack/interaction/movement
 			scene.setFg('blank');
 			scene.addCard('Start');
 			scene.addCard('Options');
+			scene.addCard('About');
 			scene.cardSpeed = 1;
 			scene.blackout();
 			scene.music('battle_theme');
@@ -141,6 +142,39 @@ scene.advance() // basic attack/interaction/movement
 			scene.clearHand();
 			scene.addCard('Start');
 			scene.addCard('Options');
+			scene.addCard('About');
+		},
+	},
+	About: {
+		sprite: 'Absolve Death',
+		description: 'Find out who made the game',
+		effect(scene) {
+			scene.clearHand();
+			scene.addCard('Back');
+			scene.addCard({
+				name: 'Made\nBy',
+				description: 'Sean and Michael of SweetHeart Squad',
+				sprite: 'Absolve Death',
+				effect() {
+					window.open('https://sweetheartsquad.itch.io');
+				},
+			});
+			scene.addCard({
+				name: 'Made\nFor',
+				description: "A Game By It's Cover 2021",
+				sprite: 'Shuffle Cards',
+				effect() {
+					window.open('https://itch.io/jam/a-game-by-its-cover-2021');
+				},
+			});
+			scene.addCard({
+				name: 'Based\nOn',
+				description: '"Short Rest" famicase, by Daniel Gil',
+				sprite: 'Teleport',
+				effect() {
+					window.open('https://famicase.com/21/softs/027.html');
+				},
+			});
 		},
 	},
 	Advance: {
