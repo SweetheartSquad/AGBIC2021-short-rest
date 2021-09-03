@@ -753,7 +753,9 @@ scene.advance() // basic attack/interaction/movement
 		},
 		effect(scene) {
 			const all = scene.party.concat(scene.obstacles);
-			const health = all.sort((a, b) => a.health - b.health)[0].health;
+			const health = all
+				.filter((i) => i.health)
+				.sort((a, b) => a.health - b.health)[0].health;
 			all.forEach((i) => {
 				i.damage(Math.max(0, i.health - health));
 			});
