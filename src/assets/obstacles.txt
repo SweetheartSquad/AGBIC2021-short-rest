@@ -28,7 +28,7 @@ format:
 		'Tactical Grace',
 		'Snooze',
 		'Teleport',
-		'Labelled Portion',
+		'Labelled Potion',
 		'Absolve Death',
 		'Blessed Rain',
 		'Slash',
