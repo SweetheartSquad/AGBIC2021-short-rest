@@ -286,7 +286,7 @@ format:
 					icon: 'icon_unknown',
 					obstacles: scene.shuffle(encounter)[0],
 				},
-				Math.random() > 0.5 && {
+				Math.random() > 0.75 && {
 					icon: 'icon_enemy',
 					obstacles: scene.shuffle(basic)[0],
 				},
@@ -294,11 +294,11 @@ format:
 					icon: 'icon_treasure',
 					obstacles: ['treasure'],
 				},
-				Math.random() > 0.5 && {
+				Math.random() > 0.75 && {
 					icon: 'icon_enemy',
 					obstacles: scene.shuffle(tough)[0],
 				},
-				Math.random() > 0.5 && {
+				Math.random() > 0.75 && {
 					icon: 'icon_enemy',
 					obstacles: scene.shuffle(tougher)[0],
 				},
@@ -311,7 +311,7 @@ format:
 						icon: 'icon_unknown',
 						obstacles: scene.shuffle(restore)[0],
 					},
-					Math.random() > 0.5 && {
+					Math.random() > 0.75 && {
 						icon: 'icon_enemy',
 						obstacles: scene.shuffle(basic)[0],
 					},
