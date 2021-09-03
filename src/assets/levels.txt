@@ -75,15 +75,15 @@ format:
 			scene.setBg('bg_forest');
 			scene.setFg('fg');
 			scene.addCard('Advance');
-			scene.addParty({ name: 'Mage', spr: 'frog', maxHealth: 2 });
 			scene.addParty({ name: 'Priest', spr: 'cat', maxHealth: 3 });
+			scene.addParty({ name: 'Mage', spr: 'frog', maxHealth: 2 });
+			scene.addParty({ name: 'Knight', spr: 'onion', maxHealth: 4 });
 			scene.addParty({
 				name: 'Rogue',
 				spr: 'apple',
 				maxHealth: 2,
 				damage: 2,
 			});
-			scene.addParty({ name: 'Knight', spr: 'onion', maxHealth: 4 });
 			initialDeck.forEach((i) => scene.addDeck(i));
 
 			if (scene.started) {
