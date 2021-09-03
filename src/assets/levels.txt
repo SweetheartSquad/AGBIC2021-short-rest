@@ -151,6 +151,7 @@ format:
 									scene.clearHand();
 									scene.addCard({
 										name: 'tutorial heal',
+										sprite: 'Absolve Death',
 										effect(scene) {
 											scene.front.heal(1);
 											scene.killObstacle();
