@@ -302,6 +302,10 @@ format:
 					icon: 'icon_enemy',
 					obstacles: scene.shuffle(tougher)[0],
 				},
+				{
+					icon: 'icon_unknown',
+					obstacles: ['mini_camp'],
+				},
 				...scene.shuffle([
 					{
 						icon: 'icon_unknown',
