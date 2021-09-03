@@ -269,23 +269,6 @@ scene.advance() // basic attack/interaction/movement
 		},
 	},
 	// gameplay
-	test: {
-		description: 'test card',
-		effect() {
-			console.log('test effect');
-		},
-		canPlay: () => true,
-	},
-	refresh: {
-		description: 'gives cards',
-		effect(scene) {
-			scene.clearHand();
-			scene.addCard('test');
-			scene.addCard('refresh');
-			scene.addCard('Advance');
-		},
-		canPlay: () => true,
-	},
 	Kindling: {
 		description: "Not good for much, but at least it's flammable",
 		canPlay() {
