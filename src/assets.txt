@@ -87,3 +87,5 @@ textures/cards/Kindle.png
 textures/cards/Portable Mulligan.png
 textures/cards/Yes.png
 textures/cards/No.png
+textures/cards/Shuffle Cards.png
+textures/cards/Card Throw.png
