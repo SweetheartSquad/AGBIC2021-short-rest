@@ -190,7 +190,7 @@ scene.advance() // basic attack/interaction/movement
 				effect: () => {
 					scene.clearHand();
 					scene.addCard('Kindle');
-					scene.addCard('Continue');
+					scene.addCard('Shuffle Cards');
 				},
 			});
 		},
