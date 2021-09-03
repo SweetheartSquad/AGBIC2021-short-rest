@@ -203,13 +203,15 @@ scene.advance() // basic attack/interaction/movement
 			const deck = scene.deck.slice();
 			scene.shuffle(deck);
 			const hand = deck.splice(0, 5);
-			hand.forEach((i) => {
+			hand.forEach((i, idx) => {
 				scene.addCard({
 					...i,
 					description: `Mulligan "${i.name}"`,
 					effect: () => {
+						const newCard = deck.splice(0, 1)[0];
+						hand.splice(idx, 1, newCard);
 						scene.addCard({
-							...deck.splice(0, 1)[0],
+							...newCard,
 							description: "Can't mulligan a card twice",
 							canPlay: () => false,
 						});
