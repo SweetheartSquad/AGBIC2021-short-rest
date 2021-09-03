@@ -153,7 +153,7 @@ scene.advance() // basic attack/interaction/movement
 			scene.addCard('Back');
 			scene.addCard({
 				name: 'Made\nBy',
-				description: 'Sean and Michael of SweetHeart Squad',
+				description: 'Sean, Michael, and IAN of SweetHeart Squad',
 				sprite: 'Absolve Death',
 				effect() {
 					window.open('https://sweetheartsquad.itch.io');
