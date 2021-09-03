@@ -186,6 +186,7 @@ scene.advance() // basic attack/interaction/movement
 			});
 			scene.addCard({
 				name: 'Back',
+				sprite: "Coward's Plan",
 				effect: () => {
 					scene.clearHand();
 					scene.addCard('Kindle');
@@ -194,8 +195,8 @@ scene.advance() // basic attack/interaction/movement
 			});
 		},
 	},
-		sprite: 'Shuffle',
 	'Shuffle Cards': {
+		sprite: 'Portable Mulligan',
 		description: 'Prepare cards to embark into the dungeon',
 		effect(scene) {
 			scene.clearHand();
