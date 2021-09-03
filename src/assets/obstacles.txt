@@ -503,7 +503,7 @@ format:
 											}
 										});
 										scene.overlay([1, 0.5, 0, 0.5]);
-										scene.deck = scene.deck.filter((d) => d.def === i.def);
+										scene.deck = scene.deck.filter((d) => d.def !== i.def);
 										hand.splice(idx, 1);
 										scene.clearHand();
 										hand.forEach((c) => {
