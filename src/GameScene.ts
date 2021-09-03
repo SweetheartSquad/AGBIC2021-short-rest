@@ -722,7 +722,7 @@ export class GameScene extends GameObject {
 		this.transition(() => {
 			this.clearHand();
 			this.addCard('Kindle');
-			this.addCard('Continue');
+			this.addCard('Shuffle Cards');
 			this.camp.display.container.visible = true;
 			this.party.forEach((i) => {
 				if (!i.health) {

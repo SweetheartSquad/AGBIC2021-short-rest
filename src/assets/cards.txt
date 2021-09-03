@@ -194,8 +194,8 @@ scene.advance() // basic attack/interaction/movement
 			});
 		},
 	},
-	Continue: {
 		sprite: 'Shuffle',
+	'Shuffle Cards': {
 		description: 'Prepare cards to embark into the dungeon',
 		effect(scene) {
 			scene.clearHand();
@@ -217,7 +217,7 @@ scene.advance() // basic attack/interaction/movement
 				});
 			});
 			scene.addCard({
-				name: 'Continue',
+				name: 'Reorder Party',
 				sprite: 'Shuffle',
 				description: 'Prepare party to embark into the dungeon with this hand',
 				effect(scene) {
@@ -255,7 +255,7 @@ scene.advance() // basic attack/interaction/movement
 							});
 							if (party.length === scene.party.length) {
 								scene.addCard({
-									name: 'Continue',
+									name: 'Embark',
 									sprite: 'Slash',
 									description:
 										'Embark into the dungeon without changing party order',
@@ -266,7 +266,7 @@ scene.advance() // basic attack/interaction/movement
 						}
 						scene.party = order.reverse();
 						scene.addCard({
-							name: 'Continue',
+							name: 'Embark',
 							sprite: 'Slash',
 							description: 'Embark into the dungeon',
 							effect: embark,
