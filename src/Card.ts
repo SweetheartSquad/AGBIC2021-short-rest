@@ -43,7 +43,6 @@ export class Card extends GameObject {
 		sprCard.anchor.x = sprCard.anchor.y = 0.5;
 		const sprImg = new Sprite(tex(d.sprite || d.name));
 		sprImg.anchor.x = sprImg.anchor.y = 0.5;
-		sprImg.y = -50;
 		const textName = new BitmapText(wrap(d.name, 8), fontName);
 		textName.y += 47;
 		textName.anchor.x = textName.anchor.y = 0.5;
