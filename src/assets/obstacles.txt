@@ -300,6 +300,7 @@ format:
 				const o = this;
 				scene.choice(
 					{
+						sprite: 'Yes',
 						name: 'Open',
 						effect() {
 							scene.queue.push(async () => {
@@ -325,6 +326,7 @@ format:
 						},
 					},
 					{
+						sprite: 'No',
 						name: "Don't Open",
 						effect() {
 							scene.killObstacle(o);
@@ -374,6 +376,7 @@ format:
 				scene.log('The party considers slaking their thirst.');
 				scene.choice(
 					{
+						sprite: 'Yes',
 						name: 'Slake',
 						effect() {
 							if (Math.random() > 0.5) {
@@ -397,6 +400,7 @@ format:
 						},
 					},
 					{
+						sprite: 'No',
 						name: "Don't Slake",
 						effect() {
 							scene.log('The party suppresses their thirst.');
@@ -422,6 +426,7 @@ format:
 				);
 				scene.choice(
 					{
+						sprite: 'Yes',
 						name: 'Quaff',
 						effect() {
 							o.animator.setAnimation('potion_empty');
@@ -449,6 +454,7 @@ format:
 						},
 					},
 					{
+						sprite: 'No',
 						name: 'Discard',
 						effect() {
 							scene.log('They toss it away.');
@@ -471,6 +477,7 @@ format:
 				scene.log("The party finds the remnants of another party's camp.");
 				scene.choice(
 					{
+						sprite: 'Yes',
 						name: 'Kindle',
 						description:
 							'Burn a card from your hand to revive fallen party members.',
@@ -509,6 +516,7 @@ format:
 						},
 					},
 					{
+						sprite: 'No',
 						name: 'Leave it alone',
 						effect() {
 							scene.killObstacle(o);
@@ -541,6 +549,7 @@ format:
 				scene.log('"Welcome! Would you like a reading?"');
 				scene.choice(
 					{
+						sprite: 'Yes',
 						name: 'Okay',
 						effect() {
 							scene.queue.push(async () => {
@@ -570,6 +579,7 @@ format:
 						},
 					},
 					{
+						sprite: 'No',
 						name: 'No thanks',
 						effect() {
 							scene.log('"Your loss!"');
