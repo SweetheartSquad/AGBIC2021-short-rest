@@ -481,7 +481,6 @@ scene.advance() // basic attack/interaction/movement
 		},
 	},
 	'Blessed Rain': {
-		sprite: 'Absolve Death',
 		description: 'The Priest heals everyone',
 		canPlay(scene) {
 			return scene.alive('Priest');

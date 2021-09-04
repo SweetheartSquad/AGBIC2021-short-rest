@@ -104,3 +104,4 @@ textures/cards/No.png
 textures/cards/Shuffle Cards.png
 textures/cards/Card Throw.png
 textures/cards/Twin Daggers.png
+textures/cards/Blessed Rain.png
