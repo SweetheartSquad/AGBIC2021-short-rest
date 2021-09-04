@@ -16,7 +16,7 @@ format:
 	// cards
 	const initialDeck = [
 		'Kindling',
-		'Shuffle',
+		'Staunch Defender',
 		'Snooze',
 		'Labelled Potion',
 		'Slash',
