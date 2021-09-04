@@ -222,6 +222,7 @@ format:
 			damage: 1,
 		},
 		'The Rat Kings': {
+			sprite: 'Rat King A',
 			name: 'Rat King',
 			health: 3,
 			damage: 1,
