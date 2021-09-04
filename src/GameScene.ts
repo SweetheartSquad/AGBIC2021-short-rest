@@ -959,6 +959,18 @@ export class GameScene extends GameObject {
 		textAnnounce.destroy();
 	}
 
+	async fanfare() {
+		this.queue.push(async () => {
+			this.sfx('sfx8');
+			this.overlay([1, 1, 1, 1], 400);
+			await this.delay(200);
+			this.overlay([1, 1, 1, 0.5], 400);
+			await this.delay(200);
+			this.overlay([1, 1, 1, 0.25], 1000);
+			await this.delay(200);
+		});
+	}
+
 	howl(howl: string) {
 		const h = resources[howl]?.data as Maybe<Howl>;
 		if (!h) {

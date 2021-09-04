@@ -60,6 +60,7 @@ scene.setBg('texture') // sets tiling background
 scene.setFg('texture') // sets tiling foreground
 await scene.delay(duration) // waits before continuing
 scene.tween(target, property, to, duration, from, ease); // adds a tween
+scene.fanfare() // plays "boss defeated" vfx/sfx
 
 // audio
 scene.sfx('name', { rate: 1, volume: 1 }) // plays sound effect (rate/volume optional)
