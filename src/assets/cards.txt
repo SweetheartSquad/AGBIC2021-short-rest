@@ -207,6 +207,7 @@ scene.advance() // basic attack/interaction/movement
 					canPlay: undefined,
 					effect: () => {
 						scene.sfx('sfx12');
+						scene.music('sfx16');
 						scene.camp.light();
 						scene.log(
 							`The party basks in the warmth of "${i.name}" and regains their strength.`

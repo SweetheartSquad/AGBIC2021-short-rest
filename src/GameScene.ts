@@ -741,7 +741,7 @@ export class GameScene extends GameObject {
 					this.log(`${i.name} revived by the fire.`);
 				}
 			});
-			this.music('');
+			this.music('sfx15');
 		});
 	}
 

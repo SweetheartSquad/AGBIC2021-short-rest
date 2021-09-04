@@ -19,6 +19,8 @@ audio/sfx11.wav
 audio/sfx12.wav
 audio/sfx13.wav
 audio/sfx14.wav
+audio/sfx15.wav
+audio/sfx16.wav
 textures/blank.png
 textures/title.png
 textures/camp_bg1.png
