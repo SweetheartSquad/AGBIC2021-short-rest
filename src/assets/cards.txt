@@ -550,7 +550,6 @@ scene.advance() // basic attack/interaction/movement
 		},
 	},
 	'Death from the Shadows': {
-		sprite: 'Slash',
 		description: 'The Rogue kills an enemy',
 		canPlay(scene) {
 			return scene.enemy && scene.alive('Rogue');

@@ -108,6 +108,7 @@ textures/cards/Card Throw.png
 textures/cards/Twin Daggers.png
 textures/cards/Blessed Rain.png
 textures/cards/Exorcise.png
+textures/cards/Death from the Shadows.png
 textures/cards/Mage.png
 textures/cards/Knight.png
 textures/cards/Priest.png
