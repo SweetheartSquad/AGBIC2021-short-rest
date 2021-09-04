@@ -483,9 +483,8 @@ format:
 				scene.choice(
 					{
 						sprite: 'Yes',
-						name: 'Kindle',
-						description:
-							'Burn a card from your hand to revive fallen party members.',
+						name: 'Re-light',
+						description: 'Burn a card from your hand to take a power nap',
 						canPlay() {
 							return hand.length > 1;
 						},
@@ -504,9 +503,9 @@ format:
 										);
 										scene.party.forEach((p) => {
 											if (!p.health) {
-												p.heal(1);
 												scene.log(`${p.name} revived.`);
 											}
+											p.heal(1);
 										});
 										scene.overlay([1, 0.5, 0, 0.5]);
 										scene.deck = scene.deck.filter((d) => d.def !== i.def);
