@@ -37,9 +37,9 @@ export class Card extends GameObject {
 		);
 	}
 
-	static getCardSpr(def: string | CardDef) {
+	static getCardSpr(def: string | CardDef, ui = false) {
 		const d = Card.getCard(def);
-		const sprCard = new Sprite(resources.card.texture);
+		const sprCard = new Sprite(resources[ui ? 'card_ui' : 'card'].texture);
 		sprCard.anchor.x = sprCard.anchor.y = 0.5;
 		const sprImg = new Sprite(tex(d.sprite || d.name));
 		sprImg.anchor.x = sprImg.anchor.y = 0.5;
@@ -61,14 +61,14 @@ export class Card extends GameObject {
 
 	def: CardDef;
 
-	constructor(def: string | CardDef) {
+	constructor(def: string | CardDef, ui?: boolean) {
 		super();
 		this.def = Card.getCard(def);
 		const { name, description } = this.def;
 		this.scripts.push((this.transform = new Transform(this)));
 		this.scripts.push((this.display = new Display(this)));
 
-		this.sprCard = Card.getCardSpr(this.def);
+		this.sprCard = Card.getCardSpr(this.def, ui);
 		this.sprCard.anchor.x = this.sprCard.anchor.y = 0.5;
 		this.display.container.addChild(this.sprCard);
 		this.display.container.filters = [getAlphaFilter()];
