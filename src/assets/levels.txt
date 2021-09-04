@@ -236,6 +236,10 @@ format:
 			);
 			areas.push(
 				{
+					icon: 'icon_unknown',
+					obstacles: ['shrine'],
+				},
+				{
 					icon: 'icon_boss',
 					obstacles: minibossOrder.pop(),
 				},
@@ -327,6 +331,10 @@ format:
 				])
 			);
 			areas.push(
+				{
+					icon: 'icon_unknown',
+					obstacles: ['shrine'],
+				},
 				{
 					icon: 'icon_boss',
 					obstacles: minibossOrder.pop(),
@@ -423,6 +431,10 @@ format:
 				])
 			);
 			areas.push(
+				{
+					icon: 'icon_unknown',
+					obstacles: ['shrine'],
+				},
 				{
 					icon: 'icon_boss',
 					obstacles: minibossOrder.pop(),
