@@ -555,8 +555,8 @@ export class GameScene extends GameObject {
 			this.party.splice(slot >= 0 ? slot : this.party.length, 0, character);
 			if (!this.front.health) {
 				this.clearHand();
-				// TODO: sfx?
 				this.announce('YOU DIED', 3000);
+				this.music('');
 				this.invert(3000);
 				this.addCard('Start');
 				(this.hand.hand[0].sprCard.children[1] as BitmapText).text = 'Restart';
