@@ -602,6 +602,7 @@ format:
 										hand.forEach((c) => {
 											scene.addCard(c.def);
 										});
+										scene.addCard('Advance');
 										scene.killObstacle(o);
 									},
 								});
