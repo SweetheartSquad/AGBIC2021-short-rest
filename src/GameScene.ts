@@ -740,6 +740,11 @@ export class GameScene extends GameObject {
 			this.addCard('Kindle');
 			this.addCard('Shuffle Cards');
 			this.camp.display.container.visible = true;
+			this.party
+				.filter((i) => i.temporary)
+				.forEach((i) => {
+					i.damage(i.maxHealth, true);
+				});
 			this.party.forEach((i) => {
 				if (!i.health) {
 					i.heal(1);
