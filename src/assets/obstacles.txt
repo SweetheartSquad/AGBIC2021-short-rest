@@ -73,7 +73,7 @@ format:
 		shrine: {
 			interact(scene) {
 				const o = this;
-				if (scene.level < scene.handSize - 3) {
+				if (scene.level < scene.handSize - 2) {
 					scene.log(
 						'The shrine crumbles before the party, its power already spent.'
 					);
