@@ -129,6 +129,9 @@ format:
 					scene.obstacles.reverse();
 				}
 			},
+			end(scene) {
+				scene.fanfare();
+			},
 		},
 		bat: {
 			name: 'Eyebat',
@@ -179,6 +182,8 @@ format:
 						...scene.obstacle.def,
 						damage: scene.obstacle.def.damage + 1,
 					};
+				} else {
+					scene.fanfare();
 				}
 			},
 		},
@@ -216,6 +221,8 @@ format:
 						...scene.obstacle.def,
 						damage: scene.obstacle.def.damage + 1,
 					};
+				} else {
+					scene.fanfare();
 				}
 			},
 		},
@@ -253,6 +260,8 @@ format:
 						...scene.obstacle.def,
 						damage: scene.obstacle.def.damage + 1,
 					};
+				} else {
+					scene.fanfare();
 				}
 			},
 		},
@@ -291,6 +300,9 @@ format:
 				scene.log('The mushroom released poisonous spores!');
 				scene.party.forEach((i) => i.damage(1));
 				scene.overlay([0.6, 0.8, 0, 0.6], 1000);
+			},
+			end(scene) {
+				scene.fanfare();
 			},
 		},
 		treasure: {
@@ -356,6 +368,9 @@ format:
 					scene.log('The blade splits the slime in two!');
 					scene.addObstacle('slime_medium');
 				}
+			},
+			end(scene) {
+				scene.fanfare();
 			},
 		},
 		slime_medium: {
@@ -649,6 +664,7 @@ format:
 				scene.tween(scene.containerParty.scale, 'x', 1, 0);
 				scene.tween(scene.containerParty.scale, 'y', 1, 0);
 				scene.tween(scene.containerParty.pivot, 'x', 0, 0);
+				scene.fanfare();
 			},
 			async interact(scene) {
 				if (!this.health) return;
