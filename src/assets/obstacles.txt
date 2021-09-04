@@ -103,7 +103,7 @@ format:
 				} else if (this.health <= 0) {
 					if (Math.random() > 0.5) {
 						scene.log('The zombie got back up!');
-						this.heal(3);
+						scene.addObstacle('zombie');
 					}
 				}
 			},
