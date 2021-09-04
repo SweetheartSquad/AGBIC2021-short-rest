@@ -115,6 +115,7 @@ textures/cards/Blessed Rain.png
 textures/cards/Exorcise.png
 textures/cards/Death from the Shadows.png
 textures/cards/Toxic Vent.png
+textures/cards/Vision of Death.png
 textures/cards/Mage.png
 textures/cards/Knight.png
 textures/cards/Priest.png

@@ -602,7 +602,6 @@ scene.advance() // basic attack/interaction/movement
 		},
 	},
 	'Vision of Death': {
-		sprite: 'Magic Blast',
 		description: 'The Mage kills everything in sight',
 		canPlay(scene) {
 			return scene.alive('Mage');
