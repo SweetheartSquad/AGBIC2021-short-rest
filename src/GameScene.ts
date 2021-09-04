@@ -491,7 +491,6 @@ export class GameScene extends GameObject {
 		const { def } = card;
 		if (def.canPlay && !def.canPlay(this)) return;
 		const sprCard = Card.getCardSpr(def);
-		sprCard.texture = card.sprCard.texture;
 		(sprCard.children[1] as BitmapText).text = (
 			card.sprCard.children[1] as BitmapText
 		).text;
@@ -555,7 +554,7 @@ export class GameScene extends GameObject {
 				// TODO: sfx?
 				this.announce('YOU DIED', 3000);
 				this.invert(3000);
-				this.addCard('Start', true);
+				this.addCard('Start');
 				(this.hand.hand[0].sprCard.children[1] as BitmapText).text = 'Restart';
 			}
 		});
@@ -734,8 +733,8 @@ export class GameScene extends GameObject {
 	async startCamp() {
 		this.transition(() => {
 			this.clearHand();
-			this.addCard('Kindle', true);
-			this.addCard('Shuffle Cards', true);
+			this.addCard('Kindle');
+			this.addCard('Shuffle Cards');
 			this.camp.display.container.visible = true;
 			this.party.forEach((i) => {
 				if (!i.health) {

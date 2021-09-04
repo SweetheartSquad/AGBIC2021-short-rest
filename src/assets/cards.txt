@@ -4,6 +4,7 @@ format:
 	name: 'Name of Card (uses object key if not set)',
 	description: 'Description text shown on hover',
 	sprite: 'card image (uses name or object key if not set)',
+	variant: undefined | 'ui',
 	effect: (scene) => {
 		// effect triggered when card is played
 		// e.g. `scene.damageObstacle(1)` to damage obstacle in the lead by 1 hp
@@ -29,7 +30,6 @@ scene.alive('Name') // whether a party member is alive
 
 // hand
 scene.addCard('name' | { ...unique definition }) // adds card to hand
-scene.addCard('name' | { ...unique definition }, true) // adds card to hand (ui styled)
 scene.addDeck('name' | { ...unique definition }) // adds card to deck
 scene.playCard(card) // plays a card from hand
 scene.clearHand() // clears cards in hand
@@ -78,7 +78,7 @@ scene.advance() // basic attack/interaction/movement
 		effect(scene) {
 			scene.setBg('title');
 			scene.setFg('blank');
-			scene.addCard('Start', true);
+			scene.addCard('Start');
 			scene.addCard('Options');
 			scene.addCard('About');
 			scene.cardSpeed = 1;
@@ -87,6 +87,7 @@ scene.advance() // basic attack/interaction/movement
 	},
 	Start: {
 		sprite: 'Slash',
+		variant: 'ui',
 		description: 'Start a new game',
 		async effect(scene) {
 			await scene.setLevel(0, () => {
@@ -103,7 +104,7 @@ scene.advance() // basic attack/interaction/movement
 		effect(scene) {
 			scene.sfx('sfx4');
 			scene.clearHand();
-			scene.addCard('Back', true);
+			scene.addCard('Back');
 			scene.addCard('Filter');
 			scene.addCard('Scale');
 			scene.addCard('Card Throw');
@@ -143,11 +144,12 @@ scene.advance() // basic attack/interaction/movement
 	},
 	Back: {
 		sprite: "Coward's Plan",
+		variant: 'ui',
 		description: 'Back to main menu',
 		effect(scene) {
 			scene.sfx('sfx4');
 			scene.clearHand();
-			scene.addCard('Start', true);
+			scene.addCard('Start');
 			scene.addCard('Options');
 			scene.addCard('About');
 		},
@@ -158,7 +160,7 @@ scene.advance() // basic attack/interaction/movement
 		effect(scene) {
 			scene.sfx('sfx4');
 			scene.clearHand();
-			scene.addCard('Back', true);
+			scene.addCard('Back');
 			scene.addCard({
 				name: 'Made\nBy',
 				description: 'Sean, Michael, and IAN of SweetHeart Squad',
@@ -186,14 +188,16 @@ scene.advance() // basic attack/interaction/movement
 		},
 	},
 	Advance: {
+		variant: 'ui',
 		description:
 			'Move, exchange blows, interact (gives another "Advance" when played)',
 		effect(scene) {
-			scene.addCard('Advance', true);
+			scene.addCard('Advance');
 			scene.advance();
 		},
 	},
 	Kindle: {
+		variant: 'ui',
 		description: 'Burn a card to light the campfire and heal the party',
 		canPlay(scene) {
 			return scene.deck.length > 0;
@@ -227,19 +231,20 @@ scene.advance() // basic attack/interaction/movement
 							},
 							true
 						);
-						scene.addCard('Shuffle Cards', true);
+						scene.addCard('Shuffle Cards');
 					},
 				});
 			});
 			scene.addCard(
 				{
 					name: 'Back',
+					variant: 'ui',
 					sprite: "Coward's Plan",
 					effect: () => {
 						scene.sfx('sfx4');
 						scene.clearHand();
-						scene.addCard('Kindle', true);
-						scene.addCard('Shuffle Cards', true);
+						scene.addCard('Kindle');
+						scene.addCard('Shuffle Cards');
 					},
 				},
 				true
@@ -247,6 +252,7 @@ scene.advance() // basic attack/interaction/movement
 		},
 	},
 	'Shuffle Cards': {
+		variant: 'ui',
 		sprite: 'Shuffle Cards',
 		description: 'Prepare cards to embark into the dungeon',
 		effect(scene) {
@@ -275,6 +281,7 @@ scene.advance() // basic attack/interaction/movement
 			scene.addCard(
 				{
 					name: 'Reorder Party',
+					variant: 'ui',
 					sprite: 'Shuffle',
 					description:
 						'Prepare party to embark into the dungeon with this hand',
@@ -318,6 +325,7 @@ scene.advance() // basic attack/interaction/movement
 						scene.addCard(
 							{
 								name: 'Embark',
+								variant: 'ui',
 								sprite: 'Advance',
 								description: 'Embark into the dungeon',
 								effect() {
@@ -328,7 +336,7 @@ scene.advance() // basic attack/interaction/movement
 										hand.forEach((i) => {
 											scene.addCard(i);
 										});
-										scene.addCard('Advance', true);
+										scene.addCard('Advance');
 									});
 								},
 							},
@@ -623,7 +631,7 @@ scene.advance() // basic attack/interaction/movement
 			for (let i = 0; i < cards && draw.length; ++i) {
 				scene.addCard(draw.pop());
 			}
-			scene.addCard('Advance', true);
+			scene.addCard('Advance');
 		},
 	},
 	'Charm Creature': {

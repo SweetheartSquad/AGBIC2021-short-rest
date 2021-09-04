@@ -10,6 +10,7 @@ import { btn, evalFn, tex, wrap } from './utils';
 
 export type CardDef = {
 	name: string;
+	variant?: string;
 	sprite?: string;
 	description?: string;
 	canPlay?: (scene: GameScene) => boolean;
@@ -37,9 +38,11 @@ export class Card extends GameObject {
 		);
 	}
 
-	static getCardSpr(def: string | CardDef, ui = false) {
+	static getCardSpr(def: string | CardDef) {
 		const d = Card.getCard(def);
-		const sprCard = new Sprite(resources[ui ? 'card_ui' : 'card'].texture);
+		const sprCard = new Sprite(
+			resources[['card', d.variant].filter((i) => i).join('_')].texture
+		);
 		sprCard.anchor.x = sprCard.anchor.y = 0.5;
 		const sprImg = new Sprite(tex(d.sprite || d.name));
 		sprImg.anchor.x = sprImg.anchor.y = 0.5;
@@ -61,14 +64,14 @@ export class Card extends GameObject {
 
 	def: CardDef;
 
-	constructor(def: string | CardDef, ui?: boolean) {
+	constructor(def: string | CardDef) {
 		super();
 		this.def = Card.getCard(def);
 		const { name, description } = this.def;
 		this.scripts.push((this.transform = new Transform(this)));
 		this.scripts.push((this.display = new Display(this)));
 
-		this.sprCard = Card.getCardSpr(this.def, ui);
+		this.sprCard = Card.getCardSpr(this.def);
 		this.sprCard.anchor.x = this.sprCard.anchor.y = 0.5;
 		this.display.container.addChild(this.sprCard);
 		this.display.container.filters = [getAlphaFilter()];
