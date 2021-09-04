@@ -416,7 +416,6 @@ format:
 		},
 		potion: {
 			interact(scene) {
-				scene.sfx('sfx2');
 				const o = this;
 				scene.log(
 					`${scene.front.name} finds a bottle filled with ${
@@ -434,6 +433,7 @@ format:
 						sprite: 'Yes',
 						name: 'Quaff',
 						effect() {
+							scene.sfx('sfx2');
 							o.animator.setAnimation('potion_empty');
 
 							if (Math.random() < 0.1) {
