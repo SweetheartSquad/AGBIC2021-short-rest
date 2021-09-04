@@ -94,6 +94,7 @@ scene.advance() // basic attack/interaction/movement
 				scene.clearParty();
 				// TODO: proper deck init
 				scene.deck.length = 0;
+				scene.handSize = 4;
 			});
 		},
 	},

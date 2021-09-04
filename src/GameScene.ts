@@ -112,7 +112,7 @@ export class GameScene extends GameObject {
 
 	cardSpeed = 0;
 
-	handSize = 5;
+	handSize = -1;
 
 	musicPlaying?: {
 		howl: Howl;
