@@ -563,7 +563,6 @@ scene.advance() // basic attack/interaction/movement
 		},
 	},
 	Exorcise: {
-		sprite: 'Absolve Death',
 		description: 'The Priest destroys all undead enemies',
 		canPlay(scene) {
 			return scene.enemy && scene.alive('Priest');
