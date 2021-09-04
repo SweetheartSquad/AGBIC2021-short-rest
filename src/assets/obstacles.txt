@@ -494,7 +494,7 @@ format:
 			sprite: 'icon_camp',
 			interact(scene) {
 				const o = this;
-				const hand = scene.hand.hand.slice();
+				const hand = scene.getHand();
 				scene.log("The party finds the remnants of another party's camp.");
 				scene.choice(
 					{
@@ -502,12 +502,12 @@ format:
 						name: 'Re-light',
 						description: 'Burn a card from your hand to take a power nap',
 						canPlay() {
-							return hand.length > 1;
+							return hand.length > 0;
 						},
 						effect() {
 							scene.sfx('sfx4');
 							scene.clearHand();
-							hand.slice(0, -1).forEach((i, idx) => {
+							hand.forEach((i, idx) => {
 								scene.addCard({
 									...i.def,
 									description: `Burn "${i.def.name}"`,

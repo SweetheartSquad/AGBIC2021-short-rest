@@ -626,7 +626,7 @@ scene.advance() // basic attack/interaction/movement
 		description: 'Replace all cards in your hand with new ones from your deck',
 		effect(scene) {
 			scene.sfx('sfx4');
-			const cards = scene.hand.hand.length - 1; // -1 for advance
+			const cards = scene.getHand();
 			const draw = scene.shuffle(scene.deck.slice());
 			scene.clearHand();
 			for (let i = 0; i < cards && draw.length; ++i) {
