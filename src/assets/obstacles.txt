@@ -692,6 +692,7 @@ format:
 					scene.killObstacle();
 				} else {
 					scene.log('A trap is sprung!');
+					scene.sfx('sfx2');
 					this.animator.setAnimation('trap_triggered');
 					this.transform.y += 10;
 					scene.front.damage(4);
