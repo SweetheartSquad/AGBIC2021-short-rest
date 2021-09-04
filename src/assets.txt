@@ -28,6 +28,7 @@ textures/camp_bg_lit2.png
 textures/border.png
 textures/shadow.png
 textures/card.png
+textures/card_ui.png
 textures/card_back.png
 textures/ditherGrid.png
 textures/onion.png
