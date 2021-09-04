@@ -474,7 +474,7 @@ format:
 							if (Math.random() > 0.5) {
 								// poison
 								scene.party.forEach((i) => {
-									i.damage(1);
+									i.damage(1, true);
 								});
 								scene.overlay([0.6, 0.8, 0, 0.6], 500);
 								scene.log('The party drinks, and retches moments later.');
@@ -531,7 +531,7 @@ format:
 								scene.addObstacle('potion_mimic');
 							} else if (Math.random() < 0.5) {
 								// poison
-								scene.front.damage(1);
+								scene.front.damage(1, true);
 								scene.overlay([0.6, 0.8, 0, 0.6], 500);
 								scene.log('They drink, and retch moments later.');
 								scene.killObstacle(o);
