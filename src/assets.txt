@@ -105,3 +105,7 @@ textures/cards/Shuffle Cards.png
 textures/cards/Card Throw.png
 textures/cards/Twin Daggers.png
 textures/cards/Blessed Rain.png
+textures/cards/Mage.png
+textures/cards/Knight.png
+textures/cards/Priest.png
+textures/cards/Rogue.png
