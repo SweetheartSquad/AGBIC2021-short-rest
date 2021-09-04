@@ -252,7 +252,7 @@ scene.advance() // basic attack/interaction/movement
 			scene.sfx('sfx4');
 			scene.clearHand();
 			const deck = scene.shuffle(scene.deck);
-			const hand = deck.splice(0, 5);
+			const hand = deck.splice(0, scene.handSize);
 			hand.forEach((i, idx) => {
 				scene.addCard({
 					...i,
