@@ -506,7 +506,6 @@ scene.advance() // basic attack/interaction/movement
 		},
 	},
 	'Twin Daggers': {
-		sprite: 'Slash',
 		description: 'The Rogue throws two daggers, each dealing 1 damage',
 		canPlay(scene) {
 			return scene.enemy && scene.alive('Rogue');
