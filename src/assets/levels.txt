@@ -153,6 +153,7 @@ format:
 										name: 'tutorial heal',
 										sprite: 'Absolve Death',
 										effect(scene) {
+											scene.sfx('sfx2');
 											scene.party[0].heal(2);
 											scene.killObstacle();
 											scene.log(

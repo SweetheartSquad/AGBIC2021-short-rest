@@ -110,6 +110,7 @@ scene.advance() // basic attack/interaction/movement
 		sprite: 'Magic Blast',
 		description: 'Enables/disables post-processing filter',
 		effect(scene) {
+			scene.sfx('sfx1');
 			scene.screenFilter.enabled = !scene.screenFilter.enabled;
 			scene.addCard('Filter');
 			scene.hand.hand.splice(1, 0, scene.hand.hand.pop()); // keep cards in order
@@ -119,6 +120,7 @@ scene.advance() // basic attack/interaction/movement
 		sprite: 'Shuffle Cards',
 		description: 'Enables/disables pixel-perfect scaling',
 		effect(scene) {
+			scene.sfx('sfx1');
 			window.resizer.scaleMode = {
 				FIT: 'MULTIPLES',
 				MULTIPLES: 'FIT',
@@ -131,6 +133,7 @@ scene.advance() // basic attack/interaction/movement
 	'Card Throw': {
 		description: 'Enables/disables card play animation',
 		effect(scene) {
+			scene.sfx('sfx1');
 			scene.cardSpeed = scene.cardSpeed ? 0 : 1;
 			scene.addCard('Card Throw');
 		},
@@ -139,6 +142,7 @@ scene.advance() // basic attack/interaction/movement
 		sprite: "Coward's Plan",
 		description: 'Back to main menu',
 		effect(scene) {
+			scene.sfx('sfx4');
 			scene.clearHand();
 			scene.addCard('Start');
 			scene.addCard('Options');
@@ -149,6 +153,7 @@ scene.advance() // basic attack/interaction/movement
 		sprite: 'Absolve Death',
 		description: 'Find out who made the game',
 		effect(scene) {
+			scene.sfx('sfx1');
 			scene.clearHand();
 			scene.addCard('Back');
 			scene.addCard({
@@ -191,6 +196,7 @@ scene.advance() // basic attack/interaction/movement
 			return scene.deck.length > 0;
 		},
 		effect(scene) {
+			scene.sfx('sfx4');
 			scene.clearHand();
 			scene.deck.forEach((i, idx) => {
 				scene.addCard({
@@ -198,6 +204,7 @@ scene.advance() // basic attack/interaction/movement
 					description: `Burn "${i.name}"`,
 					canPlay: undefined,
 					effect: () => {
+						scene.sfx('sfx12');
 						scene.camp.light();
 						scene.log(
 							`The party basks in the warmth of "${i.name}" and regains their strength.`
@@ -221,6 +228,7 @@ scene.advance() // basic attack/interaction/movement
 				name: 'Back',
 				sprite: "Coward's Plan",
 				effect: () => {
+					scene.sfx('sfx4');
 					scene.clearHand();
 					scene.addCard('Kindle');
 					scene.addCard('Shuffle Cards');
@@ -232,6 +240,7 @@ scene.advance() // basic attack/interaction/movement
 		sprite: 'Shuffle Cards',
 		description: 'Prepare cards to embark into the dungeon',
 		effect(scene) {
+			scene.sfx('sfx4');
 			scene.clearHand();
 			const deck = scene.shuffle(scene.deck);
 			const hand = deck.splice(0, 5);
@@ -240,6 +249,7 @@ scene.advance() // basic attack/interaction/movement
 					...i,
 					description: `Mulligan "${i.name}"`,
 					effect: () => {
+						scene.sfx('sfx4');
 						const newCard = deck.splice(0, 1)[0];
 						hand.splice(idx, 1, newCard);
 						scene.addCard({
@@ -257,6 +267,7 @@ scene.advance() // basic attack/interaction/movement
 				sprite: 'Shuffle',
 				description: 'Prepare party to embark into the dungeon with this hand',
 				effect(scene) {
+					scene.sfx('sfx4');
 					scene.clearHand();
 					const getPartySprite = (name) => {
 						if (['Rogue', 'Knight', 'Mage', 'Priest'].includes(name)) {
@@ -267,6 +278,7 @@ scene.advance() // basic attack/interaction/movement
 
 					// party order selection
 					const putInLead = (i) => {
+						scene.sfx('sfx4');
 						const idx = scene.party.indexOf(i);
 						const newIdx = scene.party.length - 1;
 						scene.party.push(scene.party.splice(idx, 1)[0]);
@@ -296,6 +308,7 @@ scene.advance() // basic attack/interaction/movement
 						sprite: 'Slash',
 						description: 'Embark into the dungeon',
 						effect() {
+							scene.sfx('sfx0');
 							scene.nextLevel(() => {
 								scene.clearHand();
 								hand.forEach((i) => {
@@ -321,6 +334,7 @@ scene.advance() // basic attack/interaction/movement
 	Shuffle: {
 		description: 'Shuffles party',
 		effect(scene) {
+			scene.sfx('sfx7');
 			const original = scene.party.slice();
 			do {
 				scene.party.sort((a, b) => {
@@ -335,6 +349,7 @@ scene.advance() // basic attack/interaction/movement
 		sprite: 'Shuffle',
 		description: 'Reverse party',
 		effect(scene) {
+			scene.sfx('sfx7');
 			scene.party.reverse().sort((a, b) => {
 				if (a.health <= 0 && b.health > 0) return -1;
 				if (a.health > 0 && b.health <= 0) return 1;
@@ -349,6 +364,7 @@ scene.advance() // basic attack/interaction/movement
 			return scene.party.some((i) => !i.health);
 		},
 		effect(scene) {
+			scene.sfx('sfx2');
 			const index = scene.party.findIndex((i) => !i.health);
 			const p = scene.party.splice(index, 1);
 			scene.party.push(p[0]);
@@ -363,6 +379,7 @@ scene.advance() // basic attack/interaction/movement
 			return scene.alive('Knight') && scene.front.name !== 'Knight';
 		},
 		effect(scene) {
+			scene.sfx('sfx7');
 			const index = scene.party.findIndex((i) => i.name === 'Knight');
 			const p = scene.party.splice(index, 1);
 			scene.party.push(p[0]);
@@ -374,6 +391,7 @@ scene.advance() // basic attack/interaction/movement
 			return scene.party.filter((i) => i.health).length >= 2;
 		},
 		effect(scene) {
+			scene.sfx('sfx7');
 			const weakest = scene.party
 				.slice()
 				.sort((a, b) => a.health - b.health)[0];
@@ -396,6 +414,7 @@ scene.advance() // basic attack/interaction/movement
 						name: i.name,
 						description: `Place ${i.name} in the lead`,
 						effect() {
+							scene.sfx('sfx7');
 							const p = scene.party.splice(idx, 1);
 							scene.party.push(p[0]);
 						},
@@ -407,6 +426,7 @@ scene.advance() // basic attack/interaction/movement
 		sprite: "Coward's Plan",
 		description: 'Retreat to previous campfire',
 		effect(scene) {
+			scene.sfx('sfx0');
 			scene.kick(-5);
 			scene.log('Party escaped!');
 			scene.startCamp();
@@ -429,6 +449,7 @@ scene.advance() // basic attack/interaction/movement
 		sprite: 'Absolve Death',
 		description: 'Heal lead',
 		effect(scene) {
+			scene.sfx('sfx1');
 			scene.front.heal(scene.front.maxHealth);
 		},
 	},
@@ -438,6 +459,7 @@ scene.advance() // basic attack/interaction/movement
 			return scene.alive('Priest');
 		},
 		effect(scene) {
+			scene.sfx('sfx2');
 			scene.party.forEach((i) => {
 				if (!i.health) i.heal(1);
 			});
@@ -451,6 +473,7 @@ scene.advance() // basic attack/interaction/movement
 			return scene.alive('Priest');
 		},
 		effect(scene) {
+			scene.sfx('sfx2');
 			scene.party.concat(scene.obstacles).forEach((i) => {
 				if (i.health) i.heal(i.maxHealth);
 			});
@@ -463,6 +486,7 @@ scene.advance() // basic attack/interaction/movement
 			return scene.enemy && scene.alive('Knight');
 		},
 		effect(scene) {
+			scene.sfx('sfx1');
 			scene.obstacle.damage(1);
 			scene.kick(-5);
 		},
@@ -474,10 +498,12 @@ scene.advance() // basic attack/interaction/movement
 			return scene.enemy && scene.alive('Rogue');
 		},
 		effect(scene) {
+			scene.sfx('sfx1');
 			scene.obstacle.damage(1);
 			scene.kick(-5);
 			scene.delay(100).then(() => {
 				if (scene.enemy) {
+					scene.sfx('sfx1');
 					scene.kick(-10);
 					scene.obstacle.damage(1);
 				}
@@ -490,6 +516,7 @@ scene.advance() // basic attack/interaction/movement
 			return scene.enemy && scene.alive('Mage');
 		},
 		effect(scene) {
+			scene.sfx('sfx3');
 			scene.obstacle.damage(2);
 			scene.kick(-5);
 			scene.overlay([1, 0, 1, 0.5]);
@@ -502,6 +529,7 @@ scene.advance() // basic attack/interaction/movement
 			return scene.enemy;
 		},
 		effect(scene) {
+			scene.sfx('sfx1');
 			scene.obstacle.damage(1);
 			scene.kick(-5);
 		},
@@ -513,6 +541,7 @@ scene.advance() // basic attack/interaction/movement
 			return scene.enemy && scene.alive('Rogue');
 		},
 		effect(scene) {
+			scene.sfx('sfx3');
 			scene.kick(-50);
 			scene.killObstacle();
 			scene.blackout();
@@ -525,6 +554,7 @@ scene.advance() // basic attack/interaction/movement
 			return scene.enemy && scene.alive('Priest');
 		},
 		effect(scene) {
+			scene.sfx('sfx3');
 			const undead = ['skeleton', 'skeleton_armoured', 'zombie', 'necromancer'];
 			scene.shake(5, 1000);
 			scene.whiteout(1000);
@@ -542,6 +572,7 @@ scene.advance() // basic attack/interaction/movement
 			return scene.alive('Mage');
 		},
 		effect(scene) {
+			scene.sfx('sfx3');
 			scene.obstacles.slice().forEach((i) => {
 				i.damage(i.maxHealth, true);
 			});
@@ -558,6 +589,7 @@ scene.advance() // basic attack/interaction/movement
 	'Portable Mulligan': {
 		description: 'Replace all cards in your hand with new ones from your deck',
 		effect(scene) {
+			scene.sfx('sfx4');
 			const cards = scene.hand.hand.length - 1; // -1 for advance
 			const draw = scene.shuffle(scene.deck.slice());
 			scene.clearHand();
@@ -574,6 +606,7 @@ scene.advance() // basic attack/interaction/movement
 			return scene.enemy && scene.alive('Priest');
 		},
 		effect(scene) {
+			scene.sfx('sfx2');
 			const o = scene.obstacle;
 			// TODO: limit charmable creatures
 			const p = scene.addParty({
@@ -597,6 +630,7 @@ scene.advance() // basic attack/interaction/movement
 			return scene.alive('Mage');
 		},
 		effect(scene) {
+			scene.sfx('sfx2');
 			scene.addParty({
 				name: 'Fire Sprite',
 				spr: 'icon_camp',
@@ -613,6 +647,7 @@ scene.advance() // basic attack/interaction/movement
 			return scene.enemy && scene.alive('Mage');
 		},
 		effect(scene) {
+			scene.sfx('sfx3');
 			// TODO: polymorph targets
 			const result = scene.shuffle([
 				'rat_small',
@@ -640,6 +675,7 @@ scene.advance() // basic attack/interaction/movement
 			return !scene.obstacle;
 		},
 		effect(scene) {
+			scene.sfx('sfx2');
 			const result = scene.shuffle([
 				['fountain'],
 				['treasure'],
@@ -663,6 +699,7 @@ scene.advance() // basic attack/interaction/movement
 			return scene.alive('Knight');
 		},
 		effect(scene) {
+			scene.sfx('sfx1');
 			const knight = scene.party.find((i) => i.name === 'Knight');
 			knight.damage(1, true);
 			knight.addArmour(2);
@@ -676,6 +713,7 @@ scene.advance() // basic attack/interaction/movement
 			return scene.alive('Knight');
 		},
 		effect(scene) {
+			scene.sfx('sfx1');
 			const knight = scene.party.find((i) => i.name === 'Knight');
 			knight.addArmour(1);
 			scene.overlay([0.5, 0.5, 0.5, 0.5]);
@@ -687,6 +725,7 @@ scene.advance() // basic attack/interaction/movement
 			return scene.alive('Mage');
 		},
 		effect(scene) {
+			scene.sfx('sfx1');
 			scene.front.addArmour(1);
 			scene.overlay([1, 0, 1, 0.5]);
 		},
@@ -698,6 +737,7 @@ scene.advance() // basic attack/interaction/movement
 			return scene.alive('Priest');
 		},
 		effect(scene) {
+			scene.sfx('sfx1');
 			scene.front.addArmour(1);
 			scene.whiteout();
 		},
@@ -709,6 +749,7 @@ scene.advance() // basic attack/interaction/movement
 			return scene.alive('Rogue');
 		},
 		effect(scene) {
+			scene.sfx('sfx1');
 			const rogue = scene.party.find((i) => i.name === 'Rogue');
 			rogue.addArmour(1);
 			scene.blackout();
@@ -722,6 +763,7 @@ scene.advance() // basic attack/interaction/movement
 			return scene.enemy && scene.alive('Knight');
 		},
 		effect(scene) {
+			scene.sfx('sfx3');
 			const knight = scene.party.find((i) => i.name === 'Knight');
 			scene.obstacle.damage(knight.health);
 			knight.damage(knight.health, true);
@@ -737,6 +779,7 @@ scene.advance() // basic attack/interaction/movement
 			return scene.alive('Priest');
 		},
 		effect(scene) {
+			scene.sfx('sfx2');
 			const all = scene.party.concat(scene.obstacles);
 			const health = all.sort((a, b) => b.health - a.health)[0].health;
 			all.forEach((i) => {
@@ -752,6 +795,7 @@ scene.advance() // basic attack/interaction/movement
 			return scene.alive('Mage');
 		},
 		effect(scene) {
+			scene.sfx('sfx3');
 			const all = scene.party.concat(scene.obstacles);
 			const health = all
 				.filter((i) => i.health)
@@ -770,6 +814,7 @@ scene.advance() // basic attack/interaction/movement
 			return scene.enemy && scene.alive('Priest');
 		},
 		effect(scene) {
+			scene.sfx('sfx1');
 			scene.obstacle.damage(scene.obstacle.def.damage);
 			scene.kick(5);
 		},
@@ -781,6 +826,7 @@ scene.advance() // basic attack/interaction/movement
 			return scene.enemy;
 		},
 		effect(scene) {
+			scene.sfx('sfx7');
 			const a = scene.front.health;
 			const b = scene.obstacle.health;
 			scene.front.setHealth(b);
@@ -795,6 +841,7 @@ scene.advance() // basic attack/interaction/movement
 			return scene.enemy;
 		},
 		effect(scene) {
+			scene.sfx('sfx2');
 			scene.obstacle.damage(1, true);
 			scene.front.heal(1);
 			scene.kick(-5);
@@ -812,6 +859,7 @@ scene.advance() // basic attack/interaction/movement
 			return scene.enemy && scene.alive('Priest');
 		},
 		effect(scene) {
+			scene.sfx('sfx1');
 			scene.obstacle.def = {
 				...scene.obstacle.def,
 				damage: 1,

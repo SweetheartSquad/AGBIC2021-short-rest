@@ -172,6 +172,9 @@ export class GameScene extends GameObject {
 
 		this.hand.display.container.on('play', (card) => {
 			this.playCard(card);
+			if (this.cardSpeed) {
+				this.sfx('sfx13');
+			}
 		});
 
 		const sprDeckCounter = new Sprite(tex('card_back'));
@@ -354,6 +357,7 @@ export class GameScene extends GameObject {
 				front.display.container.scale.y += 0.3;
 				TweenManager.abort(t1);
 				if (obstacle.health > 0) {
+					this.sfx('sfx1');
 					obstacle.damage(front.damageOutput);
 					await obstacle.def.interact?.call(obstacle, this);
 				} else {
@@ -363,6 +367,7 @@ export class GameScene extends GameObject {
 			});
 			return;
 		}
+		this.sfx('sfx4');
 		this.setPosition(this.position + 1);
 	}
 
@@ -380,6 +385,7 @@ export class GameScene extends GameObject {
 		removeFromArray(obstacle.scripts, obstacle.animator);
 		const tweens: Tween[] = [];
 		if (obstacle.maxHealth > 0) {
+			this.sfx('sfx14');
 			obstacle.kill();
 			tweens.push(
 				TweenManager.tween(
@@ -616,6 +622,7 @@ export class GameScene extends GameObject {
 				this.party.forEach((i) => {
 					i.transform.x = 0;
 				});
+				this.sfx('sfx9');
 				await delay(1000);
 				await Promise.all(
 					this.obstacles.map((i) => i.def?.start?.call(i, this))
@@ -813,6 +820,7 @@ export class GameScene extends GameObject {
 				const picked = await new Promise<number>((r) => {
 					sprs.forEach((i, idx) => {
 						i.on('mouseover', () => {
+							this.sfx('sfx5');
 							focused = i;
 						});
 						i.on('mouseout', () => {
@@ -821,6 +829,7 @@ export class GameScene extends GameObject {
 							});
 						});
 						i.once('click', () => {
+							this.sfx('sfx4');
 							TweenManager.tween(i.scale, 'x', 0, 100, 1, quadIn);
 							delay(100).then(() => {
 								TweenManager.tween(i.scale, 'x', 1, 300, 0, elasticOut);
@@ -829,6 +838,7 @@ export class GameScene extends GameObject {
 									c.visible = true;
 								});
 								i.once('click', () => {
+									this.sfx('sfx4');
 									r(idx);
 								});
 							});
@@ -860,6 +870,7 @@ export class GameScene extends GameObject {
 	}
 
 	async log(log: string) {
+		this.sfx('sfx10');
 		const textLog = new BitmapText(wrap(log, 20), fontLog);
 		textLog.x = 40;
 		textLog.y = 40;
@@ -896,6 +907,7 @@ export class GameScene extends GameObject {
 	}
 
 	async announce(announcement: string, duration = 2000) {
+		this.sfx('sfx11');
 		const textAnnounce = new BitmapText(wrap(announcement, 20), fontAnnounce);
 		textAnnounce.anchor.x = textAnnounce.anchor.y = 0.5;
 		textAnnounce.x = size.x / 2;

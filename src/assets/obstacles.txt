@@ -60,9 +60,11 @@ format:
 		door: {
 			interact(scene) {
 				if (!this.open) {
+					scene.sfx('sfx6');
 					this.open = true;
 					this.animator.setAnimation('door_open');
 				} else {
+					scene.sfx('sfx0');
 					scene.startCamp();
 				}
 			},
@@ -303,6 +305,7 @@ format:
 						sprite: 'Yes',
 						name: 'Open',
 						effect() {
+							scene.sfx('sfx6');
 							scene.queue.push(async () => {
 								o.animator.setAnimation('treasure_open');
 								await scene.delay(100);
@@ -379,6 +382,7 @@ format:
 						sprite: 'Yes',
 						name: 'Slake',
 						effect() {
+							scene.sfx('sfx2');
 							if (Math.random() > 0.5) {
 								// poison
 								scene.party.forEach((i) => {
@@ -412,6 +416,7 @@ format:
 		},
 		potion: {
 			interact(scene) {
+				scene.sfx('sfx2');
 				const o = this;
 				scene.log(
 					`${scene.front.name} finds a bottle filled with ${
@@ -485,6 +490,7 @@ format:
 							return hand.length > 1;
 						},
 						effect() {
+							scene.sfx('sfx4');
 							scene.clearHand();
 							hand.slice(0, -1).forEach((i, idx) => {
 								scene.addCard({
@@ -492,7 +498,7 @@ format:
 									description: `Burn "${i.def.name}"`,
 									canPlay: undefined,
 									effect: () => {
-										scene.camp.light();
+										scene.sfx('sfx12');
 										scene.log(
 											`The party burns "${i.def.name}" along with the rest of the fire.`
 										);

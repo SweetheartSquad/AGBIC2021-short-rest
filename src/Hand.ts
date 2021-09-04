@@ -5,6 +5,7 @@ import { Card } from './Card';
 import { filterTextOutline, fontDescription } from './font';
 import { game, resources } from './Game';
 import { GameObject } from './GameObject';
+import { getActiveScene } from './main';
 import { Display } from './Scripts/Display';
 import { Transform } from './Scripts/Transform';
 import { size } from './size';
@@ -84,6 +85,7 @@ export class Hand extends GameObject {
 		this.hand.push(card);
 		this.display.container.addChild(card.display.container);
 		card.display.container.on('mouseover', () => {
+			getActiveScene()?.sfx('sfx5');
 			this.inspecting = card;
 			this.display.container.addChild(card.display.container);
 
