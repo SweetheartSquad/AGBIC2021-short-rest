@@ -32,6 +32,7 @@ format:
 		'Absolve Death',
 		'Blessed Rain',
 		'Slash',
+		'Toxic Vent',
 		'Twin Daggers',
 		'Magic Blast',
 		'Bonk',

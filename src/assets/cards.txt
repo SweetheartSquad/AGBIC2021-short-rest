@@ -507,6 +507,19 @@ scene.advance() // basic attack/interaction/movement
 			scene.kick(-5);
 		},
 	},
+	'Toxic Vent': {
+		description: 'The Knight deals 1 damage to everyone, including themselves',
+		canPlay(scene) {
+			return scene.alive('Knight');
+		},
+		effect(scene) {
+			scene.sfx('sfx3');
+			scene.party.concat(scene.obstacles).forEach((i) => {
+				i.damage(1);
+			});
+			scene.overlay([0.6, 0.8, 0, 0.6], 500);
+		},
+	},
 	'Twin Daggers': {
 		description: 'The Rogue throws two daggers, each dealing 1 damage',
 		canPlay(scene) {
