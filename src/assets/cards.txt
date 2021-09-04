@@ -314,7 +314,7 @@ scene.advance() // basic attack/interaction/movement
 						scene.addCard(
 							{
 								name: 'Embark',
-								sprite: 'Slash',
+								sprite: 'Advance',
 								description: 'Embark into the dungeon',
 								effect() {
 									scene.music('battle_theme');
