@@ -43,7 +43,7 @@ export class Animator extends Script {
 		const [animation, index] = a.split(/(\d+)$/);
 		this.animation = animation;
 		this.frameCount = getFrameCount(animation);
-		this.frame = this.frameCount ? parseInt(index, 10) - 1 : 0;
+		this.frame = this.frameCount ? parseInt(index, 10) - 1 : 0 || 0;
 		this.updateTexture();
 	}
 
