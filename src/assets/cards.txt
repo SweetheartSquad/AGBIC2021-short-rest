@@ -99,6 +99,7 @@ scene.advance() // basic attack/interaction/movement
 	Options: {
 		description: 'Edit game options',
 		effect(scene) {
+			scene.sfx('sfx4');
 			scene.clearHand();
 			scene.addCard('Back', true);
 			scene.addCard('Filter');
@@ -153,7 +154,7 @@ scene.advance() // basic attack/interaction/movement
 		sprite: 'Absolve Death',
 		description: 'Find out who made the game',
 		effect(scene) {
-			scene.sfx('sfx1');
+			scene.sfx('sfx4');
 			scene.clearHand();
 			scene.addCard('Back', true);
 			scene.addCard({
