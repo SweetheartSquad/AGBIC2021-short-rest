@@ -460,6 +460,10 @@ export class GameScene extends GameObject {
 		}
 	}
 
+	getHand(filter = (c: Card) => !c.def.variant) {
+		return this.hand.hand.filter(filter);
+	}
+
 	choice(...choices: CardDef[]) {
 		this.pushHand();
 		this.clearHand();
