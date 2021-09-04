@@ -65,7 +65,7 @@ format:
 	const minibosses = [
 		['mushroom'],
 		['necromancer'],
-		['Rat King A', 'Rat King B', 'Rat King C'],
+		['The Rat Kings'],
 		['slime_big'],
 	];
 	let minibossOrder = minibosses.slice();

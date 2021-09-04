@@ -221,14 +221,22 @@ format:
 			health: 3,
 			damage: 1,
 		},
-		'Rat King A': {
+		'The Rat Kings': {
 			name: 'Rat King',
 			health: 3,
 			damage: 1,
 			start(scene) {
-				if (scene.obstacle === this) {
+				scene.queue.push(async () => {
+					scene.log('"Hey king, I could use a spot check."');
+					await scene.delay(2000);
+					scene.addObstacle('Rat King B');
+					scene.log('"Don\'t hurt yourself king."');
+					await scene.delay(2000);
+					scene.log('"Kings don\'t let kings fight alone!"');
+					scene.addObstacle('Rat King C');
+					await scene.delay(2000);
 					scene.announce('The Rat Kings');
-				}
+				});
 			},
 			interact() {
 				if (scene.obstacles.length > 1) {
@@ -264,11 +272,6 @@ format:
 			name: 'Rat King',
 			health: 3,
 			damage: 1,
-			start(scene) {
-				if (scene.obstacle === this) {
-					scene.announce('The Rat Kings');
-				}
-			},
 			interact() {
 				if (scene.obstacles.length > 1) {
 					scene.log(
@@ -303,11 +306,6 @@ format:
 			name: 'Rat King',
 			health: 3,
 			damage: 1,
-			start(scene) {
-				if (scene.obstacle === this) {
-					scene.announce('The Rat Kings');
-				}
-			},
 			interact() {
 				if (scene.obstacles.length > 1) {
 					scene.log(
