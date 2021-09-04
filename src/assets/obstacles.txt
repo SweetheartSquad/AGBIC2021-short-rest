@@ -70,6 +70,78 @@ format:
 				}
 			},
 		},
+		shrine: {
+			interact(scene) {
+				const o = this;
+				if (scene.level < scene.handSize - 3) {
+					scene.log(
+						'The shrine crumbles before the party, its power already spent.'
+					);
+					scene.killObstacle();
+				} else {
+					scene.log('The party discovers a powerful shrine.');
+					scene.choice(
+						{
+							name: 'Offer Penance',
+							sprite: 'Yes',
+							description: 'Increase maximum cards in hand by 1, at a price',
+							effect() {
+								scene.handSize += 1;
+								const h = scene.getHand();
+								if (h.length && Math.random() < 0.6) {
+									scene.queue.push(async () => {
+										scene.log('The shrine demands a sacrifice by fire:');
+										o.animator.setAnimation('shrine_card');
+										scene.overlay([1, 0.5, 0, 0.5]);
+										await scene.delay(1000);
+										const c = scene.shuffle(h)[0];
+										const idx = scene.deck.indexOf(c.def);
+										if (idx >= 0) {
+											scene.deck.splice(idx, 1);
+										}
+										c.def = {
+											...c.def,
+											canPlay() {
+												return true;
+											},
+											effect() {
+												scene.log(
+													`"${c.def.name}" is burned in exchange for power!`
+												);
+												scene.sfx('sfx12');
+												scene.killObstacle();
+											},
+										};
+										scene.playCard(c);
+									});
+								} else {
+									scene.queue.push(async () => {
+										scene.log('The shrine demands a sacrifice by blood:');
+										o.animator.setAnimation('shrine_blood');
+										scene.overlay([1, 0, 0, 0.5]);
+										await scene.delay(1000);
+										const p = scene.shuffle(
+											scene.party.filter((i) => i.health)
+										)[0];
+										p.damage(p.maxHealth, true);
+										scene.log(`${p.name} perishes in exchange for power!`);
+										scene.sfx('sfx3');
+										scene.killObstacle();
+									});
+								}
+							},
+						},
+						{
+							name: 'Ignore',
+							sprite: 'No',
+							effect() {
+								scene.killObstacle();
+							},
+						}
+					);
+				}
+			},
+		},
 		skeleton: {
 			name: 'Skelly',
 			health: 3,

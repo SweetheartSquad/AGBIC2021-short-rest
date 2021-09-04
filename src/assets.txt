@@ -58,6 +58,11 @@ textures/treasure_open.png
 textures/mimic.png
 textures/door.png
 textures/door_open.png
+textures/shrine.png
+textures/shrine_card1.png
+textures/shrine_card2.png
+textures/shrine_blood1.png
+textures/shrine_blood2.png
 textures/skeleton.png
 textures/skeleton_armoured.png
 textures/zombie.png
