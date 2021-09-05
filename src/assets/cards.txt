@@ -359,9 +359,9 @@ scene.advance() // basic attack/interaction/movement
 		},
 		effect() {},
 	},
-		description: 'Shuffles party',
 	'Deploy Panic': {
 		sprite: 'Shuffle',
+		description: 'Shuffles party order and draws 1 card',
 		effect(scene) {
 			scene.sfx('sfx7');
 			const original = scene.party.slice();
@@ -372,11 +372,12 @@ scene.advance() // basic attack/interaction/movement
 					return Math.random() - 0.5;
 				});
 			} while (scene.party.every((i, idx) => i === original[idx]));
+			scene.drawCard();
 		},
 	},
 	Reversal: {
 		sprite: 'Shuffle',
-		description: 'Reverse party',
+		description: 'Reverses party order and draws 1 card',
 		effect(scene) {
 			scene.sfx('sfx7');
 			scene.party.reverse().sort((a, b) => {
@@ -384,11 +385,12 @@ scene.advance() // basic attack/interaction/movement
 				if (a.health > 0 && b.health <= 0) return 1;
 				return 0;
 			});
+			scene.drawCard();
 		},
 	},
 	'Death Step': {
 		sprite: 'Shuffle',
-		description: 'Puts dead party member in lead',
+		description: 'Puts dead party member in lead and draws 1 card',
 		canPlay(scene) {
 			return scene.party.some((i) => !i.health);
 		},
@@ -399,11 +401,12 @@ scene.advance() // basic attack/interaction/movement
 			scene.party.push(p[0]);
 			scene.blackout();
 			scene.shake(5, 500);
+			scene.drawCard();
 		},
 	},
 	'Staunch Defender': {
 		sprite: 'Shuffle',
-		description: 'The Knight takes the lead',
+		description: 'The Knight takes the lead and draws 1 card',
 		canPlay(scene) {
 			return scene.alive('Knight') && scene.front.name !== 'Knight';
 		},
@@ -412,10 +415,12 @@ scene.advance() // basic attack/interaction/movement
 			const index = scene.party.findIndex((i) => i.name === 'Knight');
 			const p = scene.party.splice(index, 1);
 			scene.party.push(p[0]);
+			scene.drawCard();
 		},
 	},
 	"Coward's Plan": {
-		description: 'Sends party member with lowest HP to the back',
+		description:
+			'Sends party member with lowest HP to the back and draws 1 card',
 		canPlay(scene) {
 			return scene.party.filter((i) => i.health).length >= 2;
 		},
@@ -427,11 +432,12 @@ scene.advance() // basic attack/interaction/movement
 			const index = scene.party.indexOf(weakest);
 			const p = scene.party.splice(index, 1);
 			scene.party.unshift(p[0]);
+			scene.drawCard();
 		},
 	},
 	'Tactical Grace': {
 		sprite: 'Shuffle',
-		description: 'Select a party member to place in the lead',
+		description: 'Select a party member to place in the lead and draw 1 card',
 		canPlay(scene) {
 			return scene.party.filter((i) => i.health).length >= 2;
 		},
@@ -446,6 +452,7 @@ scene.advance() // basic attack/interaction/movement
 							scene.sfx('sfx7');
 							const p = scene.party.splice(idx, 1);
 							scene.party.push(p[0]);
+							scene.drawCard();
 						},
 					}))
 			);
