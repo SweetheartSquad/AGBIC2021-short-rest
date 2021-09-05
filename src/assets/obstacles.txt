@@ -50,6 +50,7 @@ format:
 		'Shield Spell',
 		'Holy Barrier',
 		'Stealth',
+		'Jealous Juggle',
 		'Bitter Tears',
 		'Equalize',
 		'Downsize',

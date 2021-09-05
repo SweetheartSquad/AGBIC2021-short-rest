@@ -829,6 +829,20 @@ scene.advance() // basic attack/interaction/movement
 			scene.blackout();
 		},
 	},
+	'Jealous Juggle': {
+		sprite: 'Death from the Shadows',
+		description: 'The Rogue takes 1 damage and draws 2 cards',
+		canPlay(scene) {
+			return scene.alive('Rogue');
+		},
+		effect(scene) {
+			scene.sfx('sfx4');
+			const rogue = scene.party.find((i) => i.name === 'Rogue');
+			rogue.damage(1);
+			scene.drawCard();
+			scene.drawCard();
+		},
+	},
 	'Bitter Tears': {
 		sprite: 'Magic Blast',
 		description:
