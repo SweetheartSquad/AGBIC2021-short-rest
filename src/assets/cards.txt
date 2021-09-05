@@ -636,14 +636,44 @@ scene.advance() // basic attack/interaction/movement
 	},
 	'Charm Creature': {
 		sprite: 'Blessed Rain',
-		description: 'The Priest sways a creature to switch sides',
+		description: 'The Priest sways a weak-willed creature to switch sides',
 		canPlay(scene) {
 			return scene.enemy && scene.alive('Priest');
 		},
 		effect(scene) {
 			scene.sfx('sfx2');
 			const o = scene.obstacle;
-			// TODO: limit charmable creatures
+			if (o.def.name && o.def.name.includes('Rat King')) {
+				scene.log('The charm spell fizzles off their glistening abs!');
+				scene.overlay([1, 0, 0, 0.1]);
+				scene.delay(1500).then(() => {
+					scene.log('"It takes a king to befriend a king!"');
+				});
+				return;
+			} else if (o.def.name && o.def.name.includes('Dragon')) {
+				scene.log('The charm spell fizzles off their glistening scales!');
+				scene.overlay([1, 0, 0, 0.1]);
+				scene.delay(1500).then(() => {
+					scene.log('"You think you can seduce ME!?"');
+				});
+				return;
+			} else if (o.def.name === 'Big Slime') {
+				scene.log('The charm spell fizzles off their glistening slime!');
+				scene.overlay([1, 0, 0, 0.1]);
+				scene.delay(1500).then(() => {
+					scene.log('"*blub blub*"');
+				});
+				return;
+			} else if (o.def.name === 'The Necromancer') {
+				scene.log('The charm spell fizzles off their glistening robe!');
+				scene.overlay([1, 0, 0, 0.1]);
+				scene.delay(1500).then(() => {
+					scene.log(
+						'"hee hee i dunked myself in anti-charm oil before the fight"'
+					);
+				});
+				return;
+			}
 			const p = scene.addParty({
 				name: `Friendly ${o.def.name}`,
 				spr: o.def.sprite,
