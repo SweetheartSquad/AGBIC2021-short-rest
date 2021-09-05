@@ -358,8 +358,9 @@ scene.advance() // basic attack/interaction/movement
 		},
 		effect() {},
 	},
-	Shuffle: {
 		description: 'Shuffles party',
+	'Deploy Panic': {
+		sprite: 'Shuffle',
 		effect(scene) {
 			scene.sfx('sfx7');
 			const original = scene.party.slice();
