@@ -37,6 +37,7 @@ scene.pushHand() // saves current card definitions to a stack
 scene.popHand() // pops stack of card definitions and adds each (generally will want to clear hand first)
 scene.loot(...card names | definitions) // gives player a choice of one card to add to their deck
 scene.getHand(filter) // returns filtered array of cards (defaults to only non-variant cards)
+scene.drawCard() // draws a card from the deck
 
 // interaction
 scene.addObstacle('name' | { ...unique definition })
