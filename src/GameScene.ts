@@ -775,10 +775,7 @@ export class GameScene extends GameObject {
 		const cards = this.getHand().map((i) => i.def);
 		const deck = this.shuffle(this.deck);
 		cards.forEach((i) => {
-			const idx = deck.indexOf(i);
-			if (idx >= 0) {
-				deck.splice(idx, 1);
-			}
+			removeFromArray(deck, i);
 		});
 		if (!deck[0]) {
 			this.log('Tried to draw a card, but there are none left!');
