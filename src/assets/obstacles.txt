@@ -97,10 +97,7 @@ format:
 										scene.overlay([1, 0.5, 0, 0.5]);
 										await scene.delay(1000);
 										const c = scene.shuffle(h)[0];
-										const idx = scene.deck.indexOf(c.def);
-										if (idx >= 0) {
-											scene.deck.splice(idx, 1);
-										}
+										scene.burnCard(c);
 										c.def = {
 											...c.def,
 											canPlay() {

@@ -767,6 +767,10 @@ export class GameScene extends GameObject {
 		return def;
 	}
 
+	burnCard(card: Card) {
+		removeFromArray(this.deck, card.def);
+	}
+
 	drawCard() {
 		const cards = this.getHand().map((i) => i.def);
 		const deck = this.shuffle(this.deck);

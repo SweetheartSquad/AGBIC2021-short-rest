@@ -38,6 +38,7 @@ scene.popHand() // pops stack of card definitions and adds each (generally will 
 scene.loot(...card names | definitions) // gives player a choice of one card to add to their deck
 scene.getHand(filter) // returns filtered array of cards (defaults to only non-variant cards)
 scene.drawCard() // draws a card from the deck
+scene.burnCard(card) // removes a card from the deck
 
 // interaction
 scene.addObstacle('name' | { ...unique definition })
@@ -207,7 +208,7 @@ scene.advance() // basic attack/interaction/movement
 		effect(scene) {
 			scene.sfx('sfx4');
 			scene.clearHand();
-			scene.deck.forEach((i, idx) => {
+			scene.deck.forEach((i) => {
 				scene.addCard({
 					...i,
 					description: `Burn "${i.name}"`,
@@ -221,7 +222,7 @@ scene.advance() // basic attack/interaction/movement
 						);
 						scene.party.forEach((p) => p.heal(p.maxHealth));
 						scene.overlay([1, 0.5, 0, 0.5]);
-						scene.deck.splice(idx, 1);
+						scene.burnCard(i);
 						scene.clearHand();
 						scene.addCard(
 							{
