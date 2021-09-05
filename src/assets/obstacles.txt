@@ -6,6 +6,7 @@ format:
 	armour: number | undefined,
 	damage: number | undefined,
 	shadow: false | undefined,
+	offset: number | undefined, // vertical offset
 	start: (scene) => {
 		// effect triggered when obstacle is encountered
 	},

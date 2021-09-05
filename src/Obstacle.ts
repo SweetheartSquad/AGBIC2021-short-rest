@@ -13,6 +13,7 @@ type ObstacleDef = {
 	damage?: number;
 	sprite?: string;
 	shadow?: false;
+	offset?: number;
 	start?: (scene: GameScene) => void | Promise<void>;
 	interact?: (scene: GameScene) => void | Promise<void>;
 	end?: (scene: GameScene) => void | Promise<void>;
@@ -60,6 +61,7 @@ export class Obstacle extends Character {
 		if (def.shadow === false) {
 			this.display.container.children[0].visible = false;
 		}
+		this.display.container.pivot.y += def.offset || 0;
 	}
 
 	kill() {
