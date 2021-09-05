@@ -463,6 +463,8 @@ format:
 			damage: 1,
 		},
 		fountain: {
+			shadow: false,
+			offset: -50,
 			interact(scene) {
 				scene.log('The party considers slaking their thirst.');
 				scene.choice(
