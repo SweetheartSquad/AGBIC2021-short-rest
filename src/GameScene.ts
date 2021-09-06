@@ -801,8 +801,9 @@ export class GameScene extends GameObject {
 		}
 	}
 
-	loot(cards: Parameters<GameScene['addCard']>[0][], oneChance = false) {
-		if (cards.length <= 0) return Promise.resolve();
+	loot(_cards: Parameters<GameScene['addCard']>[0][], oneChance = false) {
+		if (_cards.length <= 0) return Promise.resolve();
+		const cards = this.shuffle(_cards);
 		return new Promise<void>((looted) => {
 			this.queue.push(async () => {
 				const sprs = cards.map((i, idx) => {
