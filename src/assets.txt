@@ -38,7 +38,8 @@ textures/onion.png
 textures/frog.png
 textures/cat.png
 textures/apple.png
-textures/bg.png
+textures/bg1.png
+textures/bg2.png
 textures/bg_forest1.png
 textures/bg_forest2.png
 textures/bg_alternate.png
