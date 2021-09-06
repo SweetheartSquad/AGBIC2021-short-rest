@@ -73,6 +73,7 @@ format:
 	return {
 		0: (scene) => {
 			minibossOrder = scene.shuffle(minibosses);
+			minibossOrder.unshift(undefined);
 			scene.setBg('bg_forest');
 			scene.setFg('fg');
 			scene.addCard('Advance');
@@ -242,7 +243,7 @@ format:
 				},
 				{
 					icon: 'icon_boss',
-					obstacles: minibossOrder.pop(),
+					obstacles: minibossOrder[scene.level],
 				},
 				{
 					icon: 'icon_treasure',
@@ -338,7 +339,7 @@ format:
 				},
 				{
 					icon: 'icon_boss',
-					obstacles: minibossOrder.pop(),
+					obstacles: minibossOrder[scene.level],
 				},
 				{
 					icon: 'icon_treasure',
@@ -438,7 +439,7 @@ format:
 				},
 				{
 					icon: 'icon_boss',
-					obstacles: minibossOrder.pop(),
+					obstacles: minibossOrder[scene.level],
 				},
 				{
 					icon: 'icon_treasure',
