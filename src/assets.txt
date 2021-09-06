@@ -57,7 +57,7 @@ textures/icon_shield.png
 textures/error.png
 textures/treasure.png
 textures/treasure_open.png
-textures/mimic.png
+textures/treasure_mimic.png
 textures/door.png
 textures/door_open.png
 textures/shrine.png
