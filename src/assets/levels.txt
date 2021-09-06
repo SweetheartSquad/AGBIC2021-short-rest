@@ -63,6 +63,7 @@ format:
 		['trap'],
 	];
 	const restore = [['fountain'], ['potion']];
+	const npc = [['fortune_teller'], ['dealer']];
 	const minibosses = [
 		['mushroom'],
 		['necromancer'],
@@ -214,17 +215,77 @@ format:
 					obstacles: scene.shuffle(basic)[0],
 				},
 				...scene.shuffle([
-					{
-						icon: 'icon_unknown',
-						obstacles: ['treasure'],
-					},
-					{
+					Math.random() > 0.5 && {
 						icon: 'icon_enemy',
 						obstacles: scene.shuffle(tough)[0],
 					},
 					Math.random() > 0.5 && {
 						icon: 'icon_enemy',
 						obstacles: scene.shuffle(basic)[0],
+					},
+					Math.random() > 0.5 && {
+						icon: 'icon_unknown',
+						obstacles: scene.shuffle(encounter)[0],
+					},
+				]),
+				...scene.shuffle([
+					Math.random() > 0.5 && {
+						icon: 'icon_unknown',
+						obstacles: scene.shuffle(restore)[0],
+					},
+					Math.random() > 0.5 && {
+						icon: 'icon_enemy',
+						obstacles: scene.shuffle(basic)[0],
+					},
+				])
+			);
+			areas.push(
+				{
+					icon: 'icon_unknown',
+					obstacles: ['shrine'],
+				},
+				{
+					icon: 'icon_boss',
+					obstacles: minibossOrder[scene.level],
+				},
+				{
+					icon: 'icon_treasure',
+					obstacles: ['treasure'],
+				},
+				{
+					icon: 'icon_door',
+					obstacles: ['door'],
+				}
+			);
+			return areas.filter((i) => i);
+		},
+		2: (scene) => {
+			const areas = [
+				{
+					icon: 'icon_camp',
+				},
+			];
+			areas.push(
+				{
+					icon: 'icon_enemy',
+					obstacles: scene.shuffle(basic)[0],
+				},
+				...scene.shuffle([
+					{
+						icon: 'icon_unknown',
+						obstacles: ['treasure'],
+					},
+					{
+						icon: 'icon_enemy',
+						obstacles: scene.shuffle(tough.concat(annoying))[0],
+					},
+					Math.random() > 0.5 && {
+						icon: 'icon_enemy',
+						obstacles: scene.shuffle(basic)[0],
+					},
+					Math.random() > 0.5 && {
+						icon: 'icon_enemy',
+						obstacles: scene.shuffle(tough)[0],
 					},
 				]),
 				Math.random() > 0.5 && {
@@ -256,7 +317,7 @@ format:
 			);
 			return areas.filter((i) => i);
 		},
-		2: (scene) => {
+		3: (scene) => {
 			const areas = [
 				{
 					icon: 'icon_camp',
@@ -272,13 +333,13 @@ format:
 						icon: 'icon_unknown',
 						obstacles: ['treasure'],
 					},
+					Math.random() > 0.5 && {
+						icon: 'icon_unknown',
+						obstacles: scene.shuffle(npc)[0],
+					},
 					{
 						icon: 'icon_enemy',
-						obstacles: scene.shuffle(basic)[0],
-					},
-					Math.random() > 0.5 && {
-						icon: 'icon_enemy',
-						obstacles: scene.shuffle(tough)[0],
+						obstacles: scene.shuffle(tougher)[0],
 					},
 					Math.random() > 0.5 && {
 						icon: 'icon_enemy',
@@ -329,106 +390,6 @@ format:
 					{
 						icon: 'icon_enemy',
 						obstacles: scene.shuffle(tough)[0],
-					},
-				])
-			);
-			areas.push(
-				{
-					icon: 'icon_unknown',
-					obstacles: ['shrine'],
-				},
-				{
-					icon: 'icon_boss',
-					obstacles: minibossOrder[scene.level],
-				},
-				{
-					icon: 'icon_treasure',
-					obstacles: ['treasure'],
-				},
-				{
-					icon: 'icon_door',
-					obstacles: ['door'],
-				}
-			);
-			return areas.filter((i) => i);
-		},
-		3: (scene) => {
-			const areas = [
-				{
-					icon: 'icon_camp',
-				},
-			];
-			areas.push(
-				{
-					icon: 'icon_enemy',
-					obstacles: scene.shuffle(tougher)[0],
-				},
-				...scene.shuffle([
-					{
-						icon: 'icon_unknown',
-						obstacles: scene.shuffle(encounter)[0],
-					},
-					{
-						icon: 'icon_unknown',
-						obstacles: scene.shuffle(encounter)[0],
-					},
-					Math.random() > 0.5 && {
-						icon: 'icon_enemy',
-						obstacles: scene.shuffle(tougher)[0],
-					},
-					Math.random() > 0.5 && {
-						icon: 'icon_enemy',
-						obstacles: scene.shuffle(tough)[0],
-					},
-					Math.random() > 0.5 && {
-						icon: 'icon_enemy',
-						obstacles: scene.shuffle(tough)[0],
-					},
-					Math.random() > 0.5 && {
-						icon: 'icon_enemy',
-						obstacles: scene.shuffle(annoying)[0],
-					},
-					Math.random() > 0.5 && {
-						icon: 'icon_enemy',
-						obstacles: scene.shuffle(annoying)[0],
-					},
-					{
-						icon: 'icon_enemy',
-						obstacles: scene.shuffle(tough)[0],
-					},
-				]),
-				{
-					icon: 'icon_enemy',
-					obstacles: scene.shuffle(basic)[0],
-				},
-				Math.random() > 0.5 && {
-					icon: 'icon_enemy',
-					obstacles: scene.shuffle(tougher)[0],
-				},
-				Math.random() > 0.25 && {
-					icon: 'icon_enemy',
-					obstacles: scene.shuffle(basic)[0],
-				},
-				...scene.shuffle([
-					{
-						icon: 'icon_unknown',
-						obstacles: scene.shuffle(encounter)[0],
-					},
-					Math.random() > 0.5 && {
-						icon: 'icon_enemy',
-						obstacles: scene.shuffle(basic)[0],
-					},
-					Math.random() > 0.5 && {
-						icon: 'icon_enemy',
-						obstacles: scene.shuffle(tough)[0],
-					},
-					Math.random() > 0.5 && {
-						icon: 'icon_enemy',
-						obstacles: scene.shuffle(tougher)[0],
-					},
-					Math.random() > 0.5 && {
-						icon: 'icon_enemy',
-						obstacles: scene.shuffle(annoying)[0],
 					},
 				])
 			);
