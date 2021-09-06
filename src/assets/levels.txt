@@ -27,7 +27,7 @@ format:
 	];
 
 	// obstacles
-	const basic = [['bat'], ['rat_small'], ['slime_small']];
+	const basic = [['bat'], ['rat_small']];
 	const tough = [
 		['bat', 'bat'],
 		['rat_small', 'bat'],
