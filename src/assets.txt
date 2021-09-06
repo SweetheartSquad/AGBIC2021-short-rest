@@ -86,6 +86,7 @@ textures/potion.png
 textures/potion_empty.png
 textures/potion_mimic.png
 textures/fortune_teller.png
+textures/dealer.png
 textures/trap.png
 textures/trap_triggered.png
 textures/bomb.png

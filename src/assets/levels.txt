@@ -58,6 +58,7 @@ format:
 		['treasure'],
 		['potion'],
 		['fortune_teller'],
+		['dealer'],
 		['mini_camp'],
 		['trap'],
 	];

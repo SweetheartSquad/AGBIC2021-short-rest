@@ -696,6 +696,74 @@ format:
 				);
 			},
 		},
+		dealer: {
+			interact(scene) {
+				const o = this;
+				scene.log('"Welcome! Can I interest you in a game of chance?"');
+				scene.choice(
+					{
+						sprite: 'Yes',
+						name: 'Why not?',
+						description: 'Risk a card for a chance to draw another',
+						canPlay() {
+							return scene.getHand().length;
+						},
+						effect() {
+							scene.log('"Pick a card, any card!"');
+							scene.loot(
+								[
+									{
+										name: 'Bzzt!',
+										sprite: 'No',
+										variant: 'instant',
+										async effect() {
+											scene.front.damage(1);
+											scene.log('"Ouch! Better luck next time!"');
+											await scene.delay(1000);
+											scene.log('"Now scram!"');
+											scene.killObstacle(o);
+										},
+									},
+									{
+										name: 'Bzzt!',
+										sprite: 'No',
+										variant: 'instant',
+										async effect() {
+											scene.front.damage(1);
+											scene.log('"Ouch! Better luck next time!"');
+											await scene.delay(1000);
+											scene.log('"Now scram!"');
+											scene.killObstacle(o);
+										},
+									},
+									{
+										name: 'Ding!',
+										sprite: 'Yes',
+										variant: 'instant',
+										async effect() {
+											scene.drawCard();
+											scene.log('"Drat- uh- I mean, congratulations!"');
+											await scene.delay(1000);
+											scene.log('"Now scram!"');
+											scene.killObstacle(o);
+										},
+									},
+								],
+								true
+							);
+						},
+					},
+					{
+						sprite: 'No',
+						name: 'Rather not',
+						effect() {
+							scene.log('"Then scram! And don\'t push your luck!"');
+							scene.killObstacle(o);
+						},
+					}
+				);
+			},
+		},
 		trap: {
 			async interact(scene) {
 				if (scene.front.name === 'Rogue') {
