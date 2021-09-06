@@ -607,6 +607,19 @@ format:
 									},
 								});
 							});
+							scene.addCard({
+								name: 'Forget it',
+								sprite: "Coward's Plan",
+								variant: 'ui',
+								effect() {
+									scene.clearHand();
+									hand.forEach((c) => {
+										scene.addCard(c.def);
+									});
+									scene.addCard('Advance');
+									scene.killObstacle(o);
+								},
+							});
 						},
 					},
 					{
