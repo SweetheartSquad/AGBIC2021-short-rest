@@ -50,7 +50,7 @@ format:
 		['zombie', 'skeleton', 'zombie'],
 		['zombie', 'skeleton_armoured', 'zombie'],
 		['jester', 'bomb'],
-		['jester', 'slime_medium', 'potion'],
+		['jester', 'jester', 'potion'],
 		['rat_small', 'rat_big', 'rat_small'],
 	];
 	const encounter = [
