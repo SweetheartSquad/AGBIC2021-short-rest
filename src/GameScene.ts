@@ -762,7 +762,7 @@ export class GameScene extends GameObject {
 		const def = Card.getCard(...options);
 		if (def.variant === 'instant') {
 			this.queue.push(async () => {
-				def.effect(this);
+				await def.effect(this);
 			});
 			return undefined;
 		}
