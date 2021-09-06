@@ -760,6 +760,7 @@ scene.advance() // basic attack/interaction/movement
 				['treasure'],
 				['potion'],
 				['fortune_teller'],
+				['dealer'],
 				['skeleton', 'A bad omen...'],
 				['zombie', 'A bad omen...'],
 				['skeleton_armoured', 'A bad omen...'],
