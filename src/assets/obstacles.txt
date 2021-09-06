@@ -86,7 +86,7 @@ format:
 						{
 							name: 'Offer Penance',
 							sprite: 'Yes',
-							description: 'Increase maximum cards in hand by 1, at a price',
+							description: 'Increase starting hand size by 1, at a price',
 							effect() {
 								scene.handSize += 1;
 								const h = scene.getHand();
