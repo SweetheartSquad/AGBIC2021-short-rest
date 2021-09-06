@@ -73,13 +73,17 @@ format:
 			},
 		},
 		shrine: {
+			shadow: false,
+			offset: -20,
 			interact(scene) {
 				const o = this;
 				if (scene.level < scene.handSize - 2) {
 					scene.log(
 						'The shrine crumbles before the party, its power already spent.'
 					);
+					o.animator.setAnimation('shrine_crumble');
 					scene.killObstacle();
+					scene.shake();
 				} else {
 					scene.log('The party discovers a powerful shrine.');
 					scene.choice(
@@ -93,6 +97,7 @@ format:
 								if (h.length && Math.random() < 0.6) {
 									scene.queue.push(async () => {
 										scene.log('The shrine demands a sacrifice by fire:');
+										scene.shake();
 										o.animator.setAnimation('shrine_card');
 										scene.overlay([1, 0.5, 0, 0.5]);
 										await scene.delay(1000);
@@ -116,6 +121,7 @@ format:
 								} else {
 									scene.queue.push(async () => {
 										scene.log('The shrine demands a sacrifice by blood:');
+										scene.shake();
 										o.animator.setAnimation('shrine_blood');
 										scene.overlay([1, 0, 0, 0.5]);
 										await scene.delay(1000);
@@ -134,6 +140,9 @@ format:
 							name: 'Ignore',
 							sprite: 'No',
 							effect() {
+								scene.log('The shrine crumbles before the party.');
+								scene.shake();
+								o.animator.setAnimation('shrine_crumble');
 								scene.killObstacle();
 							},
 						}
