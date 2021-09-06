@@ -51,7 +51,6 @@ format:
 		['jester', 'bomb'],
 		['jester', 'slime_medium', 'potion'],
 		['rat_small', 'rat_big', 'rat_small'],
-		['slime_small', 'skeleton_armoured', 'slime_small'],
 	];
 	const encounter = [
 		['fountain'],
