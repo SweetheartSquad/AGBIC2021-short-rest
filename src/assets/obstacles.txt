@@ -452,6 +452,7 @@ format:
 			},
 		},
 		mimic: {
+			sprite: 'treasure_mimic',
 			name: 'Mimic',
 			health: 2,
 			damage: 1,
