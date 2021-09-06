@@ -224,6 +224,18 @@ format:
 			health: 1,
 			damage: 1,
 		},
+		rat_small2: {
+			sprite: 'rat_small',
+			name: 'Rat',
+			health: 1,
+			damage: 1,
+			async start(scene) {
+				scene.log('"*squeak squeak*"');
+				await scene.delay(500);
+				scene.addObstacle('rat_small');
+				scene.log('The rat called a friend!');
+			},
+		},
 		rat_big: {
 			name: 'Big Rat',
 			health: 3,
