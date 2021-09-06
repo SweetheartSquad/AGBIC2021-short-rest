@@ -39,6 +39,7 @@ scene.loot(...card names | definitions) // gives player a choice of one card to 
 scene.getHand(filter) // returns filtered array of cards (defaults to only non-variant cards)
 scene.drawCard() // draws a card from the deck
 scene.burnCard(card) // removes a card from the deck
+scene.refreshDeck() // updates available deck cards to match current deck minus current hand
 
 // interaction
 scene.addObstacle('name' | { ...unique definition })
@@ -339,6 +340,7 @@ scene.advance() // basic attack/interaction/movement
 										hand.forEach((i) => {
 											scene.addCard(i);
 										});
+										scene.refreshDeck();
 										scene.addCard('Advance');
 									});
 								},

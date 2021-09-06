@@ -100,6 +100,8 @@ export class GameScene extends GameObject {
 
 	deck: CardDef[] = [];
 
+	deckAvailable: CardDef[] = [];
+
 	areas: LevelDef[] = [];
 
 	queue: (() => Promise<void> | void)[] = [];
@@ -183,7 +185,7 @@ export class GameScene extends GameObject {
 		sprDeckCounter.scale.x = sprDeckCounter.scale.y = 0.2;
 		sprDeckCounter.x = 40;
 		sprDeckCounter.y = size.y - 40;
-		const textDeckCounter = new BitmapText('x0', fontLog);
+		const textDeckCounter = new BitmapText('0', fontLog);
 		textDeckCounter.x = 40 + sprDeckCounter.width;
 		textDeckCounter.y = size.y - 40;
 		textDeckCounter.filters = [filterTextOutline];
@@ -191,7 +193,7 @@ export class GameScene extends GameObject {
 
 		this.scripts.push({
 			update: () => {
-				textDeckCounter.text = `x${this.deck.length}`;
+				textDeckCounter.text = `${this.deckAvailable.length}/${this.deck.length}`;
 				sprDeckCounter.visible = textDeckCounter.visible = !!this.deck.length;
 			},
 		} as Script);
@@ -737,6 +739,7 @@ export class GameScene extends GameObject {
 	async startCamp() {
 		this.transition(() => {
 			this.clearHand();
+			this.refreshDeck();
 			this.addCard('Kindle');
 			this.addCard('Shuffle Cards');
 			this.camp.display.container.visible = true;
@@ -758,6 +761,7 @@ export class GameScene extends GameObject {
 	addDeck(...options: Parameters<typeof Card['getCard']>) {
 		const def = Card.getCard(...options);
 		this.deck.push(def);
+		this.deckAvailable.push(def);
 		this.deck.sort((a, b) =>
 			a.name.localeCompare(b.name, undefined, {
 				sensitivity: 'base',
@@ -767,20 +771,27 @@ export class GameScene extends GameObject {
 		return def;
 	}
 
+	/** updates deck available with current deck - current hand */
+	refreshDeck() {
+		this.deckAvailable = this.deck.slice();
+		const cards = this.getHand().map((i) => i.def);
+		cards.forEach((i) => {
+			removeFromArray(this.deckAvailable, i);
+		});
+	}
+
 	burnCard(card: Card) {
 		removeFromArray(this.deck, card.def);
+		removeFromArray(this.deckAvailable, card.def);
 	}
 
 	drawCard() {
-		const cards = this.getHand().map((i) => i.def);
-		const deck = this.shuffle(this.deck);
-		cards.forEach((i) => {
-			removeFromArray(deck, i);
-		});
-		if (!deck[0]) {
+		const [card] = this.shuffle(this.deckAvailable);
+		if (!card) {
 			this.log('Tried to draw a card, but there are none left!');
 		} else {
-			this.addCard(deck[0]);
+			removeFromArray(this.deckAvailable, card);
+			this.addCard(card);
 		}
 	}
 
