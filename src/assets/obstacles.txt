@@ -419,6 +419,7 @@ format:
 						name: 'Open',
 						effect() {
 							scene.sfx('sfx6');
+							scene.kick(-5);
 							scene.queue.push(async () => {
 								o.animator.setAnimation('treasure_open');
 								await scene.delay(100);
