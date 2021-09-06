@@ -39,7 +39,8 @@ textures/frog.png
 textures/cat.png
 textures/apple.png
 textures/bg.png
-textures/bg_forest.png
+textures/bg_forest1.png
+textures/bg_forest2.png
 textures/bg_alternate.png
 textures/fg.png
 textures/icon_attention.png
