@@ -44,6 +44,7 @@ format:
 	const tougher = [
 		['skeleton', 'skeleton_armoured', 'skeleton'],
 		['skeleton_armoured', 'skeleton_armoured'],
+		['skeleton_armoured', 'slime_medium'],
 		['bat', 'skeleton', 'bat'],
 		['bat', 'skeleton_armoured', 'bat'],
 		['zombie', 'zombie', 'zombie'],
