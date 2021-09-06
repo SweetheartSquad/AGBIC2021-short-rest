@@ -273,7 +273,8 @@ scene.advance() // basic attack/interaction/movement
 						const newCard = deck.splice(0, 1)[0];
 						hand.splice(idx, 1, newCard);
 						scene.addCard({
-							...newCard,
+							name: '',
+							sprite: 'card_back',
 							description: "Can't mulligan a card twice",
 							canPlay: () => false,
 						});
