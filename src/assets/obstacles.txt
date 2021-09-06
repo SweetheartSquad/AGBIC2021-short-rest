@@ -699,6 +699,7 @@ format:
 		dealer: {
 			interact(scene) {
 				const o = this;
+				const h = scene.getHand();
 				scene.log('"Welcome! Can I interest you in a game of chance?"');
 				scene.choice(
 					{
@@ -706,7 +707,7 @@ format:
 						name: 'Why not?',
 						description: 'Risk a card for a chance to draw another',
 						canPlay() {
-							return scene.getHand().length;
+							return h.length;
 						},
 						effect() {
 							scene.log('"Pick a card, any card!"');
