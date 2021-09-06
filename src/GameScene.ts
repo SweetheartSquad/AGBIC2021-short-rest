@@ -386,9 +386,9 @@ export class GameScene extends GameObject {
 		if (!obstacle) return;
 		removeFromArray(this.obstacles, obstacle);
 		obstacle.setHealth(0);
-		removeFromArray(obstacle.scripts, obstacle.animator);
 		const tweens: Tween[] = [];
 		if (obstacle.maxHealth > 0) {
+			removeFromArray(obstacle.scripts, obstacle.animator);
 			this.sfx('sfx14');
 			obstacle.kill();
 			tweens.push(
