@@ -35,7 +35,8 @@ scene.playCard(card) // plays a card from hand
 scene.clearHand() // clears cards in hand
 scene.pushHand() // saves current card definitions to a stack
 scene.popHand() // pops stack of card definitions and adds each (generally will want to clear hand first)
-scene.loot(...card names | definitions) // gives player a choice of one card to add to their deck
+scene.loot([array of card names | definitions]) // gives player a choice of one card to add to their deck
+scene.loot([array of card names | definitions], true) // same as above but first card revealed is also auto-picked
 scene.getHand(filter) // returns filtered array of cards (defaults to only non-variant cards)
 scene.drawCard() // draws a card from the deck
 scene.burnCard(card) // removes a card from the deck

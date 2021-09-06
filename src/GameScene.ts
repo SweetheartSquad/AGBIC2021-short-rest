@@ -801,7 +801,7 @@ export class GameScene extends GameObject {
 		}
 	}
 
-	loot(cards: Parameters<GameScene['addCard']>[0][]) {
+	loot(cards: Parameters<GameScene['addCard']>[0][], oneChance = false) {
 		if (cards.length <= 0) return Promise.resolve();
 		return new Promise<void>((looted) => {
 			this.queue.push(async () => {
@@ -865,6 +865,7 @@ export class GameScene extends GameObject {
 				sprs.forEach((i) => {
 					i.interactive = true;
 				});
+				let flipped = false;
 				const picked = await new Promise<number>((r) => {
 					sprs.forEach((i, idx) => {
 						i.on('mouseover', () => {
@@ -877,6 +878,8 @@ export class GameScene extends GameObject {
 							});
 						});
 						i.once('click', () => {
+							if (oneChance && flipped) return;
+							flipped = true;
 							this.sfx('sfx4');
 							TweenManager.tween(i.scale, 'x', 0, 100, 1, quadIn);
 							delay(100).then(() => {
@@ -886,33 +889,49 @@ export class GameScene extends GameObject {
 								i.children.forEach((c) => {
 									c.visible = true;
 								});
-								i.once('click', () => {
-									this.sfx('sfx4');
+								if (oneChance) {
 									r(idx);
-								});
+								} else {
+									i.once('click', () => {
+										this.sfx('sfx4');
+										r(idx);
+									});
+								}
 							});
 						});
 					});
 				});
 				removeFromArray(this.camera.scripts, wavy);
-				this.addDeck(cards[picked]);
 				sprs.forEach((i, idx) => {
+					if (idx === picked) return;
 					i.interactive = false;
 					const t1 = TweenManager.tween(i, 'alpha', 0, 500, undefined, quadIn);
-					const t2 = TweenManager.tween(
-						i,
-						'y',
-						idx === picked ? size.y * 2 : 0,
-						500,
-						undefined,
-						idx === picked ? quadOut : backIn
-					);
+					const t2 = TweenManager.tween(i, 'y', 0, 500, undefined, backIn);
 					delay(500).then(() => {
 						i.destroy();
 						TweenManager.abort(t1);
 						TweenManager.abort(t2);
 					});
 				});
+				await this.delay(oneChance ? 500 : 0);
+				const sprP = sprs[picked];
+				sprP.interactive = false;
+				const t1 = TweenManager.tween(sprP, 'alpha', 0, 500, undefined, quadIn);
+				const t2 = TweenManager.tween(
+					sprP,
+					'y',
+					size.y * 2,
+					500,
+					undefined,
+					quadOut
+				);
+				this.delay(500).then(() => {
+					sprP.destroy();
+					TweenManager.abort(t1);
+					TweenManager.abort(t2);
+				});
+				await this.delay(100);
+				this.addDeck(cards[picked]);
 				looted();
 			});
 		});
