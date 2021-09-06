@@ -184,24 +184,33 @@ format:
 			name: 'The Necromancer',
 			health: 4,
 			damage: 1,
-			start(scene) {
-				// TODO: better name?
-				scene.announce('The Necromancer');
-				scene.addObstacle('skeleton');
+			async start(scene) {
 				scene.log('"hee hee hee"');
+				await scene.delay(1000);
+				scene.addObstacle('skeleton');
+				scene.log('"behold! the power over death!!"');
+				await scene.delay(1000);
+				scene.announce('The Necromancer');
 			},
 			interact(scene) {
 				if (!this.health) return;
 				if (scene.obstacles.length === 1) {
-					scene.log('The necromancer raises another skeletal minion!');
+					scene.log(
+						scene.shuffle([
+							'"hee hee my minions are endless!!"',
+							'"come to me minion!!"',
+							'"death shall not stop my minions!!"',
+						])[0]
+					);
 					scene.addObstacle('skeleton');
 					scene.obstacles.reverse();
 				} else {
-					scene.log('The necromancer cowers behind their minion.');
+					scene.log('"ahgh! minion!! defend me!!!"');
 					scene.obstacles.reverse();
 				}
 			},
 			end(scene) {
+				scene.log('"noo.. my.. m-minions..."');
 				scene.fanfare();
 			},
 		},
