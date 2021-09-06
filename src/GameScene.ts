@@ -914,24 +914,25 @@ export class GameScene extends GameObject {
 						TweenManager.abort(t2);
 					});
 				});
-				await this.delay(oneChance ? 500 : 0);
+				await this.delay(oneChance ? 750 : 0);
 				const sprP = sprs[picked];
 				sprP.interactive = false;
-				const t1 = TweenManager.tween(sprP, 'alpha', 0, 500, undefined, quadIn);
+				const d = oneChance ? 1000 : 500;
+				const t1 = TweenManager.tween(sprP, 'alpha', 0, d, undefined, quadIn);
 				const t2 = TweenManager.tween(
 					sprP,
 					'y',
 					size.y * 2,
-					500,
+					d,
 					undefined,
-					quadOut
+					oneChance ? quadIn : quadOut
 				);
-				this.delay(500).then(() => {
+				this.delay(d).then(() => {
 					sprP.destroy();
 					TweenManager.abort(t1);
 					TweenManager.abort(t2);
 				});
-				await this.delay(100);
+				await this.delay(d / 2);
 				this.addDeck(cards[picked]);
 				looted();
 			});
