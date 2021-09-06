@@ -166,7 +166,7 @@ format:
 		},
 		zombie: {
 			name: 'Zombie',
-			health: 3,
+			health: 2,
 			damage: 1,
 			async interact(scene) {
 				if (scene.front.name === 'Priest') {
