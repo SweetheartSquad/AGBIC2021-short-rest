@@ -801,7 +801,7 @@ export class GameScene extends GameObject {
 		}
 	}
 
-	loot(_cards: Parameters<GameScene['addCard']>[0][], oneChance = false) {
+	loot(_cards: Parameters<GameScene['addCard']>[0][], chances = Infinity) {
 		if (_cards.length <= 0) return Promise.resolve();
 		const cards = this.shuffle(_cards);
 		return new Promise<void>((looted) => {
@@ -809,8 +809,7 @@ export class GameScene extends GameObject {
 				const sprs = cards.map((i, idx) => {
 					const def = Card.getCard(i);
 					const spr = Card.getCardSpr(def);
-					// @ts-ignore
-					spr.texOriginal = spr.texture;
+					const texOriginal = spr.texture;
 					spr.texture = resources.card_back.texture as Texture;
 					spr.children.forEach((c) => {
 						c.visible = false;
@@ -836,15 +835,58 @@ export class GameScene extends GameObject {
 					TweenManager.tween(spr, 'y', size.y / 2, 500, undefined, quadOut);
 					TweenManager.tween(spr, 'alpha', 1, 200, undefined, quadOut);
 					spr.interactive = false;
-					return spr;
+					const loot = {
+						spr,
+						texOriginal,
+						flipped: false,
+						flip: () => {
+							loot.flipped = true;
+							TweenManager.tween(spr.scale, 'x', 0, 100, 1, quadIn);
+							delay(100).then(() => {
+								TweenManager.tween(spr.scale, 'x', 1, 300, 0, elasticOut);
+								spr.texture = loot.texOriginal;
+								spr.children.forEach((c) => {
+									c.visible = true;
+								});
+								this.sfx('sfx4');
+							});
+						},
+						remove: (picked: boolean) => {
+							loot.remove = () => {};
+							spr.interactive = false;
+							const t1 = TweenManager.tween(
+								spr,
+								'alpha',
+								0,
+								500,
+								undefined,
+								quadIn
+							);
+							const t2 = TweenManager.tween(
+								spr,
+								'y',
+								picked ? size.y * 2 : 0,
+								500,
+								undefined,
+								picked ? quadOut : backIn
+							);
+							delay(500).then(() => {
+								spr.destroy();
+								TweenManager.abort(t1);
+								TweenManager.abort(t2);
+							});
+						},
+					};
+					return loot;
 				});
 				let focused: typeof sprs[number] | undefined;
 				const wavy = {
 					gameObject: this.camera,
 					update: () => {
 						sprs.forEach((i, idx) => {
-							i.pivot.y = lerp(
-								i.pivot.y,
+							if (i.spr.destroyed) return;
+							i.spr.pivot.y = lerp(
+								i.spr.pivot.y,
 								Math.sin(game.app.ticker.lastTime / 500 + idx * 2) * 5 +
 									(i === focused ? 20 : 0),
 								0.1
@@ -854,8 +896,8 @@ export class GameScene extends GameObject {
 						inputMenu(
 							focused ? sprs.indexOf(focused) : -1,
 							sprs.map((i) => ({
-								select: () => i.emit('click'),
-								focus: () => i.emit('mouseover'),
+								select: () => i.spr.emit('click'),
+								focus: () => i.spr.emit('mouseover'),
 							}))
 						);
 					},
@@ -864,76 +906,44 @@ export class GameScene extends GameObject {
 				await delay(500);
 
 				sprs.forEach((i) => {
-					i.interactive = true;
+					i.spr.interactive = true;
 				});
-				let flipped = false;
 				const picked = await new Promise<number>((r) => {
+					let flipped = 0;
 					sprs.forEach((i, idx) => {
-						i.on('mouseover', () => {
+						i.spr.on('mouseover', () => {
 							this.sfx('sfx5');
 							focused = i;
 						});
-						i.on('mouseout', () => {
+						i.spr.on('mouseout', () => {
 							setTimeout(() => {
 								if (focused === i) focused = undefined;
 							});
 						});
-						i.once('click', () => {
-							if (oneChance && flipped) return;
-							flipped = true;
-							this.sfx('sfx4');
-							TweenManager.tween(i.scale, 'x', 0, 100, 1, quadIn);
-							delay(100).then(() => {
-								TweenManager.tween(i.scale, 'x', 1, 300, 0, elasticOut);
-								// @ts-ignore
-								i.texture = i.texOriginal;
-								i.children.forEach((c) => {
-									c.visible = true;
+						i.spr.once('click', () => {
+							if (flipped >= chances) return;
+							flipped++;
+							i.flip();
+							if (flipped === chances) {
+								sprs.forEach((spr) => {
+									if (!spr.flipped) {
+										spr.remove(false);
+									}
 								});
-								if (oneChance) {
-									r(idx);
-								} else {
-									i.once('click', () => {
-										this.sfx('sfx4');
-										r(idx);
-									});
-								}
+							}
+							i.spr.once('click', () => {
+								this.sfx('sfx4');
+								r(idx);
 							});
 						});
 					});
 				});
-				removeFromArray(this.camera.scripts, wavy);
 				sprs.forEach((i, idx) => {
-					if (idx === picked) return;
-					i.interactive = false;
-					const t1 = TweenManager.tween(i, 'alpha', 0, 500, undefined, quadIn);
-					const t2 = TweenManager.tween(i, 'y', 0, 500, undefined, backIn);
-					delay(500).then(() => {
-						i.destroy();
-						TweenManager.abort(t1);
-						TweenManager.abort(t2);
-					});
+					i.remove(idx === picked);
 				});
-				await this.delay(oneChance ? 750 : 0);
-				const sprP = sprs[picked];
-				sprP.interactive = false;
-				const d = oneChance ? 1000 : 500;
-				const t1 = TweenManager.tween(sprP, 'alpha', 0, d, undefined, quadIn);
-				const t2 = TweenManager.tween(
-					sprP,
-					'y',
-					size.y * 2,
-					d,
-					undefined,
-					oneChance ? quadIn : quadOut
-				);
-				this.delay(d).then(() => {
-					sprP.destroy();
-					TweenManager.abort(t1);
-					TweenManager.abort(t2);
-				});
-				await this.delay(d / 2);
+				await this.delay(250);
 				this.addDeck(cards[picked]);
+				removeFromArray(this.camera.scripts, wavy);
 				looted();
 			});
 		});
