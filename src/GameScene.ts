@@ -137,8 +137,12 @@ export class GameScene extends GameObject {
 			size.x,
 			size.y
 		);
-		this.scripts.push((this.animatorBg = new Animator(this, { spr: this.bg })));
-		this.scripts.push((this.animatorFg = new Animator(this, { spr: this.fg })));
+		this.scripts.push(
+			(this.animatorBg = new Animator(this, { spr: this.bg, freq: 1 / 800 }))
+		);
+		this.scripts.push(
+			(this.animatorFg = new Animator(this, { spr: this.fg, freq: 1 / 800 }))
+		);
 
 		this.screenFilter = new ScreenFilter();
 		this.screenFilter.uniforms.overlay = [0, 0, 0, 1];
