@@ -222,7 +222,7 @@ scene.advance() // basic attack/interaction/movement
 						);
 						scene.party.forEach((p) => p.heal(p.maxHealth));
 						scene.overlay([1, 0.5, 0, 0.5]);
-						scene.burnCard(i);
+						scene.burnCard({ def: i });
 						scene.clearHand();
 						scene.addCard(
 							{

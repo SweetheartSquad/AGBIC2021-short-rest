@@ -596,7 +596,7 @@ format:
 											p.heal(1);
 										});
 										scene.overlay([1, 0.5, 0, 0.5]);
-										scene.deck = scene.deck.filter((d) => d.def !== i.def);
+										scene.burnCard(i);
 										hand.splice(idx, 1);
 										scene.clearHand();
 										hand.forEach((c) => {
