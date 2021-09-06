@@ -842,7 +842,7 @@ scene.advance() // basic attack/interaction/movement
 			return scene.alive('Rogue');
 		},
 		effect(scene) {
-			scene.sfx('sfx4');
+			scene.sfx('sfx3');
 			const rogue = scene.party.find((i) => i.name === 'Rogue');
 			rogue.damage(1);
 			scene.drawCard();
