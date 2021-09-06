@@ -760,6 +760,12 @@ export class GameScene extends GameObject {
 
 	addDeck(...options: Parameters<typeof Card['getCard']>) {
 		const def = Card.getCard(...options);
+		if (def.variant === 'instant') {
+			this.queue.push(async () => {
+				def.effect(this);
+			});
+			return undefined;
+		}
 		this.deck.push(def);
 		this.deckAvailable.push(def);
 		this.deck.sort((a, b) =>

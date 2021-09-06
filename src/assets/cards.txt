@@ -4,7 +4,7 @@ format:
 	name: 'Name of Card (uses object key if not set)',
 	description: 'Description text shown on hover',
 	sprite: 'card image (uses name or object key if not set)',
-	variant: undefined | 'ui',
+	variant: undefined | 'ui' | 'instant',
 	effect: (scene) => {
 		// effect triggered when card is played
 		// e.g. `scene.damageObstacle(1)` to damage obstacle in the lead by 1 hp
