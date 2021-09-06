@@ -462,7 +462,7 @@ export class GameScene extends GameObject {
 		}
 	}
 
-	getHand(filter = (c: Card) => !c.def.variant) {
+	getHand(filter = (c: Card) => c.def.variant !== 'ui') {
 		return this.hand.hand.filter(filter);
 	}
 
