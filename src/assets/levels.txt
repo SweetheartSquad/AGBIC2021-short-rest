@@ -452,12 +452,10 @@ format:
 		},
 		4: (scene) => {
 			scene.setBg('bg_alternate');
-			const areas = [
+			return [
 				{
 					icon: 'icon_camp',
 				},
-			];
-			areas.push(
 				{
 					icon: 'icon_boss',
 					obstacles: ['dragon'],
@@ -473,9 +471,8 @@ format:
 							},
 						},
 					],
-				}
-			);
-			return areas;
+				},
+			];
 		},
 	};
 })();
