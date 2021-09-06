@@ -595,7 +595,8 @@ format:
 			damage: 1,
 		},
 		mini_camp: {
-			sprite: 'icon_camp',
+			shadow: false,
+			offset: -30,
 			interact(scene) {
 				const o = this;
 				const hand = scene.getHand();
@@ -618,6 +619,7 @@ format:
 									canPlay: undefined,
 									effect: () => {
 										scene.sfx('sfx12');
+										o.animator.setAnimation('mini_camp_lit');
 										scene.log(
 											`The party burns "${i.def.name}" along with the rest of the fire.`
 										);

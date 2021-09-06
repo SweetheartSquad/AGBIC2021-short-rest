@@ -67,6 +67,9 @@ textures/shrine_card1.png
 textures/shrine_card2.png
 textures/shrine_blood1.png
 textures/shrine_blood2.png
+textures/mini_camp.png
+textures/mini_camp_lit1.png
+textures/mini_camp_lit2.png
 textures/skeleton.png
 textures/skeleton_armoured.png
 textures/zombie.png
