@@ -571,7 +571,7 @@ format:
 				scene.choice(
 					{
 						sprite: 'Yes',
-						name: 'Re-light',
+						name: 'Relight',
 						description: 'Burn a card from your hand to take a power nap',
 						canPlay() {
 							return hand.length > 0;
