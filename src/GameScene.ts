@@ -802,6 +802,8 @@ export class GameScene extends GameObject {
 				const sprs = cards.map((i, idx) => {
 					const def = Card.getCard(i);
 					const spr = Card.getCardSpr(def);
+					// @ts-ignore
+					spr.texOriginal = spr.texture;
 					spr.texture = resources.card_back.texture as Texture;
 					spr.children.forEach((c) => {
 						c.visible = false;
@@ -873,7 +875,8 @@ export class GameScene extends GameObject {
 							TweenManager.tween(i.scale, 'x', 0, 100, 1, quadIn);
 							delay(100).then(() => {
 								TweenManager.tween(i.scale, 'x', 1, 300, 0, elasticOut);
-								i.texture = resources.card.texture as Texture;
+								// @ts-ignore
+								i.texture = i.texOriginal;
 								i.children.forEach((c) => {
 									c.visible = true;
 								});
