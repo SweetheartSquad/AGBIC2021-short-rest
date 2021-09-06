@@ -743,7 +743,7 @@ scene.advance() // basic attack/interaction/movement
 			scene.killObstacle();
 			const o = scene.addObstacle(result);
 			const to = o.def.name;
-			scene.log(`${scene.obstacle.def.name} morphed into a ${to}!`);
+			scene.log(`${from} morphed into a ${to}!`);
 			scene.overlay([1, 0, 1]);
 		},
 	},
