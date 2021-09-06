@@ -77,7 +77,7 @@ format:
 			minibossOrder = scene.shuffle(minibosses);
 			minibossOrder.unshift(undefined);
 			scene.setBg('bg_forest');
-			scene.setFg('fg');
+			scene.setFg('blank');
 			scene.addCard('Advance');
 			scene.addParty({ name: 'Priest', spr: 'cat', maxHealth: 3 });
 			scene.addParty({ name: 'Mage', spr: 'frog', maxHealth: 2 });
