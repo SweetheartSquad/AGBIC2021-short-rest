@@ -700,6 +700,45 @@ format:
 			interact(scene) {
 				const o = this;
 				const h = scene.getHand();
+				const win = {
+					name: 'Ding!',
+					sprite: 'Yes',
+					variant: 'instant',
+					async effect() {
+						scene.log('"Drat- uh- I mean, congratulations!"');
+						await scene.delay(1000);
+						scene.drawCard();
+						scene.log('"Now scram!"');
+						scene.killObstacle(o);
+					},
+				};
+				const lose = {
+					name: 'Bzzt!',
+					sprite: 'No',
+					variant: 'instant',
+					async effect() {
+						scene.log('"Oops! Better luck next time!"');
+						await scene.delay(1000);
+						scene.log('"I\'ll just be taking that..."');
+						await scene.delay(1000);
+						const c = scene.shuffle(scene.getHand())[0];
+						scene.burnCard(c);
+						c.def = {
+							...c.def,
+							canPlay() {
+								return true;
+							},
+							effect() {
+								scene.sfx('sfx12');
+							},
+						};
+						scene.playCard(c);
+						scene.log(`"${c.def.name}" is taken as payment!`);
+						await scene.delay(500);
+						scene.log('"Now scram!"');
+						scene.killObstacle(o);
+					},
+				};
 				scene.log('"Welcome! Can I interest you in a game of chance?"');
 				scene.choice(
 					{
@@ -711,47 +750,7 @@ format:
 						},
 						effect() {
 							scene.log('"Pick a card, any card!"');
-							scene.loot(
-								[
-									{
-										name: 'Bzzt!',
-										sprite: 'No',
-										variant: 'instant',
-										async effect() {
-											scene.front.damage(1);
-											scene.log('"Ouch! Better luck next time!"');
-											await scene.delay(1000);
-											scene.log('"Now scram!"');
-											scene.killObstacle(o);
-										},
-									},
-									{
-										name: 'Bzzt!',
-										sprite: 'No',
-										variant: 'instant',
-										async effect() {
-											scene.front.damage(1);
-											scene.log('"Ouch! Better luck next time!"');
-											await scene.delay(1000);
-											scene.log('"Now scram!"');
-											scene.killObstacle(o);
-										},
-									},
-									{
-										name: 'Ding!',
-										sprite: 'Yes',
-										variant: 'instant',
-										async effect() {
-											scene.drawCard();
-											scene.log('"Drat- uh- I mean, congratulations!"');
-											await scene.delay(1000);
-											scene.log('"Now scram!"');
-											scene.killObstacle(o);
-										},
-									},
-								],
-								1
-							);
+							scene.loot([lose, win, win], 1);
 						},
 					},
 					{
