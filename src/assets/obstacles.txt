@@ -197,7 +197,7 @@ format:
 				scene.log('"hee hee hee"');
 				await scene.delay(1000);
 				scene.addObstacle('skeleton');
-				scene.log('"behold! the power over death!!"');
+				scene.log('"behold! my master has given me power over death!!"');
 				await scene.delay(1000);
 				scene.announce('The Necromancer');
 			},
@@ -220,6 +220,41 @@ format:
 			},
 			end(scene) {
 				scene.log('"noo.. my.. m-minions..."');
+				scene.fanfare();
+			},
+		},
+		necromancer2: {
+			name: 'The Undead Necromancer',
+			sprite: 'necromancer',
+			health: 4,
+			damage: 1,
+			async start(scene) {
+				scene.log('"hee hee hee"');
+				await scene.delay(1000);
+				scene.addObstacle('skeleton');
+				scene.log('"i told you so! my master has given me power over death!!"');
+				await scene.delay(1000);
+				scene.announce('The Undead Necromancer');
+			},
+			interact(scene) {
+				if (!this.health) return;
+				if (scene.obstacles.length === 1) {
+					scene.log(
+						scene.shuffle([
+							'"hee hee my minions are endless!!"',
+							'"come to me minion!!"',
+							'"death shall not stop my minions!!"',
+						])[0]
+					);
+					scene.addObstacle('skeleton');
+					scene.obstacles.reverse();
+				} else {
+					scene.log('"ahgh! minion!! defend me!!!"');
+					scene.obstacles.reverse();
+				}
+			},
+			end(scene) {
+				scene.log('"master.. why have you forsaken.. your m-minion..."');
 				scene.fanfare();
 			},
 		},

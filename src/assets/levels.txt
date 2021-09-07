@@ -67,7 +67,8 @@ format:
 	const npc = [['fortune_teller'], ['dealer']];
 	const minibosses = [
 		['mushroom'],
-		['necromancer'],
+		['necromancer2'],
+		['necromancer2'],
 		['The Rat Kings'],
 		['slime_big'],
 	];
@@ -75,6 +76,9 @@ format:
 	return {
 		0: (scene) => {
 			minibossOrder = scene.shuffle(minibosses);
+			minibossOrder[minibossOrder.findIndex((i) => i[0] === 'necromancer2')] = [
+				'necromancer',
+			];
 			minibossOrder.unshift(undefined);
 			scene.setBg('bg_forest');
 			scene.setFg('blank');
