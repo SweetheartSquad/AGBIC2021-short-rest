@@ -92,7 +92,6 @@ format:
 				maxHealth: 2,
 				damage: 2,
 			});
-			initialDeck.forEach((i) => scene.addDeck(i));
 
 			if (scene.started) {
 				scene.setFg('blank');
@@ -117,6 +116,7 @@ format:
 												scene.log('"Good luck slaying the immortal dragon!"');
 												scene.whiteout();
 												scene.killObstacle();
+												initialDeck.forEach((i) => scene.addDeck(i));
 											},
 										},
 									]);
@@ -207,6 +207,7 @@ format:
 															"The party immediately feels something change, but it's not clear what..."
 														);
 														scene.whiteout();
+														initialDeck.forEach((i) => scene.addDeck(i));
 													},
 												},
 											]);
