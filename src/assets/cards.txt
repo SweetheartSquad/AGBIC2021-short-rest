@@ -531,7 +531,7 @@ scene.advance() // basic attack/interaction/movement
 		},
 	},
 	'Toxic Vent': {
-		description: 'The Knight deals 1 damage to everyone, including themselves',
+		description: 'The Knight deals 1 damage to everyone,\nincluding themselves',
 		canPlay(scene) {
 			return scene.alive('Knight');
 		},
