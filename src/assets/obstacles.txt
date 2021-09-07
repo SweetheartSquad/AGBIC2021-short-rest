@@ -426,14 +426,13 @@ format:
 			},
 		},
 		mushroom: {
-			name: 'A Fun Guy',
+			name: 'Gloopy Gus',
 			health: 3,
 			start(scene) {
-				// TODO: better name
-				scene.announce('A Fun Guy');
+				scene.announce('Gloopy Gus');
 			},
 			interact(scene) {
-				scene.log('The mushroom released poisonous spores!');
+				scene.log('Gloopy Gus released poisonous spores!');
 				scene.party.forEach((i) => i.damage(1));
 				scene.overlay([0.6, 0.8, 0, 0.6], 1000);
 			},
