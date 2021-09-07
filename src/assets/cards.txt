@@ -195,7 +195,7 @@ scene.advance() // basic attack/interaction/movement
 	Advance: {
 		variant: 'ui',
 		description:
-			'Move, exchange blows, interact (gives another "Advance" when played)',
+			'Move, exchange blows, interact\n(gives another "Advance" when played)',
 		effect(scene) {
 			scene.addCard('Advance');
 			scene.advance();
@@ -203,7 +203,7 @@ scene.advance() // basic attack/interaction/movement
 	},
 	Kindle: {
 		variant: 'ui',
-		description: 'Burn a card to light the campfire and heal the party',
+		description: 'Burn a card to light the fire and heal the party',
 		canPlay(scene) {
 			return scene.deck.length > 0;
 		},
@@ -289,8 +289,7 @@ scene.advance() // basic attack/interaction/movement
 					name: 'Reorder Party',
 					variant: 'ui',
 					sprite: 'Shuffle',
-					description:
-						'Prepare party to embark into the dungeon with this hand',
+					description: 'Prepare party to embark with this hand',
 					effect(scene) {
 						scene.sfx('sfx4');
 						scene.clearHand();
@@ -545,7 +544,7 @@ scene.advance() // basic attack/interaction/movement
 		},
 	},
 	'Twin Daggers': {
-		description: 'The Rogue throws two daggers, each dealing 1 damage',
+		description: 'The Rogue throws two daggers,\neach dealing 1 damage',
 		canPlay(scene) {
 			return scene.enemy && scene.alive('Rogue');
 		},
