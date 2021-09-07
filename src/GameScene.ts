@@ -230,6 +230,7 @@ export class GameScene extends GameObject {
 		game.app.stage.addChild(sprDeckCounter);
 		game.app.stage.addChild(textDeckCounter);
 		game.app.stage.addChild(textLvlCounter);
+		game.app.stage.addChild(this.hand.textDescription);
 	}
 
 	destroy(): void {
