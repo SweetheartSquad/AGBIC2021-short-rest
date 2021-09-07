@@ -81,7 +81,6 @@ format:
 			];
 			minibossOrder.unshift(undefined);
 			scene.setBg('bg_forest');
-			scene.setFg('blank');
 			scene.addCard('Advance');
 			scene.addParty({ name: 'Priest', spr: 'cat', maxHealth: 3 });
 			scene.addParty({ name: 'Mage', spr: 'frog', maxHealth: 2 });
@@ -95,8 +94,9 @@ format:
 			initialDeck.forEach((i) => scene.addDeck(i));
 
 			if (scene.started) {
+				scene.setFg('blank');
 				// skip tutorial
-				scene.log('wow look at us skipping the tutorial areas');
+				scene.log('But they fall\nagain and again.');
 				return [
 					{
 						icon: 'icon_cleared',
@@ -108,7 +108,26 @@ format:
 				];
 			}
 			scene.started = true;
-			scene.log('Wow look at us travelling through a forest');
+			scene.setFg('black');
+			scene.containerUI.visible = false;
+			scene.queue.push(async () => {
+				scene.log(
+					'Somewhere outside a small village, nestled deep in the wood...'
+				);
+				if (!scene.debug) {
+					await scene.delay(5000);
+					scene.log('An immortal dragon makes its den.');
+					await scene.delay(5000);
+					scene.log('The village calls on heroes: Noble, strong, and good...');
+					await scene.delay(5000);
+					scene.log('But they fall\nagain and again.');
+					scene.killObstacle();
+					await scene.delay(5000);
+				}
+				scene.containerUI.visible = true;
+				scene.blackout(2000);
+				scene.setFg('blank');
+			});
 			return [
 				{
 					icon: 'icon_unknown',
@@ -116,80 +135,74 @@ format:
 				{
 					icon: 'icon_unknown',
 					obstacles: [
+						'skeleton',
 						{
-							sprite: 'blank',
+							sprite: 'peach',
 							start(scene) {
-								scene.log('We are totally outside a dungeon');
-								scene.killObstacle();
-							},
-						},
-					],
-				},
-				{
-					icon: 'icon_enemy',
-					obstacles: [
-						{
-							sprite: 'error',
-							health: 3,
-							damage: 1,
-							start(scene) {
-								scene.log('Hello i am a tutorial enemy, kill me plz');
-							},
-							end(scene) {
-								scene.log('you killed me but you but died, goodbye');
-							},
-						},
-					],
-				},
-				{
-					icon: 'icon_unknown',
-					obstacles: [
-						{
-							sprite: 'error',
-							start(scene) {
-								scene.log('Hello i am a card tutorial, try to hit me');
+								scene.log('"Ahh! Monster!! HELP!!!"');
 							},
 							interact(scene) {
-								if (this.interacted) {
-									scene.log(
-										'hello i am hint text telling you to use the card, not advance'
-									);
-								} else {
-									this.interacted = true;
-									scene.clearHand();
-									scene.addCard({
-										name: 'tutorial heal',
-										sprite: 'Absolve Death',
-										effect(scene) {
-											scene.sfx('sfx2');
-											scene.party[0].heal(2);
-											scene.killObstacle();
+								scene.queue.push(async () => {
+									this.interacted = this.interacted || 0;
+									if (this.interacted === 0) {
+										scene.log(
+											'"Thanks for saving me, but your friend looks hurt..."'
+										);
+										await scene.delay(2000);
+										scene.log('"Here, I brought this for emergencies:"');
+										await scene.delay(1000);
+										scene.clearHand();
+										scene.addCard({
+											name: 'Store-\nbought Revive',
+											description:
+												'Maybe you should have brought some of these...',
+											sprite: 'Absolve Death',
+											effect: (scene) => {
+												++this.interacted;
+												scene.sfx('sfx2');
+												scene.party[0].heal(2);
+											},
+										});
+										scene.addCard('Advance');
+										++this.interacted;
+									} else if (this.interacted === 1) {
+										scene.log(
+											'"You should give that to your friend right away, they look hurt!"'
+										);
+									} else if (this.interacted === 2) {
+										scene.queue.push(async () => {
+											scene.log('"You must be here to save the village..."');
+											await scene.delay(2000);
 											scene.log(
-												'good job i am saying goodbye and getting out of the way'
+												'"I came here to see you off, and give you this:"'
 											);
-										},
-									});
-									scene.addCard('Advance');
-									scene.log('hello i am telling you to heal yourself');
-								}
+											scene.loot([
+												{
+													name: 'Luck Charm',
+													sprite: 'Blessed Rain',
+													variant: 'instant',
+													effect() {
+														scene.log(
+															"The party immediately feels something change, but it's not clear what..."
+														);
+														scene.whiteout();
+													},
+												},
+											]);
+											++this.interacted;
+										});
+									} else if (this.interacted === 3) {
+										scene.log('"Good luck slaying the immortal dragon!"');
+										scene.killObstacle();
+									}
+								});
 							},
 						},
 					],
 				},
 				{
 					icon: 'icon_door',
-					obstacles: [
-						{
-							sprite: 'blank',
-							start() {
-								scene.log(
-									"oh what's this a door? surely it could not be the entrance to a dungeon and perhaps our last chance to take a short rest"
-								);
-								scene.killObstacle();
-							},
-						},
-						'door',
-					],
+					obstacles: ['door'],
 				},
 			];
 		},
