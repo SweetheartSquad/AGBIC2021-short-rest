@@ -212,8 +212,8 @@ export class GameScene extends GameObject {
 
 		this.scripts.push({
 			update: () => {
-				textLvlCounter.text = `LVL ${this.level + 1}`;
-				textLvlCounter.visible = this.level >= 0;
+				textLvlCounter.text = `LVL ${this.level}`;
+				textLvlCounter.visible = this.level >= 1;
 			},
 		} as Script);
 
