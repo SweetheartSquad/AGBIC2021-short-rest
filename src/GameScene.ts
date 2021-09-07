@@ -958,7 +958,7 @@ export class GameScene extends GameObject {
 	async log(log: string) {
 		this.sfx('sfx10');
 		const textLog = new BitmapText(wrap(log, 20), fontLog);
-		textLog.x = 40;
+		textLog.x = size.x - (fontLog.fontSize as number) * 20 - 40;
 		textLog.y = 40;
 		textLog.anchor.y = 1.0;
 		textLog.alpha = 0;
