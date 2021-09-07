@@ -196,9 +196,7 @@ format:
 										scene.queue.push(async () => {
 											scene.log('"You must be here to save the village..."');
 											await scene.delay(2000);
-											scene.log(
-												'"I came here to see you off, and give you this:"'
-											);
+											scene.log('"I came to see you off, and give you this:"');
 											scene.loot([
 												{
 													name: 'Luck Charm',
