@@ -417,7 +417,6 @@ format:
 			health: 2,
 			damage: 1,
 			interact(scene) {
-				if (!this.health) return;
 				const slot = scene.party.findIndex((i) => i.health > 0);
 				if (slot >= 0) {
 					scene.log(`${scene.front.name} gets pushed back!`);
