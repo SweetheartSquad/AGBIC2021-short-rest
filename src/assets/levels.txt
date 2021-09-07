@@ -445,10 +445,26 @@ format:
 					icon: 'icon_unknown',
 					obstacles: [
 						{
-							name: 'end',
+							sprite: 'peach',
 							interact(scene) {
 								// TODO: endgame
-								scene.log('The End!');
+								this.interacted = this.interacted || 0;
+								if (this.interacted === 0) {
+									scene.log('"Heroes! You did it!"');
+									++this.interacted;
+								} else if (this.interacted === 1) {
+									scene.log("I haven't written an ending yet unfortunately...");
+									++this.interacted;
+								} else if (this.interacted === 2) {
+									scene.log('Thanks for playing!');
+									scene.addCard('Start');
+									scene.hand.hand[
+										scene.hand.hand.length - 1
+									].sprCard.children[1].text = 'Restart';
+									++this.interacted;
+								} else {
+									scene.log('Thanks for playing!');
+								}
 							},
 						},
 					],
