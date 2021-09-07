@@ -5,6 +5,7 @@ import { GameObject } from './GameObject';
 import { Display } from './Scripts/Display';
 import { Transform } from './Scripts/Transform';
 import { size } from './size';
+import { tex } from './utils';
 
 const filtersOL = [new OutlineFilter(2, 0xffffff, 1)];
 
@@ -37,7 +38,7 @@ export class UIMap extends GameObject {
 	setPosition(pos: number) {
 		this.areas.forEach((i, idx) => {
 			this.sprAreas[idx].texture = (
-				idx < pos ? resources.icon_cleared.texture : resources[i].texture
+				idx < pos ? resources.icon_cleared.texture : tex(i)
 			) as Texture;
 		});
 		this.position = pos;
@@ -49,7 +50,7 @@ export class UIMap extends GameObject {
 		this.sprAreas.length = 0;
 		this.graphics.clear();
 		areas.forEach((i, idx) => {
-			const icon = new Sprite(resources[i].texture as Texture);
+			const icon = new Sprite(tex(i));
 			icon.x =
 				idx > 0 ? this.sprAreas[idx - 1].x + this.sprAreas[idx - 1].width : 0;
 			this.display.container.addChild(icon);
