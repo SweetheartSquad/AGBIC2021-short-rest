@@ -218,11 +218,8 @@ export class GameScene extends GameObject {
 		} as Script);
 
 		this.containerUI.addChild(this.map.display.container);
-		this.containerUI.addChild(textLvlCounter);
 		this.containerUI.addChild(this.camp.display.container);
 		this.containerUI.addChild(this.hand.display.container);
-		this.containerUI.addChild(sprDeckCounter);
-		this.containerUI.addChild(textDeckCounter);
 		this.containerUI.addChild(border);
 
 		this.container.addChild(this.bg);
@@ -230,6 +227,9 @@ export class GameScene extends GameObject {
 		this.container.addChild(this.containerParty);
 		this.container.addChild(this.fg);
 		this.container.addChild(this.containerUI);
+		game.app.stage.addChild(sprDeckCounter);
+		game.app.stage.addChild(textDeckCounter);
+		game.app.stage.addChild(textLvlCounter);
 	}
 
 	destroy(): void {
