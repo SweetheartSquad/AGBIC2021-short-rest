@@ -98,7 +98,6 @@ scene.advance() // basic attack/interaction/movement
 			await scene.setLevel(0, () => {
 				scene.clearHand();
 				scene.clearParty();
-				// TODO: proper deck init
 				scene.deck.length = 0;
 				scene.refreshDeck();
 				scene.handSize = 3;
