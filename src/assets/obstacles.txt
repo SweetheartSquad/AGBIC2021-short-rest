@@ -674,7 +674,7 @@ format:
 							hand.forEach((i, idx) => {
 								scene.addCard({
 									...i.def,
-									description: `Burn "${i.def.name}"`,
+									description: `Burn "${i.def.name}"\n\n${i.description}`,
 									canPlay: undefined,
 									effect: () => {
 										scene.sfx('sfx12');

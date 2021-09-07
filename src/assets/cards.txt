@@ -213,7 +213,7 @@ scene.advance() // basic attack/interaction/movement
 			scene.deck.forEach((i) => {
 				scene.addCard({
 					...i,
-					description: `Burn "${i.name}"`,
+					description: `Burn "${i.name}"\n\n${i.description}`,
 					canPlay: undefined,
 					effect: () => {
 						scene.sfx('sfx12');
@@ -268,7 +268,7 @@ scene.advance() // basic attack/interaction/movement
 			hand.forEach((i, idx) => {
 				scene.addCard({
 					...i,
-					description: `Mulligan "${i.name}"`,
+					description: `Replace "${i.name}"\n\n${i.description}`,
 					effect: () => {
 						scene.sfx('sfx4');
 						const newCard = deck.splice(0, 1)[0];
@@ -276,7 +276,7 @@ scene.advance() // basic attack/interaction/movement
 						scene.addCard({
 							name: '',
 							sprite: 'card_back',
-							description: "Can't mulligan a card twice",
+							description: "Can't replace a card twice",
 							canPlay: () => false,
 						});
 						scene.hand.hand.splice(idx, 0, scene.hand.hand.pop());
