@@ -913,7 +913,7 @@ scene.advance() // basic attack/interaction/movement
 		},
 	},
 	'Life Link Locket': {
-		sprite: 'Magic Blast',
+		sprite: 'Teleport',
 		description: 'Swap lead and enemy HP',
 		canPlay(scene) {
 			return scene.enemy;
