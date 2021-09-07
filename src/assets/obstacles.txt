@@ -225,7 +225,7 @@ format:
 		},
 		necromancer2: {
 			name: 'The Undead Necromancer',
-			sprite: 'necromancer',
+			sprite: 'necromancer_undead',
 			health: 4,
 			damage: 1,
 			async start(scene) {
