@@ -102,6 +102,28 @@ format:
 						icon: 'icon_cleared',
 					},
 					{
+						icon: 'icon_unknown',
+						obstacles: [
+							{
+								sprite: 'peach',
+								interact(scene) {
+									scene.loot([
+										{
+											name: 'Luck Charm',
+											sprite: 'Blessed Rain',
+											variant: 'instant',
+											effect() {
+												scene.log('"Good luck slaying the immortal dragon!"');
+												scene.whiteout();
+												scene.killObstacle();
+											},
+										},
+									]);
+								},
+							},
+						],
+					},
+					{
 						icon: 'icon_door',
 						obstacles: ['door'],
 					},
