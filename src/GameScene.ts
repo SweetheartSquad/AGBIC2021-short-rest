@@ -46,6 +46,8 @@ export class GameScene extends GameObject {
 
 	tween = TweenManager.tween;
 
+	debug = process.env.NODE_ENV === 'development';
+
 	camp: Camp;
 
 	container = new Container();
