@@ -1045,6 +1045,7 @@ export class GameScene extends GameObject {
 
 	async fanfare() {
 		this.queue.push(async () => {
+			this.music('', { fade: 10 });
 			this.sfx('sfx8');
 			this.overlay([1, 1, 1, 1], 400);
 			await this.delay(200);

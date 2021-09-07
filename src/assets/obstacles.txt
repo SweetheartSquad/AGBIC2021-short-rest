@@ -190,12 +190,14 @@ format:
 			health: 4,
 			damage: 1,
 			async start(scene) {
+				scene.music('');
 				scene.log('"hee hee hee"');
 				await scene.delay(1000);
 				scene.addObstacle('skeleton');
 				scene.log('"behold! my master has given me power over death!!"');
 				await scene.delay(1000);
 				scene.announce('The Necromancer');
+				scene.music('battle_boss');
 			},
 			interact(scene) {
 				if (!this.health) return;
@@ -225,12 +227,14 @@ format:
 			health: 4,
 			damage: 1,
 			async start(scene) {
+				scene.music('');
 				scene.log('"hee hee hee"');
 				await scene.delay(1000);
 				scene.addObstacle('skeleton');
 				scene.log('"i told you so! my master has given me power over death!!"');
 				await scene.delay(1000);
 				scene.announce('The Undead Necromancer');
+				scene.music('battle_boss');
 			},
 			interact(scene) {
 				if (!this.health) return;
@@ -286,18 +290,18 @@ format:
 			name: 'Rat King',
 			health: 3,
 			damage: 1,
-			start(scene) {
-				scene.queue.push(async () => {
-					scene.log('"Hey king, I could use a spot check."');
-					await scene.delay(2000);
-					scene.addObstacle('Rat King B');
-					scene.log('"Don\'t hurt yourself king."');
-					await scene.delay(2000);
-					scene.log('"Kings don\'t let kings fight alone!"');
-					scene.addObstacle('Rat King C');
-					await scene.delay(2000);
-					scene.announce('The Rat Kings');
-				});
+			async start(scene) {
+				scene.music('');
+				scene.log('"Hey king, I could use a spot check."');
+				await scene.delay(2000);
+				scene.addObstacle('Rat King B');
+				scene.log('"Don\'t hurt yourself king."');
+				await scene.delay(2000);
+				scene.log('"Kings don\'t let kings fight alone!"');
+				scene.addObstacle('Rat King C');
+				await scene.delay(2000);
+				scene.announce('The Rat Kings');
+				scene.music('battle_boss');
 			},
 			interact() {
 				if (scene.obstacles.length > 1) {
@@ -423,8 +427,12 @@ format:
 		mushroom: {
 			name: 'Gloopy Gus',
 			health: 3,
-			start(scene) {
+			async start(scene) {
+				scene.music('');
+				scene.log('"*gloop gloop*"');
+				await scene.delay(2000);
 				scene.announce('Gloopy Gus');
+				scene.music('battle_boss');
 			},
 			interact(scene) {
 				scene.log('Gloopy Gus released poisonous spores!');
@@ -438,8 +446,12 @@ format:
 		doppelgangers: {
 			name: 'Doppelgangers',
 			sprite: 'mirror',
+			start(scene) {
+				scene.music('');
+			},
 			interact(scene) {
 				scene.announce('Doppelgangers');
+				scene.music('battle_boss');
 				scene.killObstacle();
 				const end = () => {
 					if (!scene.enemy) scene.fanfare();
@@ -516,9 +528,11 @@ format:
 			name: 'Big Slime',
 			health: 5,
 			damage: 1,
-			start(scene) {
-				// TODO: better name
+			async start(scene) {
+				scene.log('"*blub blub*"');
+				await scene.delay(2000);
 				scene.announce('Big Slime');
+				scene.music('battle_boss');
 			},
 			interact(scene) {
 				if (scene.front.name === 'Knight' || scene.front.name === 'Rogue') {
@@ -895,9 +909,13 @@ format:
 			health: 10,
 			damage: 1,
 			async start(scene) {
+				scene.music('');
+				scene.log('"TODO: some sort of intro taunt!"');
+				await scene.delay(2000);
 				await scene.addObstacle('dragon_hand');
 				scene.whiteout();
 				scene.announce('The Dragon');
+				scene.music('battle_boss');
 				scene.tween(scene.containerParty.scale, 'x', 0.6, 0);
 				scene.tween(scene.containerParty.scale, 'y', 0.6, 0);
 				scene.tween(scene.containerParty.pivot, 'x', -40, 0);
