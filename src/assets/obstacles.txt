@@ -440,6 +440,31 @@ format:
 				scene.fanfare();
 			},
 		},
+		doppelgangers: {
+			name: 'Doppelgangers',
+			sprite: 'mirror',
+			interact(scene) {
+				scene.announce('Doppelgangers');
+				scene.killObstacle();
+				const end = () => {
+					if (!scene.enemy) scene.fanfare();
+				};
+				scene.party
+					.filter((i) => i.health)
+					.forEach((i) => {
+						const o = scene.addObstacle({
+							name: `${i.name} Doppelganger`,
+							sprite: i.sprBody.texture.textureCacheIds[0],
+							damage: i.damageOutput,
+							health: i.health,
+							armour: i.armour,
+							end,
+						});
+						o.sprBody.scale.x = -1;
+						o.sprOL.scale.x = -1;
+					});
+			},
+		},
 		treasure: {
 			start() {
 				// play a sound?

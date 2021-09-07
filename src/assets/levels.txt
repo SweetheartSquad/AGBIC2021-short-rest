@@ -71,6 +71,7 @@ format:
 		['necromancer2'],
 		['The Rat Kings'],
 		['slime_big'],
+		['doppelgangers'],
 	];
 	let minibossOrder = minibosses.slice();
 	return {

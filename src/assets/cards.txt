@@ -693,6 +693,13 @@ scene.advance() // basic attack/interaction/movement
 					scene.log('"*gloop gloop*"');
 				});
 				return;
+			} else if (o.def.name && o.def.name.includes('Doppelganger')) {
+				scene.log('The charm spell fizzles off their glistening reflection!');
+				scene.overlay([1, 0, 0, 0.1]);
+				scene.delay(1500).then(() => {
+					scene.log('".driew siht ekam t\'nod, wE"');
+				});
+				return;
 			}
 			const p = scene.addParty({
 				name: `Friendly ${o.def.name}`,
