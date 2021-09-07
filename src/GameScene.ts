@@ -757,7 +757,7 @@ export class GameScene extends GameObject {
 			this.party.forEach((i) => {
 				if (!i.health) {
 					i.heal(1);
-					this.log(`${i.name} revived by the fire.`);
+					this.log(`${i.name} revived by the fire with 1HP.`);
 				}
 			});
 			this.music('sfx15');

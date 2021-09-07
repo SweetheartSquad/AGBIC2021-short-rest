@@ -684,7 +684,7 @@ format:
 										);
 										scene.party.forEach((p) => {
 											if (!p.health) {
-												scene.log(`${p.name} revived.`);
+												scene.log(`${p.name} revived by the fire with 1HP.`);
 											}
 											p.heal(1);
 										});
