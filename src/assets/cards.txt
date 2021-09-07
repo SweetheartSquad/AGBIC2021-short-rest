@@ -686,6 +686,13 @@ scene.advance() // basic attack/interaction/movement
 					);
 				});
 				return;
+			} else if (o.def.name === 'Gloopy Gus') {
+				scene.log('The charm spell fizzles off their glistening cap!');
+				scene.overlay([1, 0, 0, 0.1]);
+				scene.delay(1500).then(() => {
+					scene.log('"*gloop gloop*"');
+				});
+				return;
 			}
 			const p = scene.addParty({
 				name: `Friendly ${o.def.name}`,
