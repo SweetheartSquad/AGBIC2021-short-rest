@@ -64,7 +64,6 @@ textures/treasure.png
 textures/treasure_open.png
 textures/treasure_mimic.png
 textures/door.png
-textures/door_open.png
 textures/shrine.png
 textures/shrine_crumble.png
 textures/shrine_card1.png

@@ -61,15 +61,11 @@ format:
 	];
 	return {
 		door: {
+			shadow: false,
+			offset: -110,
 			interact(scene) {
-				if (!this.open) {
-					scene.sfx('sfx6');
-					this.open = true;
-					this.animator.setAnimation('door_open');
-				} else {
-					scene.sfx('sfx0');
-					scene.startCamp();
-				}
+				scene.sfx('sfx0');
+				scene.startCamp();
 			},
 		},
 		shrine: {
