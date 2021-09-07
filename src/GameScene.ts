@@ -1080,7 +1080,7 @@ export class GameScene extends GameObject {
 		music: string,
 		{
 			rate = 1,
-			volume = 1,
+			volume = 0.5,
 			fade = 1000,
 		}: { rate?: number; volume?: number; fade?: number } = {}
 	) {
