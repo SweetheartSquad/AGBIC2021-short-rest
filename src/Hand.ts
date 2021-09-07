@@ -91,15 +91,16 @@ export class Hand extends GameObject {
 
 			this.textDescription.text = wrap(card.def.description || ' ', 50);
 			if (this.tweenDescription) TweenManager.abort(this.tweenDescription);
+			const quick =
+				this.textDescription.alpha > 0 ||
+				this.hand.every((i) => i.def.name !== 'Advance');
 			this.tweenDescription = TweenManager.tween(
 				this.textDescription,
 				'alpha',
 				1,
-				this.textDescription.alpha > 0 ? 500 : 2000,
+				quick ? 500 : 2000,
 				undefined,
-				this.textDescription.alpha > 0
-					? quadOut
-					: (t) => quadOut(Math.max(0, t - 0.75) * 4)
+				quick ? quadOut : (t) => quadOut(Math.max(0, t - 0.75) * 4)
 			);
 		});
 		card.display.container.on('mouseout', () => {
