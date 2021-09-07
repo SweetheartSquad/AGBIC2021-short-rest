@@ -677,7 +677,7 @@ scene.advance() // basic attack/interaction/movement
 					scene.log('"*blub blub*"');
 				});
 				return;
-			} else if (o.def.name === 'The Necromancer') {
+			} else if (o.def.name && o.def.name.includes('Necromancer')) {
 				scene.log('The charm spell fizzles off their glistening robe!');
 				scene.overlay([1, 0, 0, 0.1]);
 				scene.delay(1500).then(() => {
