@@ -866,6 +866,8 @@ format:
 			},
 		},
 		trap: {
+			shadow: false,
+			offset: -50,
 			async interact(scene) {
 				if (scene.front.name === 'Rogue') {
 					scene.log('The Rogue disables the trap.');
