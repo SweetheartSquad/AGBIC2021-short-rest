@@ -432,11 +432,12 @@ scene.advance() // basic attack/interaction/movement
 		effect(scene) {
 			scene.sfx('sfx7');
 			const weakest = scene.party
-				.slice()
+				.filter((i) => i.health)
+				.reverse()
 				.sort((a, b) => a.health - b.health)[0];
-			const index = scene.party.indexOf(weakest);
-			const p = scene.party.splice(index, 1);
-			scene.party.unshift(p[0]);
+			const p = scene.party.splice(scene.party.indexOf(weakest), 1);
+			const index = scene.party.findIndex((i) => i.health);
+			scene.party.splice(index, 0, p[0]);
 			scene.drawCard();
 		},
 	},
