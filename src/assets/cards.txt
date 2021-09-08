@@ -642,15 +642,16 @@ scene.advance() // basic attack/interaction/movement
 		},
 	},
 	'Portable Mulligan': {
-		description: 'Replace all cards in your hand with new ones from your deck',
+		description: 'Replace all cards in your hand by drawing from your deck',
 		effect(scene) {
 			scene.sfx('sfx4');
 			const cards = scene.getHand();
-			const draw = scene.shuffle(scene.deck.slice());
 			scene.clearHand();
-			for (let i = 0; i < cards && draw.length; ++i) {
-				scene.addCard(draw.pop());
-			}
+			new Array(Math.min(cards.length, scene.deckAvailable.length + 1))
+				.fill(0)
+				.forEach(() => {
+					scene.drawCard();
+				});
 			scene.addCard('Advance');
 		},
 	},
