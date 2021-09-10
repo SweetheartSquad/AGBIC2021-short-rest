@@ -19,6 +19,12 @@ export const fontDescription: Partial<IBitmapTextStyle> = {
 	align: 'center',
 };
 
+export const fontDmg: Partial<IBitmapTextStyle> = {
+	fontName: 'fontfnt',
+	fontSize: 16,
+	align: 'center',
+};
+
 export const fontName: Partial<IBitmapTextStyle> = {
 	fontName: 'fontfnt',
 	fontSize: 16,

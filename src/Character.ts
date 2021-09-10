@@ -1,12 +1,15 @@
+import { quadIn } from 'eases';
 import { ColorOverlayFilter, OutlineFilter } from 'pixi-filters';
-import { Container, Sprite, Texture } from 'pixi.js';
+import { BitmapText, Container, Sprite, Texture } from 'pixi.js';
+import { getAlphaFilter } from './AlphaFilter';
+import { filterTextOutline, fontDmg } from './font';
 import { game, resources } from './Game';
 import { GameObject } from './GameObject';
 import { Animator } from './Scripts/Animator';
 import { Display } from './Scripts/Display';
 import { Transform } from './Scripts/Transform';
 import { Tween, TweenManager } from './Tweens';
-import { clamp, tex } from './utils';
+import { clamp, delay, tex } from './utils';
 
 const filterOL = new OutlineFilter(2, 0xffffff, 1);
 let offset = 0;
@@ -133,12 +136,41 @@ export class Character extends GameObject {
 		this.setArmour(this.armour + armour);
 	}
 
+	async dmgLog(log: string, tint: number) {
+		const textDmg = new BitmapText(log, fontDmg);
+		textDmg.filters = [filterTextOutline, getAlphaFilter()];
+		textDmg.x = this.display.container.getGlobalPosition().x;
+		textDmg.y = this.display.container.getGlobalPosition().y - 50;
+		textDmg.anchor.x = textDmg.anchor.y = 0.5;
+		textDmg.tint = tint;
+		game.app.stage.addChild(textDmg);
+		const t1 = TweenManager.tween(
+			textDmg,
+			'y',
+			textDmg.y - 70,
+			1000,
+			undefined,
+			(t) => {
+				textDmg.x = this.display.container.getGlobalPosition().x;
+				return quadIn(t);
+			}
+		);
+		await delay(500);
+		const t2 = TweenManager.tween(textDmg, 'alpha', 0, 500);
+		await delay(500);
+		TweenManager.abort(t1);
+		TweenManager.abort(t2);
+		textDmg.destroy();
+	}
+
 	damage(damage: number, ignoreArmour = false) {
 		if (this.health <= 0 || damage === 0) return;
 		if (!ignoreArmour && this.armour > 0) {
 			this.addArmour(-1);
+			this.dmgLog('0', 0xffffff);
 		} else {
 			this.setHealth(this.health - damage);
+			this.dmgLog(`-${damage}`, 0xff0000);
 		}
 		this.filterOverlay.color = 0xff0000;
 		if (this.tweenFilter) TweenManager.finish(this.tweenFilter);
@@ -156,6 +188,10 @@ export class Character extends GameObject {
 
 	heal(damage: number) {
 		if (damage === 0) return;
+		this.dmgLog(
+			Math.min(damage, this.maxHealth - this.health).toString(10),
+			0x00ff00
+		);
 		this.setHealth(this.health + damage);
 		this.filterOverlay.color = 0x00ff00;
 		if (this.tweenFilter) TweenManager.finish(this.tweenFilter);
