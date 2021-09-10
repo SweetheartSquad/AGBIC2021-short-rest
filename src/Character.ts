@@ -151,7 +151,9 @@ export class Character extends GameObject {
 			1000,
 			undefined,
 			(t) => {
-				textDmg.x = this.display.container.getGlobalPosition().x;
+				if (!this.display.container.destroyed) {
+					textDmg.x = this.display.container.getGlobalPosition().x;
+				}
 				return quadIn(t);
 			}
 		);
