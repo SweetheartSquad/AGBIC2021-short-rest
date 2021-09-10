@@ -641,15 +641,7 @@ format:
 			interact(scene) {
 				const o = this;
 				scene.log(
-					`${scene.front.name} finds a bottle filled with ${
-						scene.shuffle([
-							'mysterious',
-							'strange',
-							'glowing',
-							'weird',
-							'murky',
-						])[0]
-					} liquid.`
+					`${scene.front.name} finds an unlabelled bottle filled with liquid.`
 				);
 				scene.choice(
 					{
