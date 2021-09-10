@@ -715,10 +715,15 @@ format:
 										scene.log(
 											`The party burns "${i.def.name}" along with the rest of the fire.`
 										);
+										const dead = scene.party.filter((p) => !p.health);
+										if (dead.length > 0) {
+											scene.log(
+												`${scene.andList(
+													dead.map((p) => p.name)
+												)} revived by the fire with 1HP.`
+											);
+										}
 										scene.party.forEach((p) => {
-											if (!p.health) {
-												scene.log(`${p.name} revived by the fire with 1HP.`);
-											}
 											p.heal(1);
 										});
 										scene.overlay([1, 0.5, 0, 0.5]);

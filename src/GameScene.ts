@@ -28,6 +28,7 @@ import { size } from './size';
 import { Tween, TweenManager } from './Tweens';
 import { UIMap } from './UIMap';
 import {
+	andList,
 	btn,
 	delay,
 	inputMenu,
@@ -43,6 +44,8 @@ export class GameScene extends GameObject {
 	delay = delay;
 
 	shuffle = shuffle;
+
+	andList = andList;
 
 	tween = TweenManager.tween;
 
@@ -757,12 +760,17 @@ export class GameScene extends GameObject {
 				.forEach((i) => {
 					i.damage(Infinity, true);
 				});
-			this.party.forEach((i) => {
-				if (!i.health) {
-					i.heal(1);
-					this.log(`${i.name} revived by the fire with 1HP.`);
-				}
+			const dead = this.party.filter((i) => !i.health);
+			dead.forEach((i) => {
+				i.heal(1);
 			});
+			if (dead.length > 0) {
+				this.log(
+					`${this.andList(
+						dead.map((i) => i.name)
+					)} revived by the fire with 1HP.`
+				);
+			}
 			this.music('jingle_sad');
 		});
 	}

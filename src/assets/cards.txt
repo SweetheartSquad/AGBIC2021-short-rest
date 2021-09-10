@@ -54,6 +54,7 @@ scene.shuffle([1,2,3]); // returns a shuffled copy of the provided array
 
 // vfx
 scene.log('text') // adds text to action log
+scene.andList(['a','b','c']) // returns string in format 'a, b, and c'
 scene.announce('text', 2000) // adds big text (for bosses, etc)
 scene.overlay([r,g,b,a], duration) // flashes a colour overlay
 scene.blackout(duration) // shortcut for black overlay
@@ -633,10 +634,17 @@ scene.advance() // basic attack/interaction/movement
 				i.damage(Infinity, true);
 			});
 			const mageIndex = scene.party.findIndex((i) => i.name === 'Mage');
-			scene.party.slice(mageIndex + 1).forEach((i) => {
+			const collateral = scene.party.slice(mageIndex + 1);
+			collateral.forEach((i) => {
 				i.damage(Infinity);
-				scene.log(`${i.name} is caught in the line of sight!`);
 			});
+			if (collateral.length > 0) {
+				scene.log(
+					`${scene.andList(
+						collateral.map((i) => i.name)
+					)} is caught in the line of sight!`
+				);
+			}
 			scene.shake(5, 1000);
 			scene.kick(-50);
 			scene.overlay([1, 0, 1, 0.5], 1000);

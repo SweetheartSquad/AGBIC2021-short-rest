@@ -190,3 +190,11 @@ export function inputMenu(
 		}
 	}
 }
+
+/** helper for generating a string in the format "X and Y" or "X, Y, and Z" */
+export function andList(...words: string[] | [string[]]) {
+	if (Array.isArray(words[0])) {
+		[words] = words;
+	}
+	return [words.slice(0, -1).join(', '), words.slice(-1)[0]].join(', and ');
+}
