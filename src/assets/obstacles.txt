@@ -7,6 +7,7 @@ format:
 	damage: number | undefined,
 	shadow: false | undefined,
 	offset: number | undefined, // vertical offset
+	bounce: number | undefined, // idle animation
 	start: (scene) => {
 		// effect triggered when obstacle is encountered
 	},

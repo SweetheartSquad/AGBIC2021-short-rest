@@ -39,6 +39,8 @@ export class Character extends GameObject {
 
 	offset: number = ++offset;
 
+	bounce?: number;
+
 	filterOverlay = new ColorOverlayFilter(0, 0);
 
 	tweenFilter?: Tween;
@@ -48,14 +50,17 @@ export class Character extends GameObject {
 		health,
 		maxHealth,
 		armour,
+		bounce,
 	}: {
 		spr: string;
 		health?: number;
 		maxHealth: number;
 		armour?: number;
+		bounce?: number;
 	}) {
 		super();
 		this.maxHealth = maxHealth;
+		this.bounce = bounce;
 		this.scripts.push((this.transform = new Transform(this)));
 		this.scripts.push((this.display = new Display(this)));
 		this.sprOL = new Sprite(tex(spr));
@@ -98,10 +103,12 @@ export class Character extends GameObject {
 
 	update() {
 		super.update();
-		if (this.health > 0) {
+		if (this.bounce || this.health > 0) {
 			const t = this.offset + game.app.ticker.lastTime / 100;
-			this.sprOL.scale.y = this.sprBody.scale.y = 1.0 + Math.sin(t) * 0.04;
-			this.sprOL.rotation = this.sprBody.rotation = Math.sin(t) * 0.03;
+			this.sprOL.scale.y = this.sprBody.scale.y =
+				1.0 + Math.sin(t) * 0.04 * (this.bounce || 1);
+			this.sprOL.rotation = this.sprBody.rotation =
+				Math.sin(t) * 0.03 * (this.bounce || 1);
 		}
 		this.sprOL.x = this.sprBody.x - 2;
 		this.sprOL.y = this.sprBody.y;

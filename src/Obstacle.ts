@@ -14,6 +14,7 @@ type ObstacleDef = {
 	sprite?: string;
 	shadow?: false;
 	offset?: number;
+	bounce?: number;
 	start?: (scene: GameScene) => void | Promise<void>;
 	interact?: (scene: GameScene) => void | Promise<void>;
 	end?: (scene: GameScene) => void | Promise<void>;
@@ -55,6 +56,7 @@ export class Obstacle extends Character {
 			spr: def.sprite || (typeof obstacle === 'string' ? obstacle : 'error'),
 			maxHealth: def.health || 0,
 			armour: def.armour,
+			bounce: def.bounce,
 		});
 		this.def = def;
 		this.display.container.filters = [getAlphaFilter()];
