@@ -73,6 +73,7 @@ format:
 			offset: -20,
 			interact(scene) {
 				const o = this;
+				const h = scene.getHand();
 				if (scene.level < scene.handSize - 2) {
 					scene.log(
 						'The shrine crumbles before the party, its power already spent.'
@@ -84,57 +85,65 @@ format:
 					scene.log('The party discovers a powerful shrine.');
 					scene.choice(
 						{
-							name: 'Offer Penance',
-							sprite: 'Yes',
-							description: 'Increase starting hand size by 1, for a price',
+							name: 'Devotion',
+							sprite: 'Exorcise',
+							description:
+								'Kills a random party member to\nincrease max hand size by 1',
 							effect() {
 								scene.handSize += 1;
-								const h = scene.getHand();
-								if (h.length && Math.random() < 0.6) {
-									scene.queue.push(async () => {
-										scene.log('The shrine demands a sacrifice by fire:');
-										scene.shake();
-										o.animator.setAnimation('shrine_card');
-										scene.overlay([1, 0.5, 0, 0.5]);
-										await scene.delay(2000);
-										const c = scene.shuffle(h)[0];
-										scene.burnCard(c);
-										c.def = {
-											...c.def,
-											canPlay() {
-												return true;
-											},
-											effect() {
-												scene.log(
-													`"${c.def.name}" is burned in exchange for power!`
-												);
-												scene.sfx('sfx12');
-												scene.killObstacle();
-											},
-										};
-										scene.playCard(c);
-									});
-								} else {
-									scene.queue.push(async () => {
-										scene.log('The shrine demands a sacrifice by blood:');
-										scene.shake();
-										o.animator.setAnimation('shrine_blood');
-										scene.overlay([1, 0, 0, 0.5]);
-										await scene.delay(2000);
-										const p = scene.shuffle(
-											scene.party.filter((i) => i.health)
-										)[0];
-										p.damage(Infinity, true);
-										scene.log(`${p.name} perishes in exchange for power!`);
-										scene.sfx('sfx3');
-										scene.killObstacle();
-									});
-								}
+								scene.queue.push(async () => {
+									scene.log('The shrine accepts the offer:');
+									scene.shake();
+									o.animator.setAnimation('shrine_blood');
+									scene.overlay([1, 0, 0, 0.5]);
+									await scene.delay(2000);
+									const p = scene.shuffle(
+										scene.party.filter((i) => i.health)
+									)[0];
+									p.damage(Infinity, true);
+									scene.log(`${p.name} is claimed as sacrifice!`);
+									scene.sfx('sfx3');
+									scene.killObstacle();
+								});
 							},
 						},
 						{
-							name: 'Ignore',
+							name: 'Piety',
+							sprite: 'Kindle',
+							description:
+								'Burns a random card to\nincrease max hand size by 1',
+							canPlay() {
+								return h.length;
+							},
+							effect() {
+								scene.handSize += 1;
+								scene.queue.push(async () => {
+									scene.log('The shrine accepts the offer:');
+									scene.shake();
+									o.animator.setAnimation('shrine_card');
+									scene.overlay([1, 0.5, 0, 0.5]);
+									await scene.delay(2000);
+									const c = scene.shuffle(h)[0];
+									scene.burnCard(c);
+									c.def = {
+										...c.def,
+										canPlay() {
+											return true;
+										},
+										effect() {
+											scene.log(`"${c.def.name}" is claimed as sacrifice!`);
+											scene.sfx('sfx12');
+											scene.killObstacle();
+										},
+									};
+									scene.playCard(c);
+								});
+							},
+						},
+						{
+							name: 'Heresy',
 							sprite: 'No',
+							description: 'Ignore the shrine',
 							effect() {
 								scene.log('The shrine crumbles before the party.');
 								scene.shake();
