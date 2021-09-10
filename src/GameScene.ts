@@ -119,9 +119,11 @@ export class GameScene extends GameObject {
 	handSize = -1;
 
 	musicPlaying?: {
+		music: string;
 		howl: Howl;
 		id: number;
 		volume: number;
+		rate: number;
 	};
 
 	constructor() {
@@ -1087,6 +1089,12 @@ export class GameScene extends GameObject {
 		}: { rate?: number; volume?: number; fade?: number } = {}
 	) {
 		const playing = this.musicPlaying;
+		if (
+			playing?.music === music &&
+			playing.volume === volume &&
+			playing.rate === rate
+		)
+			return undefined;
 		if (playing) {
 			playing.howl.fade(playing.volume, 0, fade, playing.id);
 			delay(fade).then(() => {
@@ -1102,9 +1110,11 @@ export class GameScene extends GameObject {
 		howl.loop(true, id);
 		howl.fade(0, volume, fade, id);
 		this.musicPlaying = {
+			music,
 			howl,
 			id,
 			volume,
+			rate,
 		};
 		return id;
 	}
