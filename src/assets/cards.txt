@@ -223,7 +223,7 @@ scene.advance() // basic attack/interaction/movement
 						scene.log(
 							`The party basks in the warmth of "${i.name}" and regains their strength.`
 						);
-						scene.party.forEach((p) => p.heal(p.maxHealth));
+						scene.party.forEach((p) => p.heal(Infinity));
 						scene.overlay([1, 0.5, 0, 0.5]);
 						scene.burnCard({ def: i });
 						scene.clearHand();
@@ -492,7 +492,7 @@ scene.advance() // basic attack/interaction/movement
 		description: 'Fully heal party member in lead',
 		effect(scene) {
 			scene.sfx('sfx1');
-			scene.front.heal(scene.front.maxHealth);
+			scene.front.heal(Infinity);
 		},
 	},
 	'Absolve Death': {
@@ -516,7 +516,7 @@ scene.advance() // basic attack/interaction/movement
 		effect(scene) {
 			scene.sfx('sfx2');
 			scene.party.concat(scene.obstacles).forEach((i) => {
-				if (i.health) i.heal(i.maxHealth);
+				if (i.health) i.heal(Infinity);
 			});
 			scene.overlay([0, 1, 0]);
 		},
@@ -618,7 +618,7 @@ scene.advance() // basic attack/interaction/movement
 			scene.obstacles
 				.filter((i) => undead.includes(i.def.name))
 				.forEach((i) => {
-					i.damage(i.maxHealth, true);
+					i.damage(Infinity, true);
 				});
 		},
 	},
@@ -630,11 +630,11 @@ scene.advance() // basic attack/interaction/movement
 		effect(scene) {
 			scene.sfx('sfx3');
 			scene.obstacles.slice().forEach((i) => {
-				i.damage(i.maxHealth, true);
+				i.damage(Infinity, true);
 			});
 			const mageIndex = scene.party.findIndex((i) => i.name === 'Mage');
 			scene.party.slice(mageIndex + 1).forEach((i) => {
-				i.damage(i.maxHealth);
+				i.damage(Infinity);
 				scene.log(`${i.name} is caught in the line of sight!`);
 			});
 			scene.shake(5, 1000);

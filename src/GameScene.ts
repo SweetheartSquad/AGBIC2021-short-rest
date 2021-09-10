@@ -755,7 +755,7 @@ export class GameScene extends GameObject {
 			this.party
 				.filter((i) => i.temporary)
 				.forEach((i) => {
-					i.damage(i.maxHealth, true);
+					i.damage(Infinity, true);
 				});
 			this.party.forEach((i) => {
 				if (!i.health) {

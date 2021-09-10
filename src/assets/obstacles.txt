@@ -124,7 +124,7 @@ format:
 										const p = scene.shuffle(
 											scene.party.filter((i) => i.health)
 										)[0];
-										p.damage(p.maxHealth, true);
+										p.damage(Infinity, true);
 										scene.log(`${p.name} perishes in exchange for power!`);
 										scene.sfx('sfx3');
 										scene.killObstacle();
@@ -153,7 +153,7 @@ format:
 			interact(scene) {
 				if (scene.front.name === 'Priest') {
 					scene.log('The Priest banishes the skeleton!');
-					this.damage(3);
+					this.damage(Infinity);
 				}
 			},
 		},
@@ -165,7 +165,7 @@ format:
 			interact(scene) {
 				if (scene.front.name === 'Priest') {
 					scene.log('The Priest banishes the skeleton!');
-					this.damage(3);
+					this.damage(Infinity);
 				}
 			},
 		},
@@ -176,7 +176,7 @@ format:
 			async interact(scene) {
 				if (scene.front.name === 'Priest') {
 					scene.log('The Priest banishes the zombie!');
-					this.damage(3);
+					this.damage(Infinity);
 				} else if (this.health <= 0) {
 					if (Math.random() > 0.5) {
 						scene.log('The zombie got back up!');
@@ -606,7 +606,7 @@ format:
 								// healing
 								scene.party.forEach((i) => {
 									if (i.health > 0) {
-										i.heal(i.maxHealth);
+										i.heal(Infinity);
 									}
 								});
 								scene.overlay([0, 0.8, 1, 0.6], 500);
@@ -904,7 +904,7 @@ format:
 					scene.sfx('sfx2');
 					this.animator.setAnimation('trap_triggered');
 					this.transform.y += 10;
-					scene.front.damage(4);
+					scene.front.damage(Infinity);
 					await scene.delay(200);
 					scene.killObstacle();
 				}
@@ -926,7 +926,7 @@ format:
 					scene.log('The bomb goes off!');
 					this.animator.setAnimation('bomb');
 					scene.whiteout();
-					scene.front.damage(scene.front.health);
+					scene.front.damage(Infinity);
 				}
 			},
 		},
