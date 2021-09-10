@@ -931,7 +931,7 @@ format:
 			},
 		},
 		dragon: {
-			name: 'The Dragon',
+			name: 'The Immortal Dragon',
 			health: 10,
 			damage: 1,
 			async start(scene) {
