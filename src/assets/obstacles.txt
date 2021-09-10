@@ -655,8 +655,6 @@ format:
 						name: 'Quaff',
 						effect() {
 							scene.sfx('sfx2');
-							o.animator.setAnimation('potion_empty');
-
 							if (Math.random() < 0.1) {
 								scene.killObstacle(o);
 								scene.log('The bottle bursts to life and attacks!');
@@ -664,12 +662,14 @@ format:
 								scene.addObstacle('potion_mimic');
 							} else if (Math.random() < 1 / 3) {
 								// poison
+								o.animator.setAnimation('potion_poison');
 								scene.front.damage(1, true);
 								scene.overlay([0.6, 0.8, 0, 0.6], 500);
 								scene.log('They drink, and retch moments later.');
 								scene.killObstacle(o);
 							} else {
 								// healing
+								o.animator.setAnimation('potion_empty');
 								scene.party.forEach((i) => {
 									scene.front.heal(i.maxHealth);
 								});

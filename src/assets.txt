@@ -94,6 +94,7 @@ textures/dragon.png
 textures/dragon_hand.png
 textures/fountain.png
 textures/potion.png
+textures/potion_poison.png
 textures/potion_empty.png
 textures/potion_mimic.png
 textures/fortune_teller.png
