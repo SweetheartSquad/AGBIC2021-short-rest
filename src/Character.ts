@@ -167,7 +167,7 @@ export class Character extends GameObject {
 		if (this.health <= 0 || damage === 0) return;
 		if (!ignoreArmour && this.armour > 0) {
 			this.addArmour(-1);
-			this.dmgLog('0', 0xffffff);
+			this.dmgLog('BLOCKED', 0xffffff);
 		} else {
 			this.setHealth(this.health - damage);
 			this.dmgLog(`-${Math.min(damage, 99)}`, 0xff0000);
