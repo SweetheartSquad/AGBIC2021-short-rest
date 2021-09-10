@@ -107,6 +107,7 @@ format:
 						obstacles: [
 							{
 								sprite: 'peach',
+								bounce: 1,
 								interact(scene) {
 									scene.loot([
 										{
@@ -162,6 +163,7 @@ format:
 						'skeleton',
 						{
 							sprite: 'peach',
+							bounce: 1,
 							start(scene) {
 								scene.log('"Ahh! Monster!! HELP!!!"');
 							},
@@ -469,6 +471,7 @@ format:
 					obstacles: [
 						{
 							sprite: 'peach',
+							bounce: 1,
 							interact(scene) {
 								// TODO: endgame
 								this.interacted = this.interacted || 0;

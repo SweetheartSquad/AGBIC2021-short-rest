@@ -774,6 +774,7 @@ format:
 			},
 		},
 		fortune_teller: {
+			bounce: 1,
 			interact(scene) {
 				const o = this;
 				// TODO: full readings
@@ -838,6 +839,7 @@ format:
 			},
 		},
 		dealer: {
+			bounce: 1,
 			interact(scene) {
 				const o = this;
 				const h = scene.getHand();
