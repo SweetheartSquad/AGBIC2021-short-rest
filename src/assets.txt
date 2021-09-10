@@ -106,7 +106,7 @@ textures/bomb_b.png
 textures/bomb_c.png
 textures/jester1.png
 textures/jester2.png
-textures/kangaroo.png
+textures/dragon_junior.png
 textures/mushroom.png
 textures/peach.png
 textures/cards/Shuffle.png

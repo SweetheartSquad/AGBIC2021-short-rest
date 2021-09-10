@@ -411,16 +411,41 @@ format:
 				scene.party.sort((a, b) => (a.health > 0) - (b.health > 0));
 			},
 		},
-		kangaroo: {
-			// TODO: name
-			health: 2,
+		dragon_junior: {
+			name: 'The Immortal Dragon (Junior)',
+			health: 3,
+			armour: 1,
 			damage: 1,
+			async start(scene) {
+				scene.music('');
+				scene.log('"Batter up, nerds!"');
+				await scene.delay(2000);
+				scene.announce('The Immortal Dragon\n(Junior)');
+				scene.music('battle_boss');
+			},
 			interact(scene) {
 				const slot = scene.party.findIndex((i) => i.health > 0);
 				if (slot >= 0) {
 					scene.log(`${scene.front.name} gets pushed back!`);
 					scene.party.splice(slot, 0, scene.party.pop());
 				}
+				if (this.health) {
+					scene.delay(200).then(() => {
+						scene.log(
+							scene.shuffle([
+								'"Get crushed, nerds!"',
+								'"Boom! Home run!"',
+								'"Bam! Can of corn!"',
+								'"Just another changeup, c\'mon!"',
+								'"Hit and run!"',
+							])[0]
+						);
+					});
+				}
+			},
+			end(scene) {
+				scene.log('"Third.. strike..."');
+				scene.fanfare();
 			},
 		},
 		mushroom: {

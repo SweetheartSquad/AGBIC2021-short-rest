@@ -40,7 +40,7 @@ format:
 		['zombie'],
 		['slime_medium'],
 	];
-	const annoying = [['jester'], ['kangaroo'], ['bomb']];
+	const annoying = [['jester'], ['bomb']];
 	const tougher = [
 		['skeleton', 'skeleton_armoured', 'skeleton'],
 		['skeleton_armoured', 'skeleton_armoured'],
@@ -72,6 +72,7 @@ format:
 		['The Rat Kings'],
 		['slime_big'],
 		['doppelgangers'],
+		['dragon_junior'],
 	];
 	let minibossOrder = minibosses.slice();
 	return {
