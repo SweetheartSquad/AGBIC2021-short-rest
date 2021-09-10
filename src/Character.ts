@@ -170,7 +170,7 @@ export class Character extends GameObject {
 			this.dmgLog('0', 0xffffff);
 		} else {
 			this.setHealth(this.health - damage);
-			this.dmgLog(`-${damage}`, 0xff0000);
+			this.dmgLog(`-${Math.min(damage, 99)}`, 0xff0000);
 		}
 		this.filterOverlay.color = 0xff0000;
 		if (this.tweenFilter) TweenManager.finish(this.tweenFilter);
