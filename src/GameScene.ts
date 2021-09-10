@@ -758,11 +758,11 @@ export class GameScene extends GameObject {
 			this.party
 				.filter((i) => i.temporary)
 				.forEach((i) => {
-					i.damage(Infinity, true);
+					i.display.container.emit('dead');
 				});
 			const dead = this.party.filter((i) => !i.health);
 			dead.forEach((i) => {
-				i.heal(1);
+				i.setHealth(Math.max(1, i.health));
 			});
 			if (dead.length > 0) {
 				this.log(
