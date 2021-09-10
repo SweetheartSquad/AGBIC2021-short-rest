@@ -93,6 +93,7 @@ textures/slime_small.png
 textures/dragon.png
 textures/dragon_hand.png
 textures/fountain.png
+textures/fountain_poison.png
 textures/potion.png
 textures/potion_poison.png
 textures/potion_empty.png

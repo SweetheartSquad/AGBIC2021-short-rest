@@ -607,6 +607,7 @@ format:
 							scene.sfx('sfx2');
 							if (Math.random() < 1 / 3) {
 								// poison
+								scene.obstacle.animator.setAnimation('fountain_poison');
 								scene.party.forEach((i) => {
 									i.damage(1, true);
 								});
