@@ -490,7 +490,7 @@ format:
 			},
 			interact(scene) {
 				scene.log('Gloopy Gus released poisonous spores!');
-				scene.party.forEach((i) => i.damage(1));
+				scene.party.forEach((i) => i.damage(1, true));
 				scene.overlay([0.6, 0.8, 0, 0.6], 1000);
 			},
 			end(scene) {
