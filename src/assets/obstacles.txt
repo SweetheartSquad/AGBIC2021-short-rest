@@ -1078,6 +1078,7 @@ format:
 			health: 1,
 			damage: 2,
 			shadow: false,
+			offset: 20,
 		},
 	};
 })();
