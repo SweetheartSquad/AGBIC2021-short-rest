@@ -458,7 +458,7 @@ scene.advance() // basic attack/interaction/movement
 		},
 		"Coward's Plan": {
 			description:
-				'Sends party member with lowest HP to the back and draws 1 card',
+				'Sends party member with lowest HP to the back\nand draws 1 card',
 			canPlay(scene) {
 				return scene.party.filter((i) => i.health).length >= 2;
 			},
@@ -476,7 +476,8 @@ scene.advance() // basic attack/interaction/movement
 		},
 		'Tactical Grace': {
 			sprite: 'Shuffle',
-			description: 'Select a party member to place in the lead and draw 1 card',
+			description:
+				'Select a party member to place in the lead\nand draw 1 card',
 			canPlay(scene) {
 				return scene.party.filter((i) => i.health).length >= 2;
 			},
@@ -700,7 +701,7 @@ scene.advance() // basic attack/interaction/movement
 			},
 		},
 		'Portable Mulligan': {
-			description: 'Replace all cards in your hand by drawing from your deck',
+			description: 'Replace all cards in your hand\nby drawing from your deck',
 			effect(scene) {
 				scene.sfx('sfx4');
 				const cards = scene.getHand();
@@ -715,7 +716,7 @@ scene.advance() // basic attack/interaction/movement
 		},
 		'Charm Creature': {
 			sprite: 'Blessed Rain',
-			description: 'The Priest sways a weak-willed creature to switch sides',
+			description: 'The Priest sways a weak-willed creature\nto switch sides',
 			canPlay(scene) {
 				return scene.enemy && scene.alive('Priest');
 			},
@@ -784,7 +785,7 @@ scene.advance() // basic attack/interaction/movement
 		'Summon Sprite': {
 			sprite: 'Blessed Rain',
 			description:
-				'The Mage Summons a 1HP creature to fight alongside the party',
+				'The Mage Summons a 1HP creature\nto fight alongside the party',
 			canPlay(scene) {
 				return scene.alive('Mage');
 			},
@@ -802,7 +803,7 @@ scene.advance() // basic attack/interaction/movement
 		'Poly Morph': {
 			sprite: 'Blessed Rain',
 			description:
-				'The Mage transforms a small or medium creature into another',
+				'The Mage transforms a small or\nmedium creature into another',
 			canPlay(scene) {
 				return scene.enemy && scene.alive('Mage');
 			},
@@ -948,7 +949,7 @@ scene.advance() // basic attack/interaction/movement
 		'Bitter Tears': {
 			sprite: 'Magic Blast',
 			description:
-				'The Knight sacrifices themselves and deals their HP as damage',
+				'The Knight sacrifices themselves and\ndeals their HP as damage',
 			canPlay(scene) {
 				return scene.enemy && scene.alive('Knight');
 			},
@@ -964,7 +965,7 @@ scene.advance() // basic attack/interaction/movement
 		Equalize: {
 			sprite: 'Blessed Rain',
 			description:
-				'The Priest heals everyone to match whoever has the highest HP',
+				'The Priest heals everyone to\nmatch whoever has the highest HP',
 			canPlay(scene) {
 				return scene.alive('Priest');
 			},
@@ -981,7 +982,7 @@ scene.advance() // basic attack/interaction/movement
 		Downsize: {
 			sprite: 'Magic Blast',
 			description:
-				'The Mage damages everyone to match whoever has the lowest HP',
+				'The Mage damages everyone to\nmatch whoever has the lowest HP',
 			canPlay(scene) {
 				return scene.alive('Mage');
 			},
