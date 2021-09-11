@@ -1059,7 +1059,7 @@ export class GameScene extends GameObject {
 
 	async fanfare() {
 		this.queue.push(async () => {
-			if (!this.front.health) return;
+			if (!this.party.some((i) => i.health)) return;
 			this.music('', { fade: 10 });
 			this.sfx('sfx8');
 			this.overlay([1, 1, 1, 1], 400);
