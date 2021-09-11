@@ -484,6 +484,19 @@ scene.advance() // basic attack/interaction/movement
 			return scene.position < scene.areas.length - 1 && scene.alive('Mage');
 		},
 		effect(scene) {
+			scene.sfx('sfx1');
+			if (
+				scene.obstacle.def.name &&
+				scene.obstacle.def.name.includes('Dragon') &&
+				!scene.obstacle.def.name.includes('Junior')
+			) {
+				scene.log('The teleport spell fizzles, leaving the party behind!');
+				scene.overlay([1, 0, 0, 0.1]);
+				scene.delay(1500).then(() => {
+					scene.log('"FOOLS! You think you can run from ME!?"');
+				});
+				return;
+			}
 			scene.setPosition(scene.position + 1);
 			scene.whiteout();
 		},
