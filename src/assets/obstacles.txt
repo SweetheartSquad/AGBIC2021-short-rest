@@ -59,6 +59,10 @@ format:
 		'Life Link Locket',
 		'Leech Wand',
 		'Weaken',
+		'Heal Mage',
+		'Heal Rogue',
+		'Heal Knight',
+		'Heal Priest',
 	];
 	return {
 		door: {
