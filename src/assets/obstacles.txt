@@ -774,22 +774,98 @@ format:
 			bounce: 1,
 			interact(scene) {
 				const o = this;
+				const heal = (name) => ({
+					name: `Heal ${name}`,
+					sprite: name,
+					variant: 'instant',
+					effect() {
+						scene.party.find((i) => i.name === name);
+						scene.whiteout();
+					},
+				});
 				// TODO: full readings
 				const readings = scene.shuffle([
-					{
-						card: scene.shuffle(cardsAll)[0],
-						reading:
-							'"A test reading! An omen of having a TODO you forgot to address."',
-					},
-					{
-						card: scene.shuffle(cardsAll)[0],
-						reading:
-							'"A test reading! An omen of having a TODO you forgot to address."',
-					},
-					{
-						card: scene.shuffle(cardsAll)[0],
-						reading: '"Death! A bad omen, but likely not your own."',
-					},
+					[
+						'Kindling',
+						'"The Fool! Every flame must begin with a spark after all..."',
+					],
+					[
+						heal('Mage'),
+						'"The Magician! Well, I suppose one among you is already familiar with this one?"',
+					],
+					[
+						'Holy Barrier',
+						'"The High Priestess! Do not let this sway you. Do not let me sway you."',
+					],
+					[
+						'Summon Sprite',
+						'"The Empress! Oh, but they grow up so fast, don\'t they?"',
+					],
+					[
+						'Downsize',
+						'"The Emperor! Well well, you set the rules now, don\'t you?"',
+					],
+					[
+						'Invoke Augur',
+						'"The Hierophant! What better teacher than the thirst for knowledge?"',
+					],
+					[
+						'Life Link Locket',
+						'"The Lovers! An unbreakable bond, I see that you\'ll forge it soon."',
+					],
+					['Teleport', '"The Chariot! Best not to wait around, eh?"'],
+					[
+						'Equalize',
+						'"Justice! Your sword will swing true, and so will your foe\'s. What will happen, will happen."',
+					],
+					[
+						'Snooze',
+						'"The Hermit! Sometimes we must step back to see what is ahead of us."',
+					],
+					[
+						'Deploy Panic',
+						'"Wheel of Fortune! I\'d wish you luck, but I know that it won\'t matter."',
+					],
+					[heal('Knight'), '"Strength!"'],
+					[
+						'Take One For The Team',
+						'"The Hanged Man! Perhaps you need to give something up to gain what you desire?"',
+					],
+					[
+						'Vision of Death',
+						'"Death! But not necessarily your own... perhaps you should take this to who it belongs."',
+					],
+					['Blessed Rain', '"Temperance! Continue and persevere!"'],
+					['Charm Creature', '"The Devil!"'],
+					[
+						{
+							name: 'The Tower',
+							sprite: 'Death from the Shadows',
+							variant: 'instant',
+							effect() {
+								scene.front.damage(Infinity);
+								scene.blackout();
+							},
+						},
+						'"The Tower! Terrible card. I hope you can withstand its omen..."',
+					],
+					[heal('Priest'), '"The Star! It is truly your time to shine!"'],
+					[
+						heal('Rogue'),
+						'"The Moon! Not often someone resonates as powerfully as you do."',
+					],
+					[
+						'Tactical Grace',
+						'"The Sun! Seize the day, it\'s yours for the taking!"',
+					],
+					[
+						'Bitter Tears',
+						'"Judgement! But are you here to deliver or to receive?"',
+					],
+					[
+						'Reversal',
+						'"The World! Continue forward! The end of your journey nears!"',
+					],
 				]);
 				const numReadings = 3;
 				scene.log('"Welcome! Would you like a reading?"');
@@ -797,27 +873,25 @@ format:
 					{
 						sprite: 'Yes',
 						name: 'Okay',
-						effect() {
+						async effect() {
 							scene.queue.push(async () => {
 								scene.log('"Alright, let me just shuffle here..."');
 								await scene.delay(2000);
 							});
 							for (let i = 0; i < numReadings; ++i) {
+								const reading = readings.pop();
 								scene.queue.push(async () => {
 									scene.log('"Let\'s see..."');
 									await scene.delay(1000);
-								});
-								const reading = readings.pop();
-								scene.loot([reading.card]);
-								scene.queue.push(async () => {
-									scene.log('"Hmm..."');
-									await scene.delay(1000);
-									scene.log(reading.reading);
+									scene.log(reading[1]);
 									await scene.delay(2000);
 								});
+								await scene.loot([reading[0]]);
 							}
 							scene.queue.push(async () => {
-								scene.log('"That\'s all for now."');
+								scene.log(
+									'"That\'s all for now. I hope you make good use of it."'
+								);
 								await scene.delay(1000);
 								scene.log('"Good luck!"');
 								scene.killObstacle(o);
