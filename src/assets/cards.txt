@@ -78,964 +78,989 @@ scene.setLevel(level)
 scene.nextLevel()
 scene.advance() // basic attack/interaction/movement
 */
-(() => ({
-	// menus
-	init: {
-		effect(scene) {
-			scene.setBg('title');
-			scene.setFg('blank');
-			scene.addCard('Start');
-			scene.addCard('Options');
-			scene.addCard('About');
-			scene.cardSpeed = 1;
-			scene.blackout();
+(() => {
+	const heal = (name) => ({
+		name: `Heal ${name}`,
+		sprite: name,
+		variant: 'instant',
+		effect() {
+			const p = scene.party.find((i) => i.name === name);
+			if (p) {
+				scene.sfx('sfx2');
+				p.heal(Infinity);
+				scene.whiteout();
+			}
 		},
-	},
-	Start: {
-		sprite: 'Slash',
-		variant: 'ui',
-		description: 'Start a new game',
-		async effect(scene) {
-			await scene.setLevel(0, () => {
+	});
+	return {
+		// menus
+		init: {
+			effect(scene) {
+				scene.setBg('title');
+				scene.setFg('blank');
+				scene.addCard('Start');
+				scene.addCard('Options');
+				scene.addCard('About');
+				scene.cardSpeed = 1;
+				scene.blackout();
+			},
+		},
+		Start: {
+			sprite: 'Slash',
+			variant: 'ui',
+			description: 'Start a new game',
+			async effect(scene) {
+				await scene.setLevel(0, () => {
+					scene.clearHand();
+					scene.clearParty();
+					scene.deck.length = 0;
+					scene.refreshDeck();
+					scene.handSize = 3;
+					scene.music('jingle_sad');
+				});
+			},
+		},
+		Options: {
+			description: 'Edit game options',
+			effect(scene) {
+				scene.sfx('sfx4');
 				scene.clearHand();
-				scene.clearParty();
-				scene.deck.length = 0;
-				scene.refreshDeck();
-				scene.handSize = 3;
-				scene.music('jingle_sad');
-			});
+				scene.addCard('Back');
+				scene.addCard('Filter');
+				scene.addCard('Scale');
+				scene.addCard('Audio');
+				scene.addCard('Card Throw');
+			},
 		},
-	},
-	Options: {
-		description: 'Edit game options',
-		effect(scene) {
-			scene.sfx('sfx4');
-			scene.clearHand();
-			scene.addCard('Back');
-			scene.addCard('Filter');
-			scene.addCard('Scale');
-			scene.addCard('Audio');
-			scene.addCard('Card Throw');
+		Filter: {
+			sprite: 'Magic Blast',
+			description: 'Enables/disables post-processing filter',
+			effect(scene) {
+				scene.sfx('sfx1');
+				scene.screenFilter.enabled = !scene.screenFilter.enabled;
+				scene.log(
+					`Filter ${scene.screenFilter.enabled ? 'enabled' : 'disabled'}`
+				);
+				scene.addCard('Filter');
+				scene.hand.hand.splice(1, 0, scene.hand.hand.pop()); // keep cards in order
+			},
 		},
-	},
-	Filter: {
-		sprite: 'Magic Blast',
-		description: 'Enables/disables post-processing filter',
-		effect(scene) {
-			scene.sfx('sfx1');
-			scene.screenFilter.enabled = !scene.screenFilter.enabled;
-			scene.log(
-				`Filter ${scene.screenFilter.enabled ? 'enabled' : 'disabled'}`
-			);
-			scene.addCard('Filter');
-			scene.hand.hand.splice(1, 0, scene.hand.hand.pop()); // keep cards in order
+		Scale: {
+			sprite: 'Shuffle Cards',
+			description: 'Enables/disables pixel-perfect scaling',
+			effect(scene) {
+				scene.sfx('sfx1');
+				const scaleMode = {
+					FIT: 'MULTIPLES',
+					MULTIPLES: 'FIT',
+				}[window.resizer.scaleMode];
+				window.resizer.scaleMode = scaleMode;
+				scene.log(`Scaling ${scaleMode === 'FIT' ? 'to fit' : 'in multiples'}`);
+				window.resizer.onResize();
+				scene.addCard('Scale');
+				scene.hand.hand.splice(2, 0, scene.hand.hand.pop()); // keep cards in order
+			},
 		},
-	},
-	Scale: {
-		sprite: 'Shuffle Cards',
-		description: 'Enables/disables pixel-perfect scaling',
-		effect(scene) {
-			scene.sfx('sfx1');
-			const scaleMode = {
-				FIT: 'MULTIPLES',
-				MULTIPLES: 'FIT',
-			}[window.resizer.scaleMode];
-			window.resizer.scaleMode = scaleMode;
-			scene.log(`Scaling ${scaleMode === 'FIT' ? 'to fit' : 'in multiples'}`);
-			window.resizer.onResize();
-			scene.addCard('Scale');
-			scene.hand.hand.splice(2, 0, scene.hand.hand.pop()); // keep cards in order
+		Audio: {
+			sprite: 'Toxic Vent',
+			description: 'Mute/unmute audio',
+			effect(scene) {
+				scene.sfx('sfx1');
+				window.Howler.mute(!window.Howler._muted);
+				scene.log(`Audio ${window.Howler._muted ? 'muted' : 'unmuted'}`);
+				scene.addCard('Audio');
+				scene.hand.hand.splice(3, 0, scene.hand.hand.pop()); // keep cards in order
+			},
 		},
-	},
-	Audio: {
-		sprite: 'Toxic Vent',
-		description: 'Mute/unmute audio',
-		effect(scene) {
-			scene.sfx('sfx1');
-			window.Howler.mute(!window.Howler._muted);
-			scene.log(`Audio ${window.Howler._muted ? 'muted' : 'unmuted'}`);
-			scene.addCard('Audio');
-			scene.hand.hand.splice(3, 0, scene.hand.hand.pop()); // keep cards in order
+		'Card Throw': {
+			description: 'Enables/disables card throw animation',
+			effect(scene) {
+				scene.sfx('sfx1');
+				scene.cardSpeed = scene.cardSpeed ? 0 : 1;
+				scene.log(`Card throw ${scene.cardSpeed ? 'enabled' : 'disabled'}`);
+				scene.addCard('Card Throw');
+			},
 		},
-	},
-	'Card Throw': {
-		description: 'Enables/disables card throw animation',
-		effect(scene) {
-			scene.sfx('sfx1');
-			scene.cardSpeed = scene.cardSpeed ? 0 : 1;
-			scene.log(`Card throw ${scene.cardSpeed ? 'enabled' : 'disabled'}`);
-			scene.addCard('Card Throw');
+		Back: {
+			sprite: "Coward's Plan",
+			variant: 'ui',
+			description: 'Back to main menu',
+			effect(scene) {
+				scene.sfx('sfx4');
+				scene.clearHand();
+				scene.addCard('Start');
+				scene.addCard('Options');
+				scene.addCard('About');
+			},
 		},
-	},
-	Back: {
-		sprite: "Coward's Plan",
-		variant: 'ui',
-		description: 'Back to main menu',
-		effect(scene) {
-			scene.sfx('sfx4');
-			scene.clearHand();
-			scene.addCard('Start');
-			scene.addCard('Options');
-			scene.addCard('About');
-		},
-	},
-	About: {
-		sprite: 'Absolve Death',
-		description: 'Find out who made the game',
-		effect(scene) {
-			scene.sfx('sfx4');
-			scene.clearHand();
-			scene.addCard('Back');
-			scene.addCard({
-				name: 'Made\nBy',
-				description: 'Sean, Michael, and IAN of SweetHeart Squad',
-				sprite: 'Absolve Death',
-				effect() {
-					window.open('https://sweetheartsquad.itch.io');
-				},
-			});
-			scene.addCard({
-				name: 'Based\nOn',
-				description: '"Short Rest" famicase, by Daniel Gil',
-				sprite: 'Teleport',
-				effect() {
-					window.open('https://famicase.com/21/softs/027.html');
-				},
-			});
-			scene.addCard({
-				name: 'Made\nFor',
-				description: "A Game By It's Cover 2021",
-				sprite: 'Shuffle Cards',
-				effect() {
-					window.open('https://itch.io/jam/a-game-by-its-cover-2021');
-				},
-			});
-		},
-	},
-	Advance: {
-		variant: 'ui',
-		description:
-			'Move, exchange blows, interact\n(gives another "Advance" when played)',
-		effect(scene) {
-			scene.addCard('Advance');
-			scene.advance();
-		},
-	},
-	Kindle: {
-		variant: 'ui',
-		description: 'Burn a card to light the fire and heal the party',
-		canPlay(scene) {
-			return scene.deck.length > 0;
-		},
-		effect(scene) {
-			scene.sfx('sfx4');
-			scene.clearHand();
-			scene.deck.forEach((i) => {
+		About: {
+			sprite: 'Absolve Death',
+			description: 'Find out who made the game',
+			effect(scene) {
+				scene.sfx('sfx4');
+				scene.clearHand();
+				scene.addCard('Back');
 				scene.addCard({
-					...i,
-					description: `Burn "${i.name}"\n\n${i.description}`,
-					canPlay: undefined,
-					effect: () => {
-						scene.sfx('sfx12');
-						scene.music('jingle');
-						scene.camp.light();
-						scene.log(
-							`The party basks in the warmth of "${i.name}" and regains their strength.`
-						);
-						scene.party.forEach((p) => p.setHealth(p.maxHealth));
-						scene.overlay([1, 0.5, 0, 0.5]);
-						scene.burnCard({ def: i });
-						scene.clearHand();
-						scene.addCard(
-							{
-								name: 'Kindle',
-								description: 'Campfire already kindled',
-								canPlay() {
-									return false;
+					name: 'Made\nBy',
+					description: 'Sean, Michael, and IAN of SweetHeart Squad',
+					sprite: 'Absolve Death',
+					effect() {
+						window.open('https://sweetheartsquad.itch.io');
+					},
+				});
+				scene.addCard({
+					name: 'Based\nOn',
+					description: '"Short Rest" famicase, by Daniel Gil',
+					sprite: 'Teleport',
+					effect() {
+						window.open('https://famicase.com/21/softs/027.html');
+					},
+				});
+				scene.addCard({
+					name: 'Made\nFor',
+					description: "A Game By It's Cover 2021",
+					sprite: 'Shuffle Cards',
+					effect() {
+						window.open('https://itch.io/jam/a-game-by-its-cover-2021');
+					},
+				});
+			},
+		},
+		Advance: {
+			variant: 'ui',
+			description:
+				'Move, exchange blows, interact\n(gives another "Advance" when played)',
+			effect(scene) {
+				scene.addCard('Advance');
+				scene.advance();
+			},
+		},
+		Kindle: {
+			variant: 'ui',
+			description: 'Burn a card to light the fire and heal the party',
+			canPlay(scene) {
+				return scene.deck.length > 0;
+			},
+			effect(scene) {
+				scene.sfx('sfx4');
+				scene.clearHand();
+				scene.deck.forEach((i) => {
+					scene.addCard({
+						...i,
+						description: `Burn "${i.name}"\n\n${i.description}`,
+						canPlay: undefined,
+						effect: () => {
+							scene.sfx('sfx12');
+							scene.music('jingle');
+							scene.camp.light();
+							scene.log(
+								`The party basks in the warmth of "${i.name}" and regains their strength.`
+							);
+							scene.party.forEach((p) => p.setHealth(p.maxHealth));
+							scene.overlay([1, 0.5, 0, 0.5]);
+							scene.burnCard({ def: i });
+							scene.clearHand();
+							scene.addCard(
+								{
+									name: 'Kindle',
+									description: 'Campfire already kindled',
+									canPlay() {
+										return false;
+									},
 								},
-							},
-							true
-						);
-						scene.addCard('Shuffle Cards');
-					},
+								true
+							);
+							scene.addCard('Shuffle Cards');
+						},
+					});
 				});
-			});
-			scene.addCard(
-				{
-					name: 'Back',
-					variant: 'ui',
-					sprite: "Coward's Plan",
-					effect: () => {
-						scene.sfx('sfx4');
-						scene.clearHand();
-						scene.addCard('Kindle');
-						scene.addCard('Shuffle Cards');
-					},
-				},
-				true
-			);
-		},
-	},
-	'Shuffle Cards': {
-		variant: 'ui',
-		sprite: 'Shuffle Cards',
-		description: 'Prepare cards to embark into the dungeon',
-		effect(scene) {
-			scene.sfx('sfx4');
-			scene.clearHand();
-			const deck = scene.shuffle(scene.deck);
-			const hand = deck.splice(0, scene.handSize);
-			hand.forEach((i, idx) => {
-				scene.addCard({
-					...i,
-					description: `Replace "${i.name}"\n\n${i.description}`,
-					effect: () => {
-						scene.sfx('sfx4');
-						const newCard = deck.splice(0, 1)[0];
-						hand.splice(idx, 1, newCard);
-						scene.addCard({
-							name: '',
-							sprite: 'card_back',
-							description: "Can't replace a card twice",
-							canPlay: () => false,
-						});
-						scene.hand.hand.splice(idx, 0, scene.hand.hand.pop());
-					},
-					canPlay: () => deck.length > 0,
-				});
-			});
-			scene.addCard(
-				{
-					name: 'Reorder Party',
-					variant: 'ui',
-					sprite: 'Shuffle',
-					description: 'Prepare party to embark with this hand',
-					effect(scene) {
-						scene.sfx('sfx4');
-						scene.clearHand();
-						const getPartySprite = (name) => {
-							if (['Rogue', 'Knight', 'Mage', 'Priest'].includes(name)) {
-								return name;
-							}
-							return 'blank';
-						};
-
-						// party order selection
-						const putInLead = (i) => {
+				scene.addCard(
+					{
+						name: 'Back',
+						variant: 'ui',
+						sprite: "Coward's Plan",
+						effect: () => {
 							scene.sfx('sfx4');
-							const idx = scene.party.indexOf(i);
-							const newIdx = scene.party.length - 1;
-							scene.party.push(scene.party.splice(idx, 1)[0]);
-							scene.addCard({
-								name: i.name,
-								sprite: getPartySprite(i.name),
-								description: `Put ${i.name} in the lead`,
-								effect() {
-									putInLead(i);
-								},
-							});
-							scene.hand.hand.splice(newIdx, 0, scene.hand.hand.pop());
-						};
-						scene.clearHand();
-						scene.party.forEach((i, idx) => {
-							scene.addCard({
-								name: i.name,
-								sprite: getPartySprite(i.name),
-								description: `Put ${i.name} in the lead`,
-								effect() {
-									putInLead(i);
-								},
-							});
-						});
-						scene.addCard(
-							{
-								name: 'Embark',
-								variant: 'ui',
-								sprite: 'Advance',
-								description: 'Embark into the dungeon',
-								effect() {
-									scene.music('battle');
-									scene.sfx('sfx0');
-									scene.nextLevel(() => {
-										scene.clearHand();
-										hand.forEach((i) => {
-											scene.addCard(i);
-										});
-										scene.refreshDeck();
-										scene.addCard('Advance');
-									});
-								},
-							},
-							true
-						);
+							scene.clearHand();
+							scene.addCard('Kindle');
+							scene.addCard('Shuffle Cards');
+						},
 					},
-				},
-				true
-			);
+					true
+				);
+			},
 		},
-	},
-	// gameplay
-	Kindling: {
-		sprite: 'Kindle',
-		description: "Not good for much, but at least it's flammable",
-		canPlay() {
-			return false;
+		'Shuffle Cards': {
+			variant: 'ui',
+			sprite: 'Shuffle Cards',
+			description: 'Prepare cards to embark into the dungeon',
+			effect(scene) {
+				scene.sfx('sfx4');
+				scene.clearHand();
+				const deck = scene.shuffle(scene.deck);
+				const hand = deck.splice(0, scene.handSize);
+				hand.forEach((i, idx) => {
+					scene.addCard({
+						...i,
+						description: `Replace "${i.name}"\n\n${i.description}`,
+						effect: () => {
+							scene.sfx('sfx4');
+							const newCard = deck.splice(0, 1)[0];
+							hand.splice(idx, 1, newCard);
+							scene.addCard({
+								name: '',
+								sprite: 'card_back',
+								description: "Can't replace a card twice",
+								canPlay: () => false,
+							});
+							scene.hand.hand.splice(idx, 0, scene.hand.hand.pop());
+						},
+						canPlay: () => deck.length > 0,
+					});
+				});
+				scene.addCard(
+					{
+						name: 'Reorder Party',
+						variant: 'ui',
+						sprite: 'Shuffle',
+						description: 'Prepare party to embark with this hand',
+						effect(scene) {
+							scene.sfx('sfx4');
+							scene.clearHand();
+							const getPartySprite = (name) => {
+								if (['Rogue', 'Knight', 'Mage', 'Priest'].includes(name)) {
+									return name;
+								}
+								return 'blank';
+							};
+
+							// party order selection
+							const putInLead = (i) => {
+								scene.sfx('sfx4');
+								const idx = scene.party.indexOf(i);
+								const newIdx = scene.party.length - 1;
+								scene.party.push(scene.party.splice(idx, 1)[0]);
+								scene.addCard({
+									name: i.name,
+									sprite: getPartySprite(i.name),
+									description: `Put ${i.name} in the lead`,
+									effect() {
+										putInLead(i);
+									},
+								});
+								scene.hand.hand.splice(newIdx, 0, scene.hand.hand.pop());
+							};
+							scene.clearHand();
+							scene.party.forEach((i, idx) => {
+								scene.addCard({
+									name: i.name,
+									sprite: getPartySprite(i.name),
+									description: `Put ${i.name} in the lead`,
+									effect() {
+										putInLead(i);
+									},
+								});
+							});
+							scene.addCard(
+								{
+									name: 'Embark',
+									variant: 'ui',
+									sprite: 'Advance',
+									description: 'Embark into the dungeon',
+									effect() {
+										scene.music('battle');
+										scene.sfx('sfx0');
+										scene.nextLevel(() => {
+											scene.clearHand();
+											hand.forEach((i) => {
+												scene.addCard(i);
+											});
+											scene.refreshDeck();
+											scene.addCard('Advance');
+										});
+									},
+								},
+								true
+							);
+						},
+					},
+					true
+				);
+			},
 		},
-		effect() {},
-	},
-	'Deploy Panic': {
-		sprite: 'Shuffle',
-		description: 'Shuffles party order and draws 1 card',
-		effect(scene) {
-			scene.sfx('sfx7');
-			const original = scene.party.slice();
-			do {
-				scene.party.sort((a, b) => {
+		// gameplay
+		Kindling: {
+			sprite: 'Kindle',
+			description: "Not good for much, but at least it's flammable",
+			canPlay() {
+				return false;
+			},
+			effect() {},
+		},
+		'Deploy Panic': {
+			sprite: 'Shuffle',
+			description: 'Shuffles party order and draws 1 card',
+			effect(scene) {
+				scene.sfx('sfx7');
+				const original = scene.party.slice();
+				do {
+					scene.party.sort((a, b) => {
+						if (a.health <= 0 && b.health > 0) return -1;
+						if (a.health > 0 && b.health <= 0) return 1;
+						return Math.random() - 0.5;
+					});
+				} while (scene.party.every((i, idx) => i === original[idx]));
+				scene.drawCard();
+			},
+		},
+		Reversal: {
+			sprite: 'Shuffle',
+			description: 'Reverses party order and draws 1 card',
+			effect(scene) {
+				scene.sfx('sfx7');
+				scene.party.reverse().sort((a, b) => {
 					if (a.health <= 0 && b.health > 0) return -1;
 					if (a.health > 0 && b.health <= 0) return 1;
-					return Math.random() - 0.5;
+					return 0;
 				});
-			} while (scene.party.every((i, idx) => i === original[idx]));
-			scene.drawCard();
+				scene.drawCard();
+			},
 		},
-	},
-	Reversal: {
-		sprite: 'Shuffle',
-		description: 'Reverses party order and draws 1 card',
-		effect(scene) {
-			scene.sfx('sfx7');
-			scene.party.reverse().sort((a, b) => {
-				if (a.health <= 0 && b.health > 0) return -1;
-				if (a.health > 0 && b.health <= 0) return 1;
-				return 0;
-			});
-			scene.drawCard();
+		'Death Step': {
+			sprite: 'Shuffle',
+			description: 'Puts dead party member in lead and draws 1 card',
+			canPlay(scene) {
+				return scene.party.some((i) => !i.health);
+			},
+			effect(scene) {
+				scene.sfx('sfx2');
+				const index = scene.party.findIndex((i) => !i.health);
+				const p = scene.party.splice(index, 1);
+				scene.party.push(p[0]);
+				scene.blackout();
+				scene.shake(5, 500);
+				scene.drawCard();
+			},
 		},
-	},
-	'Death Step': {
-		sprite: 'Shuffle',
-		description: 'Puts dead party member in lead and draws 1 card',
-		canPlay(scene) {
-			return scene.party.some((i) => !i.health);
+		'Staunch Defender': {
+			sprite: 'Shuffle',
+			description: 'The Knight takes the lead and draws 1 card',
+			canPlay(scene) {
+				return scene.alive('Knight') && scene.front.name !== 'Knight';
+			},
+			effect(scene) {
+				scene.sfx('sfx7');
+				const index = scene.party.findIndex((i) => i.name === 'Knight');
+				const p = scene.party.splice(index, 1);
+				scene.party.push(p[0]);
+				scene.drawCard();
+			},
 		},
-		effect(scene) {
-			scene.sfx('sfx2');
-			const index = scene.party.findIndex((i) => !i.health);
-			const p = scene.party.splice(index, 1);
-			scene.party.push(p[0]);
-			scene.blackout();
-			scene.shake(5, 500);
-			scene.drawCard();
-		},
-	},
-	'Staunch Defender': {
-		sprite: 'Shuffle',
-		description: 'The Knight takes the lead and draws 1 card',
-		canPlay(scene) {
-			return scene.alive('Knight') && scene.front.name !== 'Knight';
-		},
-		effect(scene) {
-			scene.sfx('sfx7');
-			const index = scene.party.findIndex((i) => i.name === 'Knight');
-			const p = scene.party.splice(index, 1);
-			scene.party.push(p[0]);
-			scene.drawCard();
-		},
-	},
-	"Coward's Plan": {
-		description:
-			'Sends party member with lowest HP to the back and draws 1 card',
-		canPlay(scene) {
-			return scene.party.filter((i) => i.health).length >= 2;
-		},
-		effect(scene) {
-			scene.sfx('sfx7');
-			const weakest = scene.party
-				.filter((i) => i.health)
-				.reverse()
-				.sort((a, b) => a.health - b.health)[0];
-			const p = scene.party.splice(scene.party.indexOf(weakest), 1);
-			const index = scene.party.findIndex((i) => i.health);
-			scene.party.splice(index, 0, p[0]);
-			scene.drawCard();
-		},
-	},
-	'Tactical Grace': {
-		sprite: 'Shuffle',
-		description: 'Select a party member to place in the lead and draw 1 card',
-		canPlay(scene) {
-			return scene.party.filter((i) => i.health).length >= 2;
-		},
-		effect(scene) {
-			scene.choice(
-				...scene.party
+		"Coward's Plan": {
+			description:
+				'Sends party member with lowest HP to the back and draws 1 card',
+			canPlay(scene) {
+				return scene.party.filter((i) => i.health).length >= 2;
+			},
+			effect(scene) {
+				scene.sfx('sfx7');
+				const weakest = scene.party
 					.filter((i) => i.health)
-					.map((i, idx) => ({
-						name: i.name,
-						description: `Place ${i.name} in the lead`,
-						effect() {
-							scene.sfx('sfx7');
-							const p = scene.party.splice(idx, 1);
-							scene.party.push(p[0]);
-							scene.drawCard();
-						},
-					}))
-			);
+					.reverse()
+					.sort((a, b) => a.health - b.health)[0];
+				const p = scene.party.splice(scene.party.indexOf(weakest), 1);
+				const index = scene.party.findIndex((i) => i.health);
+				scene.party.splice(index, 0, p[0]);
+				scene.drawCard();
+			},
 		},
-	},
-	Snooze: {
-		sprite: "Coward's Plan",
-		description: 'Retreat to previous campfire',
-		effect(scene) {
-			scene.sfx('sfx0');
-			scene.kick(-5);
-			scene.log('Party escaped!');
-			scene.startCamp();
-			scene.queue.push(async () => {
-				scene.level -= 1;
-			});
+		'Tactical Grace': {
+			sprite: 'Shuffle',
+			description: 'Select a party member to place in the lead and draw 1 card',
+			canPlay(scene) {
+				return scene.party.filter((i) => i.health).length >= 2;
+			},
+			effect(scene) {
+				scene.choice(
+					...scene.party
+						.filter((i) => i.health)
+						.map((i, idx) => ({
+							name: i.name,
+							description: `Place ${i.name} in the lead`,
+							effect() {
+								scene.sfx('sfx7');
+								const p = scene.party.splice(idx, 1);
+								scene.party.push(p[0]);
+								scene.drawCard();
+							},
+						}))
+				);
+			},
 		},
-	},
-	Teleport: {
-		description: 'Mage teleports party to next area',
-		canPlay(scene) {
-			return scene.position < scene.areas.length - 1 && scene.alive('Mage');
-		},
-		effect(scene) {
-			scene.sfx('sfx1');
-			if (
-				scene.obstacles.some(
-					(i) =>
-						i.def.name &&
-						i.def.name.includes('Dragon') &&
-						!i.def.name.includes('Junior')
-				)
-			) {
-				scene.log('The teleport spell fizzles, leaving the party behind!');
-				scene.overlay([1, 0, 0, 0.1]);
-				scene.delay(1500).then(() => {
-					scene.log('"FOOLS! You think you can run from ME!?"');
+		Snooze: {
+			sprite: "Coward's Plan",
+			description: 'Retreat to previous campfire',
+			effect(scene) {
+				scene.sfx('sfx0');
+				scene.kick(-5);
+				scene.log('Party escaped!');
+				scene.startCamp();
+				scene.queue.push(async () => {
+					scene.level -= 1;
 				});
-				return;
-			}
-			scene.setPosition(scene.position + 1);
-			scene.whiteout();
+			},
 		},
-	},
-	'Labelled Potion': {
-		sprite: 'Absolve Death',
-		description: 'Fully heal party member in lead',
-		effect(scene) {
-			scene.sfx('sfx1');
-			scene.front.heal(Infinity);
-		},
-	},
-	'Absolve Death': {
-		description: 'The Priest revives fallen party members',
-		canPlay(scene) {
-			return scene.alive('Priest');
-		},
-		effect(scene) {
-			scene.sfx('sfx2');
-			scene.party.forEach((i) => {
-				if (!i.health) i.heal(1);
-			});
-			scene.overlay([0, 1, 0]);
-		},
-	},
-	'Blessed Rain': {
-		description: 'The Priest heals everyone',
-		canPlay(scene) {
-			return scene.alive('Priest');
-		},
-		effect(scene) {
-			scene.sfx('sfx2');
-			scene.party.concat(scene.obstacles).forEach((i) => {
-				if (i.health) i.heal(Infinity);
-			});
-			scene.overlay([0, 1, 0]);
-		},
-	},
-	Slash: {
-		description: 'The Knight slashes for 1 damage',
-		canPlay(scene) {
-			return scene.enemy && scene.alive('Knight');
-		},
-		effect(scene) {
-			scene.sfx('sfx1');
-			scene.obstacle.damage(1);
-			scene.kick(-5);
-		},
-	},
-	'Toxic Vent': {
-		description: 'The Knight deals 1 damage to everyone,\nincluding themselves',
-		canPlay(scene) {
-			return scene.alive('Knight');
-		},
-		effect(scene) {
-			scene.sfx('sfx3');
-			scene.party.concat(scene.obstacles).forEach((i) => {
-				i.damage(1);
-			});
-			scene.overlay([0.6, 0.8, 0, 0.6], 500);
-		},
-	},
-	'Twin Daggers': {
-		description: 'The Rogue throws two daggers,\neach dealing 1 damage',
-		canPlay(scene) {
-			return scene.enemy && scene.alive('Rogue');
-		},
-		effect(scene) {
-			scene.sfx('sfx1');
-			scene.obstacle.damage(1);
-			scene.kick(-5);
-			scene.delay(100).then(() => {
-				if (scene.enemy) {
-					scene.sfx('sfx1');
-					scene.kick(-10);
-					scene.obstacle.damage(1);
+		Teleport: {
+			description: 'Mage teleports party to next area',
+			canPlay(scene) {
+				return scene.position < scene.areas.length - 1 && scene.alive('Mage');
+			},
+			effect(scene) {
+				scene.sfx('sfx1');
+				if (
+					scene.obstacles.some(
+						(i) =>
+							i.def.name &&
+							i.def.name.includes('Dragon') &&
+							!i.def.name.includes('Junior')
+					)
+				) {
+					scene.log('The teleport spell fizzles, leaving the party behind!');
+					scene.overlay([1, 0, 0, 0.1]);
+					scene.delay(1500).then(() => {
+						scene.log('"FOOLS! You think you can run from ME!?"');
+					});
+					return;
 				}
-			});
+				scene.setPosition(scene.position + 1);
+				scene.whiteout();
+			},
 		},
-	},
-	'Magic Blast': {
-		description: 'The Mage fires a blast, dealing 2 damage',
-		canPlay(scene) {
-			return scene.enemy && scene.alive('Mage');
+		'Labelled Potion': {
+			sprite: 'Absolve Death',
+			description: 'Fully heal party member in lead',
+			effect(scene) {
+				scene.sfx('sfx1');
+				scene.front.heal(Infinity);
+			},
 		},
-		effect(scene) {
-			scene.sfx('sfx3');
-			scene.obstacle.damage(2);
-			scene.kick(-5);
-			scene.overlay([1, 0, 1, 0.5]);
+		'Absolve Death': {
+			description: 'The Priest revives fallen party members',
+			canPlay(scene) {
+				return scene.alive('Priest');
+			},
+			effect(scene) {
+				scene.sfx('sfx2');
+				scene.party.forEach((i) => {
+					if (!i.health) i.heal(1);
+				});
+				scene.overlay([0, 1, 0]);
+			},
 		},
-	},
-	Bonk: {
-		sprite: 'Slash',
-		description: 'Bonk an enemy for 1 damage',
-		canPlay(scene) {
-			return scene.enemy;
+		'Blessed Rain': {
+			description: 'The Priest heals everyone',
+			canPlay(scene) {
+				return scene.alive('Priest');
+			},
+			effect(scene) {
+				scene.sfx('sfx2');
+				scene.party.concat(scene.obstacles).forEach((i) => {
+					if (i.health) i.heal(Infinity);
+				});
+				scene.overlay([0, 1, 0]);
+			},
 		},
-		effect(scene) {
-			scene.sfx('sfx1');
-			scene.obstacle.damage(1);
-			scene.kick(-5);
+		Slash: {
+			description: 'The Knight slashes for 1 damage',
+			canPlay(scene) {
+				return scene.enemy && scene.alive('Knight');
+			},
+			effect(scene) {
+				scene.sfx('sfx1');
+				scene.obstacle.damage(1);
+				scene.kick(-5);
+			},
 		},
-	},
-	'Death from the Shadows': {
-		description: 'The Rogue strikes for 5 damage',
-		canPlay(scene) {
-			return scene.enemy && scene.alive('Rogue');
+		'Toxic Vent': {
+			description:
+				'The Knight deals 1 damage to everyone,\nincluding themselves',
+			canPlay(scene) {
+				return scene.alive('Knight');
+			},
+			effect(scene) {
+				scene.sfx('sfx3');
+				scene.party.concat(scene.obstacles).forEach((i) => {
+					i.damage(1);
+				});
+				scene.overlay([0.6, 0.8, 0, 0.6], 500);
+			},
 		},
-		effect(scene) {
-			scene.sfx('sfx3');
-			scene.kick(-50);
-			scene.enemy.damage(5);
-			scene.blackout();
+		'Twin Daggers': {
+			description: 'The Rogue throws two daggers,\neach dealing 1 damage',
+			canPlay(scene) {
+				return scene.enemy && scene.alive('Rogue');
+			},
+			effect(scene) {
+				scene.sfx('sfx1');
+				scene.obstacle.damage(1);
+				scene.kick(-5);
+				scene.delay(100).then(() => {
+					if (scene.enemy) {
+						scene.sfx('sfx1');
+						scene.kick(-10);
+						scene.obstacle.damage(1);
+					}
+				});
+			},
 		},
-	},
-	Exorcise: {
-		description: 'The Priest destroys all undead enemies',
-		canPlay(scene) {
-			return scene.enemy && scene.alive('Priest');
+		'Magic Blast': {
+			description: 'The Mage fires a blast, dealing 2 damage',
+			canPlay(scene) {
+				return scene.enemy && scene.alive('Mage');
+			},
+			effect(scene) {
+				scene.sfx('sfx3');
+				scene.obstacle.damage(2);
+				scene.kick(-5);
+				scene.overlay([1, 0, 1, 0.5]);
+			},
 		},
-		effect(scene) {
-			scene.sfx('sfx3');
-			const undead = [
-				'skeleton',
-				'skeleton_armoured',
-				'zombie',
-				'necromancer',
-				'necromancer2',
-			];
-			scene.shake(5, 1000);
-			scene.whiteout(1000);
-			scene.obstacles
-				.filter((i) => undead.includes(i.def.name))
-				.forEach((i) => {
+		Bonk: {
+			sprite: 'Slash',
+			description: 'Bonk an enemy for 1 damage',
+			canPlay(scene) {
+				return scene.enemy;
+			},
+			effect(scene) {
+				scene.sfx('sfx1');
+				scene.obstacle.damage(1);
+				scene.kick(-5);
+			},
+		},
+		'Death from the Shadows': {
+			description: 'The Rogue strikes for 5 damage',
+			canPlay(scene) {
+				return scene.enemy && scene.alive('Rogue');
+			},
+			effect(scene) {
+				scene.sfx('sfx3');
+				scene.kick(-50);
+				scene.enemy.damage(5);
+				scene.blackout();
+			},
+		},
+		Exorcise: {
+			description: 'The Priest destroys all undead enemies',
+			canPlay(scene) {
+				return scene.enemy && scene.alive('Priest');
+			},
+			effect(scene) {
+				scene.sfx('sfx3');
+				const undead = [
+					'skeleton',
+					'skeleton_armoured',
+					'zombie',
+					'necromancer',
+					'necromancer2',
+				];
+				scene.shake(5, 1000);
+				scene.whiteout(1000);
+				scene.obstacles
+					.filter((i) => undead.includes(i.def.name))
+					.forEach((i) => {
+						i.damage(Infinity, true);
+					});
+			},
+		},
+		'Vision of Death': {
+			description: 'The Mage kills everything in sight',
+			canPlay(scene) {
+				return scene.alive('Mage');
+			},
+			effect(scene) {
+				scene.sfx('sfx3');
+				scene.obstacles.slice().forEach((i) => {
 					i.damage(Infinity, true);
 				});
-		},
-	},
-	'Vision of Death': {
-		description: 'The Mage kills everything in sight',
-		canPlay(scene) {
-			return scene.alive('Mage');
-		},
-		effect(scene) {
-			scene.sfx('sfx3');
-			scene.obstacles.slice().forEach((i) => {
-				i.damage(Infinity, true);
-			});
-			const mageIndex = scene.party.findIndex((i) => i.name === 'Mage');
-			const collateral = scene.party.slice(mageIndex + 1);
-			collateral.forEach((i) => {
-				i.damage(Infinity);
-			});
-			if (collateral.length > 0) {
-				scene.log(
-					`${scene.andList(
-						collateral.map((i) => i.name)
-					)} caught in the line of sight!`
-				);
-			}
-			scene.shake(5, 1000);
-			scene.kick(-50);
-			scene.overlay([1, 0, 1, 0.5], 1000);
-		},
-	},
-	'Portable Mulligan': {
-		description: 'Replace all cards in your hand by drawing from your deck',
-		effect(scene) {
-			scene.sfx('sfx4');
-			const cards = scene.getHand();
-			scene.clearHand();
-			new Array(Math.min(cards.length, scene.deckAvailable.length + 1))
-				.fill(0)
-				.forEach(() => {
-					scene.drawCard();
+				const mageIndex = scene.party.findIndex((i) => i.name === 'Mage');
+				const collateral = scene.party.slice(mageIndex + 1);
+				collateral.forEach((i) => {
+					i.damage(Infinity);
 				});
-			scene.addCard('Advance');
-		},
-	},
-	'Charm Creature': {
-		sprite: 'Blessed Rain',
-		description: 'The Priest sways a weak-willed creature to switch sides',
-		canPlay(scene) {
-			return scene.enemy && scene.alive('Priest');
-		},
-		effect(scene) {
-			scene.sfx('sfx2');
-			const o = scene.obstacle;
-			if (o.def.name && o.def.name.includes('Rat King')) {
-				scene.log('The charm spell fizzles off their glistening abs!');
-				scene.overlay([1, 0, 0, 0.1]);
-				scene.delay(1500).then(() => {
-					scene.log('"It takes a king to befriend a king!"');
-				});
-				return;
-			} else if (o.def.name && o.def.name.includes('Dragon')) {
-				scene.log('The charm spell fizzles off their glistening scales!');
-				scene.overlay([1, 0, 0, 0.1]);
-				scene.delay(1500).then(() => {
-					scene.log('"You think you can seduce ME!?"');
-				});
-				return;
-			} else if (o.def.name === 'Big Slime') {
-				scene.log('The charm spell fizzles off their glistening slime!');
-				scene.overlay([1, 0, 0, 0.1]);
-				scene.delay(1500).then(() => {
-					scene.log('"*blub blub*"');
-				});
-				return;
-			} else if (o.def.name && o.def.name.includes('Necromancer')) {
-				scene.log('The charm spell fizzles off their glistening robe!');
-				scene.overlay([1, 0, 0, 0.1]);
-				scene.delay(1500).then(() => {
+				if (collateral.length > 0) {
 					scene.log(
-						'"hee hee i dunked myself in anti-charm oil before the fight"'
+						`${scene.andList(
+							collateral.map((i) => i.name)
+						)} caught in the line of sight!`
 					);
+				}
+				scene.shake(5, 1000);
+				scene.kick(-50);
+				scene.overlay([1, 0, 1, 0.5], 1000);
+			},
+		},
+		'Portable Mulligan': {
+			description: 'Replace all cards in your hand by drawing from your deck',
+			effect(scene) {
+				scene.sfx('sfx4');
+				const cards = scene.getHand();
+				scene.clearHand();
+				new Array(Math.min(cards.length, scene.deckAvailable.length + 1))
+					.fill(0)
+					.forEach(() => {
+						scene.drawCard();
+					});
+				scene.addCard('Advance');
+			},
+		},
+		'Charm Creature': {
+			sprite: 'Blessed Rain',
+			description: 'The Priest sways a weak-willed creature to switch sides',
+			canPlay(scene) {
+				return scene.enemy && scene.alive('Priest');
+			},
+			effect(scene) {
+				scene.sfx('sfx2');
+				const o = scene.obstacle;
+				if (o.def.name && o.def.name.includes('Rat King')) {
+					scene.log('The charm spell fizzles off their glistening abs!');
+					scene.overlay([1, 0, 0, 0.1]);
+					scene.delay(1500).then(() => {
+						scene.log('"It takes a king to befriend a king!"');
+					});
+					return;
+				} else if (o.def.name && o.def.name.includes('Dragon')) {
+					scene.log('The charm spell fizzles off their glistening scales!');
+					scene.overlay([1, 0, 0, 0.1]);
+					scene.delay(1500).then(() => {
+						scene.log('"You think you can seduce ME!?"');
+					});
+					return;
+				} else if (o.def.name === 'Big Slime') {
+					scene.log('The charm spell fizzles off their glistening slime!');
+					scene.overlay([1, 0, 0, 0.1]);
+					scene.delay(1500).then(() => {
+						scene.log('"*blub blub*"');
+					});
+					return;
+				} else if (o.def.name && o.def.name.includes('Necromancer')) {
+					scene.log('The charm spell fizzles off their glistening robe!');
+					scene.overlay([1, 0, 0, 0.1]);
+					scene.delay(1500).then(() => {
+						scene.log(
+							'"hee hee i dunked myself in anti-charm oil before the fight"'
+						);
+					});
+					return;
+				} else if (o.def.name === 'Gloopy Gus') {
+					scene.log('The charm spell fizzles off their glistening cap!');
+					scene.overlay([1, 0, 0, 0.1]);
+					scene.delay(1500).then(() => {
+						scene.log('"*gloop gloop*"');
+					});
+					return;
+				} else if (o.def.name && o.def.name.includes('Doppelganger')) {
+					scene.log('The charm spell fizzles off their glistening reflection!');
+					scene.overlay([1, 0, 0, 0.1]);
+					scene.delay(1500).then(() => {
+						scene.log('".driew siht ekam t\'nod, wE"');
+					});
+					return;
+				}
+				const p = scene.addParty({
+					name: `Friendly ${o.def.name}`,
+					spr: o.def.sprite,
+					maxHealth: o.maxHealth,
+					armour: o.armour,
+					health: o.health,
+					temporary: true,
+					damage: o.def.damage,
 				});
-				return;
-			} else if (o.def.name === 'Gloopy Gus') {
-				scene.log('The charm spell fizzles off their glistening cap!');
-				scene.overlay([1, 0, 0, 0.1]);
-				scene.delay(1500).then(() => {
-					scene.log('"*gloop gloop*"');
+				p.sprBody.scale.x = -1;
+				p.sprOL.scale.x = -1;
+				scene.killObstacle(o);
+			},
+		},
+		'Summon Sprite': {
+			sprite: 'Blessed Rain',
+			description:
+				'The Mage Summons a 1HP creature to fight alongside the party',
+			canPlay(scene) {
+				return scene.alive('Mage');
+			},
+			effect(scene) {
+				scene.sfx('sfx2');
+				scene.addParty({
+					name: 'Fire Sprite',
+					spr: 'icon_camp',
+					maxHealth: 1,
+					temporary: true,
 				});
-				return;
-			} else if (o.def.name && o.def.name.includes('Doppelganger')) {
-				scene.log('The charm spell fizzles off their glistening reflection!');
-				scene.overlay([1, 0, 0, 0.1]);
-				scene.delay(1500).then(() => {
-					scene.log('".driew siht ekam t\'nod, wE"');
-				});
-				return;
-			}
-			const p = scene.addParty({
-				name: `Friendly ${o.def.name}`,
-				spr: o.def.sprite,
-				maxHealth: o.maxHealth,
-				armour: o.armour,
-				health: o.health,
-				temporary: true,
-				damage: o.def.damage,
-			});
-			p.sprBody.scale.x = -1;
-			p.sprOL.scale.x = -1;
-			scene.killObstacle(o);
+				scene.whiteout();
+			},
 		},
-	},
-	'Summon Sprite': {
-		sprite: 'Blessed Rain',
-		description: 'The Mage Summons a 1HP creature to fight alongside the party',
-		canPlay(scene) {
-			return scene.alive('Mage');
-		},
-		effect(scene) {
-			scene.sfx('sfx2');
-			scene.addParty({
-				name: 'Fire Sprite',
-				spr: 'icon_camp',
-				maxHealth: 1,
-				temporary: true,
-			});
-			scene.whiteout();
-		},
-	},
-	'Poly Morph': {
-		sprite: 'Blessed Rain',
-		description: 'The Mage transforms a small or medium creature into another',
-		canPlay(scene) {
-			return scene.enemy && scene.alive('Mage');
-		},
-		effect(scene) {
-			scene.sfx('sfx3');
-			if (
-				scene.obstacle.def.name &&
-				scene.obstacle.def.name.includes('Dragon') &&
-				!scene.obstacle.def.name.includes('Junior')
-			) {
-				scene.log('The morph spell fizzles before it can capture their form!');
-				scene.overlay([1, 0, 0, 0.1]);
-				scene.delay(1500).then(() => {
+		'Poly Morph': {
+			sprite: 'Blessed Rain',
+			description:
+				'The Mage transforms a small or medium creature into another',
+			canPlay(scene) {
+				return scene.enemy && scene.alive('Mage');
+			},
+			effect(scene) {
+				scene.sfx('sfx3');
+				if (
+					scene.obstacle.def.name &&
+					scene.obstacle.def.name.includes('Dragon') &&
+					!scene.obstacle.def.name.includes('Junior')
+				) {
 					scene.log(
-						'"Pitiful! I practically invented polymorphic magic and you INSULT me so?!"'
+						'The morph spell fizzles before it can capture their form!'
 					);
+					scene.overlay([1, 0, 0, 0.1]);
+					scene.delay(1500).then(() => {
+						scene.log(
+							'"Pitiful! I practically invented polymorphic magic and you INSULT me so?!"'
+						);
+					});
+					return;
+				}
+				const result = scene.shuffle([
+					'rat_small',
+					'slime_small',
+					'bat',
+					'rat_small',
+					'slime_small',
+					'bat',
+					'skeleton',
+					'zombie',
+					'bomb',
+				])[0];
+				const from = scene.obstacle.def.name;
+				scene.killObstacle();
+				const o = scene.addObstacle(result);
+				const to = o.def.name;
+				scene.log(`${from} morphed into a ${to}!`);
+				scene.overlay([1, 0, 1]);
+			},
+		},
+		'Invoke Augur': {
+			sprite: 'Blessed Rain',
+			description: 'The Priest prompts an encounter in an empty room',
+			canPlay(scene) {
+				return !scene.obstacle;
+			},
+			effect(scene) {
+				scene.sfx('sfx2');
+				const result = scene.shuffle([
+					['fountain'],
+					['treasure'],
+					['potion'],
+					['fortune_teller'],
+					['dealer'],
+					['skeleton', 'A bad omen...'],
+					['zombie', 'A bad omen...'],
+					['skeleton_armoured', 'A bad omen...'],
+				])[0];
+				scene.whiteout();
+				scene.addObstacle(result[0]);
+				if (result[1]) {
+					scene.log(result[1]);
+				}
+			},
+		},
+		'Take One For The Team': {
+			sprite: 'Shield Spell',
+			description: 'The Knight takes 1 damage and gains 2 armour',
+			canPlay(scene) {
+				return scene.alive('Knight');
+			},
+			effect(scene) {
+				scene.sfx('sfx1');
+				const knight = scene.party.find((i) => i.name === 'Knight');
+				knight.damage(1, true);
+				knight.addArmour(2);
+				scene.overlay([0.5, 0.5, 0.5, 0.5]);
+			},
+		},
+		'Steel Layer': {
+			sprite: 'Shield Spell',
+			description: 'The Knight gains 1 armour',
+			canPlay(scene) {
+				return scene.alive('Knight');
+			},
+			effect(scene) {
+				scene.sfx('sfx1');
+				const knight = scene.party.find((i) => i.name === 'Knight');
+				knight.addArmour(1);
+				scene.overlay([0.5, 0.5, 0.5, 0.5]);
+			},
+		},
+		'Shield Spell': {
+			description: 'The Mage grants 1 armour to party lead',
+			canPlay(scene) {
+				return scene.alive('Mage');
+			},
+			effect(scene) {
+				scene.sfx('sfx1');
+				scene.front.addArmour(1);
+				scene.overlay([1, 0, 1, 0.5]);
+			},
+		},
+		'Holy Barrier': {
+			sprite: 'Shield Spell',
+			description: 'The Priest grants 1 armour to party lead',
+			canPlay(scene) {
+				return scene.alive('Priest');
+			},
+			effect(scene) {
+				scene.sfx('sfx1');
+				scene.front.addArmour(1);
+				scene.whiteout();
+			},
+		},
+		Stealth: {
+			sprite: "Coward's Plan",
+			description: 'The Rogue gains 1 armour',
+			canPlay(scene) {
+				return scene.alive('Rogue');
+			},
+			effect(scene) {
+				scene.sfx('sfx1');
+				const rogue = scene.party.find((i) => i.name === 'Rogue');
+				rogue.addArmour(1);
+				scene.blackout();
+			},
+		},
+		'Jealous Juggle': {
+			sprite: 'Death from the Shadows',
+			description: 'The Rogue takes 1 damage and draws 2 cards',
+			canPlay(scene) {
+				return scene.alive('Rogue');
+			},
+			effect(scene) {
+				scene.sfx('sfx3');
+				const rogue = scene.party.find((i) => i.name === 'Rogue');
+				rogue.damage(1);
+				scene.drawCard();
+				scene.drawCard();
+			},
+		},
+		'Bitter Tears': {
+			sprite: 'Magic Blast',
+			description:
+				'The Knight sacrifices themselves and deals their HP as damage',
+			canPlay(scene) {
+				return scene.enemy && scene.alive('Knight');
+			},
+			effect(scene) {
+				scene.sfx('sfx3');
+				const knight = scene.party.find((i) => i.name === 'Knight');
+				scene.obstacle.damage(knight.health);
+				knight.damage(knight.health, true);
+				scene.shake();
+				scene.kick(-5);
+			},
+		},
+		Equalize: {
+			sprite: 'Blessed Rain',
+			description:
+				'The Priest heals everyone to match whoever has the highest HP',
+			canPlay(scene) {
+				return scene.alive('Priest');
+			},
+			effect(scene) {
+				scene.sfx('sfx2');
+				const all = scene.party.concat(scene.obstacles);
+				const health = all.sort((a, b) => b.health - a.health)[0].health;
+				all.forEach((i) => {
+					if (i.health) i.heal(Math.max(0, health - i.health));
 				});
-				return;
-			}
-			const result = scene.shuffle([
-				'rat_small',
-				'slime_small',
-				'bat',
-				'rat_small',
-				'slime_small',
-				'bat',
-				'skeleton',
-				'zombie',
-				'bomb',
-			])[0];
-			const from = scene.obstacle.def.name;
-			scene.killObstacle();
-			const o = scene.addObstacle(result);
-			const to = o.def.name;
-			scene.log(`${from} morphed into a ${to}!`);
-			scene.overlay([1, 0, 1]);
+				scene.overlay([0, 1, 0], 1000);
+			},
 		},
-	},
-	'Invoke Augur': {
-		sprite: 'Blessed Rain',
-		description: 'The Priest prompts an encounter in an empty room',
-		canPlay(scene) {
-			return !scene.obstacle;
+		Downsize: {
+			sprite: 'Magic Blast',
+			description:
+				'The Mage damages everyone to match whoever has the lowest HP',
+			canPlay(scene) {
+				return scene.alive('Mage');
+			},
+			effect(scene) {
+				scene.sfx('sfx3');
+				const all = scene.party.concat(scene.obstacles);
+				const health = all
+					.filter((i) => i.health)
+					.sort((a, b) => a.health - b.health)[0].health;
+				all.forEach((i) => {
+					i.damage(Math.max(0, i.health - health));
+				});
+				scene.overlay([1, 0, 1], 1000);
+				scene.shake(5, 1000);
+			},
 		},
-		effect(scene) {
-			scene.sfx('sfx2');
-			const result = scene.shuffle([
-				['fountain'],
-				['treasure'],
-				['potion'],
-				['fortune_teller'],
-				['dealer'],
-				['skeleton', 'A bad omen...'],
-				['zombie', 'A bad omen...'],
-				['skeleton_armoured', 'A bad omen...'],
-			])[0];
-			scene.whiteout();
-			scene.addObstacle(result[0]);
-			if (result[1]) {
-				scene.log(result[1]);
-			}
-		},
-	},
-	'Take One For The Team': {
-		sprite: 'Shield Spell',
-		description: 'The Knight takes 1 damage and gains 2 armour',
-		canPlay(scene) {
-			return scene.alive('Knight');
-		},
-		effect(scene) {
-			scene.sfx('sfx1');
-			const knight = scene.party.find((i) => i.name === 'Knight');
-			knight.damage(1, true);
-			knight.addArmour(2);
-			scene.overlay([0.5, 0.5, 0.5, 0.5]);
-		},
-	},
-	'Steel Layer': {
-		sprite: 'Shield Spell',
-		description: 'The Knight gains 1 armour',
-		canPlay(scene) {
-			return scene.alive('Knight');
-		},
-		effect(scene) {
-			scene.sfx('sfx1');
-			const knight = scene.party.find((i) => i.name === 'Knight');
-			knight.addArmour(1);
-			scene.overlay([0.5, 0.5, 0.5, 0.5]);
-		},
-	},
-	'Shield Spell': {
-		description: 'The Mage grants 1 armour to party lead',
-		canPlay(scene) {
-			return scene.alive('Mage');
-		},
-		effect(scene) {
-			scene.sfx('sfx1');
-			scene.front.addArmour(1);
-			scene.overlay([1, 0, 1, 0.5]);
-		},
-	},
-	'Holy Barrier': {
-		sprite: 'Shield Spell',
-		description: 'The Priest grants 1 armour to party lead',
-		canPlay(scene) {
-			return scene.alive('Priest');
-		},
-		effect(scene) {
-			scene.sfx('sfx1');
-			scene.front.addArmour(1);
-			scene.whiteout();
-		},
-	},
-	Stealth: {
-		sprite: "Coward's Plan",
-		description: 'The Rogue gains 1 armour',
-		canPlay(scene) {
-			return scene.alive('Rogue');
-		},
-		effect(scene) {
-			scene.sfx('sfx1');
-			const rogue = scene.party.find((i) => i.name === 'Rogue');
-			rogue.addArmour(1);
-			scene.blackout();
-		},
-	},
-	'Jealous Juggle': {
-		sprite: 'Death from the Shadows',
-		description: 'The Rogue takes 1 damage and draws 2 cards',
-		canPlay(scene) {
-			return scene.alive('Rogue');
-		},
-		effect(scene) {
-			scene.sfx('sfx3');
-			const rogue = scene.party.find((i) => i.name === 'Rogue');
-			rogue.damage(1);
-			scene.drawCard();
-			scene.drawCard();
-		},
-	},
-	'Bitter Tears': {
-		sprite: 'Magic Blast',
-		description:
-			'The Knight sacrifices themselves and deals their HP as damage',
-		canPlay(scene) {
-			return scene.enemy && scene.alive('Knight');
-		},
-		effect(scene) {
-			scene.sfx('sfx3');
-			const knight = scene.party.find((i) => i.name === 'Knight');
-			scene.obstacle.damage(knight.health);
-			knight.damage(knight.health, true);
-			scene.shake();
-			scene.kick(-5);
-		},
-	},
-	Equalize: {
-		sprite: 'Blessed Rain',
-		description:
-			'The Priest heals everyone to match whoever has the highest HP',
-		canPlay(scene) {
-			return scene.alive('Priest');
-		},
-		effect(scene) {
-			scene.sfx('sfx2');
-			const all = scene.party.concat(scene.obstacles);
-			const health = all.sort((a, b) => b.health - a.health)[0].health;
-			all.forEach((i) => {
-				if (i.health) i.heal(Math.max(0, health - i.health));
-			});
-			scene.overlay([0, 1, 0], 1000);
-		},
-	},
-	Downsize: {
-		sprite: 'Magic Blast',
-		description: 'The Mage damages everyone to match whoever has the lowest HP',
-		canPlay(scene) {
-			return scene.alive('Mage');
-		},
-		effect(scene) {
-			scene.sfx('sfx3');
-			const all = scene.party.concat(scene.obstacles);
-			const health = all
-				.filter((i) => i.health)
-				.sort((a, b) => a.health - b.health)[0].health;
-			all.forEach((i) => {
-				i.damage(Math.max(0, i.health - health));
-			});
-			scene.overlay([1, 0, 1], 1000);
-			scene.shake(5, 1000);
-		},
-	},
-	Confuse: {
-		sprite: 'Blessed Rain',
-		description: 'The Priest causes an enemy to damage themselves',
-		canPlay(scene) {
-			return scene.enemy && scene.alive('Priest');
-		},
-		effect(scene) {
-			scene.sfx('sfx1');
-			scene.obstacle.damage(scene.obstacle.def.damage);
-			scene.kick(5);
-		},
-	},
-	'Life Link Locket': {
-		sprite: 'Teleport',
-		description: 'Swap lead and enemy HP',
-		canPlay(scene) {
-			return scene.enemy;
-		},
-		effect(scene) {
-			scene.sfx('sfx7');
-			const a = scene.front.health;
-			const b = scene.obstacle.health;
-			scene.front.setHealth(b);
-			scene.obstacle.setHealth(a);
-			scene.invert();
-		},
-	},
-	'Leech Wand': {
-		sprite: 'Magic Blast',
-		description: 'Steal 1HP from enemy',
-		canPlay(scene) {
-			return scene.enemy;
-		},
-		effect(scene) {
-			scene.sfx('sfx2');
-			scene.obstacle.damage(1, true);
-			scene.front.heal(1);
-			scene.kick(-5);
-			scene.overlay([1, 0, 0, 0.1]);
-			scene.delay(200).then(() => {
+		Confuse: {
+			sprite: 'Blessed Rain',
+			description: 'The Priest causes an enemy to damage themselves',
+			canPlay(scene) {
+				return scene.enemy && scene.alive('Priest');
+			},
+			effect(scene) {
+				scene.sfx('sfx1');
+				scene.obstacle.damage(scene.obstacle.def.damage);
 				scene.kick(5);
-				scene.overlay([0, 1, 0, 0.1]);
-			});
+			},
 		},
-	},
-	Weaken: {
-		sprite: 'Blessed Rain',
-		description: 'The Priest reduces enemy damage to 1',
-		canPlay(scene) {
-			return scene.enemy && scene.alive('Priest');
+		'Life Link Locket': {
+			sprite: 'Teleport',
+			description: 'Swap lead and enemy HP',
+			canPlay(scene) {
+				return scene.enemy;
+			},
+			effect(scene) {
+				scene.sfx('sfx7');
+				const a = scene.front.health;
+				const b = scene.obstacle.health;
+				scene.front.setHealth(b);
+				scene.obstacle.setHealth(a);
+				scene.invert();
+			},
 		},
-		effect(scene) {
-			scene.sfx('sfx1');
-			scene.obstacle.def = {
-				...scene.obstacle.def,
-				damage: 1,
-			};
-			scene.whiteout();
+		'Leech Wand': {
+			sprite: 'Magic Blast',
+			description: 'Steal 1HP from enemy',
+			canPlay(scene) {
+				return scene.enemy;
+			},
+			effect(scene) {
+				scene.sfx('sfx2');
+				scene.obstacle.damage(1, true);
+				scene.front.heal(1);
+				scene.kick(-5);
+				scene.overlay([1, 0, 0, 0.1]);
+				scene.delay(200).then(() => {
+					scene.kick(5);
+					scene.overlay([0, 1, 0, 0.1]);
+				});
+			},
 		},
-	},
-}))();
+		Weaken: {
+			sprite: 'Blessed Rain',
+			description: 'The Priest reduces enemy damage to 1',
+			canPlay(scene) {
+				return scene.enemy && scene.alive('Priest');
+			},
+			effect(scene) {
+				scene.sfx('sfx1');
+				scene.obstacle.def = {
+					...scene.obstacle.def,
+					damage: 1,
+				};
+				scene.whiteout();
+			},
+		},
+		'Heal Mage': heal('Mage'),
+		'Heal Rogue': heal('Rogue'),
+		'Heal Knight': heal('Knight'),
+		'Heal Priest': heal('Priest'),
+	};
+})();

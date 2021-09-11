@@ -786,22 +786,13 @@ format:
 			bounce: 1,
 			interact(scene) {
 				const o = this;
-				const heal = (name) => ({
-					name: `Heal ${name}`,
-					sprite: name,
-					variant: 'instant',
-					effect() {
-						scene.party.find((i) => i.name === name);
-						scene.whiteout();
-					},
-				});
 				const readings = scene.shuffle([
 					[
 						'Kindling',
 						'"The Fool! Every flame must begin with a spark after all..."',
 					],
 					[
-						heal('Mage'),
+						'Heal Mage',
 						'"The Magician! Well, I suppose one among you is already familiar with this one?"',
 					],
 					[
@@ -838,7 +829,7 @@ format:
 						'"Wheel of Fortune! I\'d wish you luck, but I know that it won\'t matter."',
 					],
 					[
-						heal('Knight'),
+						'Heal Knight',
 						'"Strength! You\'ll have it in droves, or not at all."',
 					],
 					[
@@ -866,9 +857,9 @@ format:
 						},
 						'"The Tower! Terrible card. I hope you can withstand its omen..."',
 					],
-					[heal('Priest'), '"The Star! It is truly your time to shine!"'],
+					['Heal Priest', '"The Star! It is truly your time to shine!"'],
 					[
-						heal('Rogue'),
+						'Heal Rogue',
 						'"The Moon! Not often someone resonates as powerfully as you do."',
 					],
 					[
