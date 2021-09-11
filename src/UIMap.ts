@@ -66,11 +66,13 @@ export class UIMap extends GameObject {
 		const b = this.display.container.getLocalBounds();
 		this.display.container.pivot.x = this.display.container.width / 2;
 
-		this.graphics.beginFill(0xffffff);
-		this.graphics.drawRect(25, -3, b.width - 50, 6);
-		this.graphics.endFill();
-		this.graphics.beginFill(0x000000);
-		this.graphics.drawRect(25 + 2, -2, b.width - 50 - 4, 4);
-		this.graphics.endFill();
+		if (areas.length > 0) {
+			this.graphics.beginFill(0xffffff);
+			this.graphics.drawRect(25, -3, b.width - 50, 6);
+			this.graphics.endFill();
+			this.graphics.beginFill(0x000000);
+			this.graphics.drawRect(25 + 2, -2, b.width - 50 - 4, 4);
+			this.graphics.endFill();
+		}
 	}
 }
