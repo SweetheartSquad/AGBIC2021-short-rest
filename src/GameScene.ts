@@ -755,6 +755,9 @@ export class GameScene extends GameObject {
 			this.addCard('Kindle');
 			this.addCard('Shuffle Cards');
 			this.camp.display.container.visible = true;
+			this.party.forEach((i) => {
+				i.setArmour(0);
+			});
 			this.party
 				.filter((i) => i.temporary)
 				.forEach((i) => {
