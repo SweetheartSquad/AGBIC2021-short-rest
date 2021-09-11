@@ -247,7 +247,7 @@ scene.advance() // basic attack/interaction/movement
 				scene.deck.forEach((i) => {
 					scene.addCard({
 						...i,
-						description: `Burn "${i.name}"\n\n${i.description}`,
+						description: `Burn "${i.name}"\n${i.description}`,
 						canPlay: undefined,
 						effect: () => {
 							scene.sfx('sfx12');
@@ -302,7 +302,7 @@ scene.advance() // basic attack/interaction/movement
 				hand.forEach((i, idx) => {
 					scene.addCard({
 						...i,
-						description: `Replace "${i.name}"\n\n${i.description}`,
+						description: `Replace "${i.name}"\n${i.description}`,
 						effect: () => {
 							scene.sfx('sfx4');
 							const newCard = deck.splice(0, 1)[0];
