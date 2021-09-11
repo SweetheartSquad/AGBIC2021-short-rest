@@ -43,7 +43,7 @@ format:
 		'Vision of Death',
 		'Portable Mulligan',
 		'Charm Creature',
-		'Summon Fire Sprite',
+		'Summon Sprite',
 		'Poly Morph',
 		'Invoke Augur',
 		'Take One For The Team',

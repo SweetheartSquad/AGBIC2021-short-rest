@@ -732,7 +732,7 @@ scene.advance() // basic attack/interaction/movement
 			scene.killObstacle(o);
 		},
 	},
-	'Summon Fire Sprite': {
+	'Summon Sprite': {
 		sprite: 'Blessed Rain',
 		description: 'The Mage Summons a 1HP creature to fight alongside the party',
 		canPlay(scene) {
