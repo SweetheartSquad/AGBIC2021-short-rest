@@ -106,9 +106,9 @@ export class Character extends GameObject {
 		if (this.bounce || this.health > 0) {
 			const t = this.offset + game.app.ticker.lastTime / 100;
 			this.sprOL.scale.y = this.sprBody.scale.y =
-				1.0 + Math.sin(t) * 0.04 * (this.bounce || 1);
+				1.0 + Math.sin(t) * 0.04 * (this.bounce ?? 1);
 			this.sprOL.rotation = this.sprBody.rotation =
-				Math.sin(t) * 0.03 * (this.bounce || 1);
+				Math.sin(t) * 0.03 * (this.bounce ?? 1);
 		}
 		this.sprOL.x = this.sprBody.x - 2;
 		this.sprOL.y = this.sprBody.y;
