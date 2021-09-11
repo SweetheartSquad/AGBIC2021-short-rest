@@ -40,7 +40,7 @@ format:
 		['zombie'],
 		['slime_medium'],
 	];
-	const annoying = [['jester'], ['bomb']];
+	const annoying = [['jester'], ['bomb'], ['mirror']];
 	const tougher = [
 		['skeleton', 'skeleton_armoured', 'skeleton'],
 		['skeleton_armoured', 'skeleton_armoured'],

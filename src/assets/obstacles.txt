@@ -413,6 +413,19 @@ format:
 				}
 			},
 		},
+		mirror: {
+			health: 2,
+			bounce: 0,
+			shadow: false,
+			offset: -45,
+			interact(scene) {
+				scene.log(
+					`${scene.front.name} takes damage alongside their reflection!`
+				);
+				scene.front.damage(scene.front.damageOutput);
+				scene.overlay([1, 1, 1, 0.1]);
+			},
+		},
 		jester: {
 			name: 'Jester',
 			health: 2,
