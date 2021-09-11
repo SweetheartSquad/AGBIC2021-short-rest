@@ -480,6 +480,8 @@ format:
 		doppelgangers: {
 			name: 'Doppelgangers',
 			sprite: 'mirror',
+			shadow: false,
+			offset: -45,
 			start(scene) {
 				scene.music('');
 			},
