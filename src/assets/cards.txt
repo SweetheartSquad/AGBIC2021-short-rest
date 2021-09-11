@@ -486,9 +486,12 @@ scene.advance() // basic attack/interaction/movement
 		effect(scene) {
 			scene.sfx('sfx1');
 			if (
-				scene.obstacle.def.name &&
-				scene.obstacle.def.name.includes('Dragon') &&
-				!scene.obstacle.def.name.includes('Junior')
+				scene.obstacles.some(
+					(i) =>
+						i.def.name &&
+						i.def.name.includes('Dragon') &&
+						!i.def.name.includes('Junior')
+				)
 			) {
 				scene.log('The teleport spell fizzles, leaving the party behind!');
 				scene.overlay([1, 0, 0, 0.1]);
