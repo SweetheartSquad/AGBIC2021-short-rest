@@ -100,7 +100,7 @@ export class Hand extends GameObject {
 				1,
 				quick ? 500 : 2000,
 				undefined,
-				quick ? quadOut : (t) => quadOut(Math.max(0, t - 0.75) * 4)
+				quick ? quadOut : (t) => quadOut(Math.max(0, t - 0.5) * 2)
 			);
 		});
 		card.display.container.on('mouseout', () => {
