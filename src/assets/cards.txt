@@ -751,13 +751,26 @@ scene.advance() // basic attack/interaction/movement
 	},
 	'Poly Morph': {
 		sprite: 'Blessed Rain',
-		description: 'The Mage transforms a creature into another',
+		description: 'The Mage transforms a small or medium creature into another',
 		canPlay(scene) {
 			return scene.enemy && scene.alive('Mage');
 		},
 		effect(scene) {
 			scene.sfx('sfx3');
-			// TODO: polymorph targets
+			if (
+				scene.obstacle.def.name &&
+				scene.obstacle.def.name.includes('Dragon') &&
+				!scene.obstacle.def.name.includes('Junior')
+			) {
+				scene.log('The morph spell fizzles before it can capture their form!');
+				scene.overlay([1, 0, 0, 0.1]);
+				scene.delay(1500).then(() => {
+					scene.log(
+						'"Pitiful! I practically invented polymorphic magic and you INSULT me so?!"'
+					);
+				});
+				return;
+			}
 			const result = scene.shuffle([
 				'rat_small',
 				'slime_small',
