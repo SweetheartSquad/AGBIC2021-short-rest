@@ -407,7 +407,7 @@ export class GameScene extends GameObject {
 				TweenManager.tween(
 					obstacle.sprBody.scale,
 					'y',
-					0.8,
+					0.8 * Math.sign(obstacle.sprBody.scale.y),
 					1000,
 					undefined,
 					quadIn
@@ -417,7 +417,7 @@ export class GameScene extends GameObject {
 				TweenManager.tween(
 					obstacle.sprBody.scale,
 					'x',
-					1.2,
+					1.2 * Math.sign(obstacle.sprBody.scale.x),
 					1000,
 					undefined,
 					quadIn
