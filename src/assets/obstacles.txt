@@ -687,9 +687,7 @@ format:
 							} else {
 								// healing
 								o.animator.setAnimation('potion_empty');
-								scene.party.forEach((i) => {
-									scene.front.heal(i.maxHealth);
-								});
+								scene.front.heal(Infinity);
 								scene.overlay([0, 0.8, 1, 0.6], 500);
 								scene.log('They drink, and feel refreshed.');
 								scene.killObstacle(o);
