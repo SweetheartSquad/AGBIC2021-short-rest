@@ -123,6 +123,9 @@ scene.advance() // basic attack/interaction/movement
 		effect(scene) {
 			scene.sfx('sfx1');
 			scene.screenFilter.enabled = !scene.screenFilter.enabled;
+			scene.log(
+				`Filter ${scene.screenFilter.enabled ? 'enabled' : 'disabled'}`
+			);
 			scene.addCard('Filter');
 			scene.hand.hand.splice(1, 0, scene.hand.hand.pop()); // keep cards in order
 		},
@@ -132,20 +135,23 @@ scene.advance() // basic attack/interaction/movement
 		description: 'Enables/disables pixel-perfect scaling',
 		effect(scene) {
 			scene.sfx('sfx1');
-			window.resizer.scaleMode = {
+			const scaleMode = {
 				FIT: 'MULTIPLES',
 				MULTIPLES: 'FIT',
 			}[window.resizer.scaleMode];
+			window.resizer.scaleMode = scaleMode;
+			scene.log(`Scaling ${scaleMode === 'FIT' ? 'to fit' : 'in multiples'}`);
 			window.resizer.onResize();
 			scene.addCard('Scale');
 			scene.hand.hand.splice(2, 0, scene.hand.hand.pop()); // keep cards in order
 		},
 	},
 	'Card Throw': {
-		description: 'Enables/disables card play animation',
+		description: 'Enables/disables card throw animation',
 		effect(scene) {
 			scene.sfx('sfx1');
 			scene.cardSpeed = scene.cardSpeed ? 0 : 1;
+			scene.log(`Card throw ${scene.cardSpeed ? 'enabled' : 'disabled'}`);
 			scene.addCard('Card Throw');
 		},
 	},
