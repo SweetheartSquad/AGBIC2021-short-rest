@@ -1027,6 +1027,16 @@ format:
 				}
 			},
 		},
+		bomb_short: {
+			sprite: 'bomb_a',
+			health: 1,
+			interact(scene) {
+				scene.log('The bomb goes off!');
+				this.animator.setAnimation('bomb');
+				scene.whiteout();
+				scene.front.damage(Infinity);
+			},
+		},
 		dragon: {
 			name: 'The Immortal Dragon',
 			health: 10,
