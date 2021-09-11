@@ -106,16 +106,23 @@ format:
 						icon: 'icon_unknown',
 						obstacles: [
 							{
-								sprite: 'peach',
+								sprite: scene.revealed ? 'dragonfruit' : 'peach',
 								bounce: 1,
+								start(scene) {
+									scene.log('"Heroes!"');
+								},
 								interact(scene) {
 									scene.loot([
 										{
-											name: 'Luck Charm',
+											name: scene.revealed ? "Dragon's Charm" : 'Luck Charm',
 											sprite: 'Blessed Rain',
 											variant: 'instant',
 											effect() {
-												scene.log('"Good luck slaying the immortal dragon!"');
+												scene.log(
+													scene.revealed
+														? '"Good luck slaying the immortal dragon! BWAHAHAHA!!"'
+														: '"Good luck slaying the immortal dragon!"'
+												);
 												scene.whiteout();
 												scene.killObstacle();
 												initialDeck.forEach((i) => scene.addDeck(i));
@@ -470,27 +477,173 @@ format:
 					icon: 'icon_unknown',
 					obstacles: [
 						{
-							sprite: 'peach',
-							bounce: 1,
+							sprite: 'door',
+							shadow: false,
+							offset: -110,
 							interact(scene) {
-								// TODO: endgame
-								this.interacted = this.interacted || 0;
-								if (this.interacted === 0) {
-									scene.log('"Heroes! You did it!"');
-									++this.interacted;
-								} else if (this.interacted === 1) {
-									scene.log("I haven't written an ending yet unfortunately...");
-									++this.interacted;
-								} else if (this.interacted === 2) {
-									scene.log('Thanks for playing!');
-									scene.addCard('Start');
-									scene.hand.hand[
-										scene.hand.hand.length - 1
-									].sprCard.children[1].text = 'Restart';
-									++this.interacted;
-								} else {
-									scene.log('Thanks for playing!');
-								}
+								scene.sfx('sfx0');
+								scene.nextLevel();
+							},
+						},
+					],
+				},
+			];
+		},
+		5: (scene) => {
+			const areas = [
+				{
+					icon: 'icon_unknown',
+				},
+			];
+			if (scene.revealed) {
+				areas.push({
+					icon: 'icon_boss',
+					obstacles: ['dragon_fruit'],
+				});
+			} else {
+				scene.pushHand();
+				scene.clearHand();
+				scene.addCard('Advance');
+				scene.setBg('bg_forest');
+				scene.setFg('blank');
+				areas.push(
+					{
+						icon: 'icon_unknown',
+						obstacles: [
+							{
+								sprite: 'peach',
+								health: 1,
+								start(scene) {
+									scene.log('"Heroes!"');
+								},
+								interact(scene) {
+									scene.log('"Good luck slay-Ahh!"');
+								},
+							},
+						],
+					},
+					{
+						icon: 'icon_unknown',
+						obstacles: [
+							{
+								sprite: 'peach',
+								health: 1,
+								start(scene) {
+									scene.log('"Heroes?"');
+								},
+								interact(scene) {
+									scene.log('"Ahh! H-how..."');
+								},
+							},
+						],
+					},
+					{
+						icon: 'icon_unknown',
+						obstacles: [
+							{
+								sprite: 'peach',
+								health: 1,
+								start(scene) {
+									scene.log('"So... you\'ve seen through the illusion?"');
+								},
+								interact(scene) {
+									scene.log('"Gah! Fine then..."');
+								},
+								end(scene) {
+									scene.sfx('sfx3');
+									scene.blackout();
+									scene.setBg('bg');
+									scene.setFg('fg');
+									scene.loot([
+										{
+											name: "Dragon's Charm",
+											sprite: 'Blessed Rain',
+											variant: 'instant',
+											effect() {
+												scene.sfx('sfx1');
+												scene.revealed = true;
+												scene.whiteout();
+												scene.clearHand();
+												scene.popHand();
+											},
+										},
+									]);
+								},
+							},
+						],
+					},
+					{
+						icon: 'icon_unknown',
+						obstacles: ['dragon_fruit'],
+					}
+				);
+			}
+			areas.push({
+				icon: 'icon_unknown',
+				obstacles: [
+					{
+						sprite: 'door',
+						shadow: false,
+						offset: -110,
+						interact(scene) {
+							scene.sfx('sfx0');
+							scene.nextLevel();
+						},
+					},
+				],
+			});
+			return areas;
+		},
+		6: (scene) => {
+			scene.level = 0;
+			scene.deck.length = 0;
+			scene.setBg('bg_forest');
+			scene.setFg('blank');
+			scene.clearHand();
+			const credits = [
+				'Made by Sean, Michael, and IAN of SweetHeart Squad.',
+				'Based on My Famicase Exhibition entry "Short Rest" by Daniel Gil.',
+				'Made for A Game By Its Cover 2021.',
+			];
+			const fakeAdvance = {
+				name: 'Advance',
+				sprite: 'Advance',
+				variant: 'ui',
+				effect() {
+					if (credits.length) {
+						scene.log(credits.shift());
+					}
+					scene.advance();
+					scene.addCard(fakeAdvance);
+				},
+			};
+			scene.addCard(fakeAdvance);
+			return [
+				{
+					icon: 'icon_cleared',
+				},
+				...credits.map(() => ({ icon: 'icon_cleared' })),
+				{
+					icon: 'icon_unknown',
+					obstacles: [
+						{
+							sprite: 'peach',
+							async start(scene) {
+								scene.log('"Heroes?"');
+								await scene.delay(2000);
+								scene.log('"Is it over?"');
+							},
+							async interact(scene) {
+								scene.sfx('sfx0');
+								scene.clearHand();
+								scene.whiteout(2000);
+								scene.setFg('black');
+								scene.map.setAreas([]);
+								await scene.delay(3000);
+								scene.announce('The End');
+								await scene.delay(3000);
+								scene.addCard('Start');
+								scene.hand.hand[0].sprCard.children[1].text = 'Restart';
 							},
 						},
 					],

@@ -1103,5 +1103,81 @@ format:
 			shadow: false,
 			offset: 20,
 		},
+		dragon_fruit: {
+			name: 'The Immortal Dragonfruit',
+			sprite: 'dragonfruit',
+			health: 5,
+			async start(scene) {
+				if (scene.revealed) {
+					scene.log('"You heroes just never give up, do you..."');
+					await scene.delay(2000);
+				} else {
+					scene.log('"TODO: intro taunt"');
+					await scene.delay(2000);
+				}
+				scene.log('"No matter..."');
+				await scene.delay(2000);
+				scene.announce('The Immortal Dragonfruit');
+				scene.music('battle_boss');
+				await scene.delay(2000);
+				scene.obstacle.def.interact.call(scene.obstacle, scene);
+			},
+			async interact() {
+				if (!this.health) {
+					scene.log('"NOOOO!"');
+					return;
+				}
+				const summons = [
+					[
+						['zombie'],
+						'"I believe they used to be a hero too... Introduce yourself!"',
+					],
+					[['bomb_short'], '"You should give up now, and go out with a bang!"'],
+					[
+						['rat_small', 'rat_small', 'rat_small'],
+						'"Waste my time, I\'ll waste yours!"',
+					],
+					[['jester'], '"What a bore."'],
+					[['mirror'], '"Don\'t you see how futile this is?"'],
+					[
+						['dragon_hand'],
+						scene.shuffle([
+							'"How dare you!"',
+							'"You DARE!?"',
+							'"Insolent!"',
+							'"I\'ll get you for that!"',
+						])[0],
+					],
+				];
+				scene.overlay([1, 0, 0, 0.5]);
+				scene.shake();
+				const summon = scene.shuffle(summons)[0];
+				if (this.health < this.maxHealth) {
+					scene.log(
+						summon[1].replace(
+							'"',
+							`"${
+								scene.shuffle([
+									'Gah!',
+									'Grr!',
+									'Hrg!',
+									'Argh!',
+									'Ah!',
+									'*HISS*',
+								])[0]
+							} `
+						)
+					);
+				} else {
+					scene.log(summon[1]);
+				}
+				await Promise.all(summon[0].map((i) => scene.addObstacle(i)));
+			},
+			end(scene) {
+				scene.log('"I-impossible..."');
+				scene.whiteout();
+				scene.fanfare();
+			},
+		},
 	};
 })();
