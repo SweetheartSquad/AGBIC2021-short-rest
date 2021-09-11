@@ -783,7 +783,6 @@ format:
 						scene.whiteout();
 					},
 				});
-				// TODO: full readings
 				const readings = scene.shuffle([
 					[
 						'Kindling',
@@ -826,7 +825,10 @@ format:
 						'Deploy Panic',
 						'"Wheel of Fortune! I\'d wish you luck, but I know that it won\'t matter."',
 					],
-					[heal('Knight'), '"Strength!"'],
+					[
+						heal('Knight'),
+						'"Strength! You\'ll have it in droves, or not at all."',
+					],
 					[
 						'Take One For The Team',
 						'"The Hanged Man! Perhaps you need to give something up to gain what you desire?"',
@@ -836,7 +838,10 @@ format:
 						'"Death! But not necessarily your own... perhaps you should take this to who it belongs."',
 					],
 					['Blessed Rain', '"Temperance! Continue and persevere!"'],
-					['Charm Creature', '"The Devil!"'],
+					[
+						'Charm Creature',
+						'"The Devil! Everyone lives in a prison of their own making, but we all know who made this one..."',
+					],
 					[
 						{
 							name: 'The Tower',
