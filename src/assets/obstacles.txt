@@ -124,8 +124,9 @@ format:
 									o.animator.setAnimation('shrine_card');
 									scene.overlay([1, 0.5, 0, 0.5]);
 									await scene.delay(2000);
-									const c = scene.shuffle(h)[0];
-									scene.burnCard(c);
+									const h2 = scene.getHand();
+									const c = scene.shuffle(h2)[0];
+									const d = c.def;
 									c.def = {
 										...c.def,
 										canPlay() {
@@ -135,6 +136,7 @@ format:
 											scene.log(`"${c.def.name}" is claimed as sacrifice!`);
 											scene.sfx('sfx12');
 											scene.killObstacle();
+											scene.burnCard({ def: d });
 										},
 									};
 									scene.playCard(c);
