@@ -114,6 +114,7 @@ scene.advance() // basic attack/interaction/movement
 			scene.addCard('Back');
 			scene.addCard('Filter');
 			scene.addCard('Scale');
+			scene.addCard('Audio');
 			scene.addCard('Card Throw');
 		},
 	},
@@ -144,6 +145,17 @@ scene.advance() // basic attack/interaction/movement
 			window.resizer.onResize();
 			scene.addCard('Scale');
 			scene.hand.hand.splice(2, 0, scene.hand.hand.pop()); // keep cards in order
+		},
+	},
+	Audio: {
+		sprite: 'Toxic Vent',
+		description: 'Mute/unmute audio',
+		effect(scene) {
+			scene.sfx('sfx1');
+			window.Howler.mute(!window.Howler._muted);
+			scene.log(`Audio ${window.Howler._muted ? 'muted' : 'unmuted'}`);
+			scene.addCard('Audio');
+			scene.hand.hand.splice(3, 0, scene.hand.hand.pop()); // keep cards in order
 		},
 	},
 	'Card Throw': {
