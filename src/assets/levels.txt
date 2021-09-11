@@ -628,6 +628,7 @@ format:
 					obstacles: [
 						{
 							sprite: 'peach',
+							bounce: 1,
 							async start(scene) {
 								scene.log('"Heroes?"');
 								await scene.delay(2000);
@@ -639,9 +640,9 @@ format:
 								scene.whiteout(2000);
 								scene.setFg('black');
 								scene.map.setAreas([]);
-								await scene.delay(3000);
+								await scene.delay(4000);
 								scene.announce('The End');
-								await scene.delay(3000);
+								await scene.delay(4000);
 								scene.addCard('Start');
 								scene.hand.hand[0].sprCard.children[1].text = 'Restart';
 							},
