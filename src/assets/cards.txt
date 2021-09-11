@@ -596,7 +596,7 @@ scene.advance() // basic attack/interaction/movement
 		effect(scene) {
 			scene.sfx('sfx3');
 			scene.kick(-50);
-			scene.killObstacle();
+			scene.enemy.damage(Infinity, true);
 			scene.blackout();
 		},
 	},
