@@ -1037,7 +1037,7 @@ format:
 				await scene.delay(2000);
 				await scene.addObstacle('dragon_hand');
 				scene.whiteout();
-				scene.announce('The Dragon');
+				scene.announce('The Immortal Dragon');
 				scene.music('battle_boss');
 				scene.tween(scene.containerParty.scale, 'x', 0.6, 0);
 				scene.tween(scene.containerParty.scale, 'y', 0.6, 0);
