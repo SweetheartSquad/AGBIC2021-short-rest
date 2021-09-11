@@ -1021,8 +1021,14 @@ scene.advance() // basic attack/interaction/movement
 				scene.sfx('sfx7');
 				const a = scene.front.health;
 				const b = scene.obstacle.health;
-				scene.front.setHealth(b);
-				scene.obstacle.setHealth(a);
+				const diff = Math.abs(a - b);
+				if (a > b) {
+					scene.front.damage(diff, true);
+					scene.obstacle.heal(diff);
+				} else {
+					scene.front.heal(diff);
+					scene.obstacle.damage(diff, true);
+				}
 				scene.invert();
 			},
 		},
