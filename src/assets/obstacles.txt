@@ -524,6 +524,7 @@ format:
 						});
 						o.sprBody.scale.x = -1;
 						o.sprOL.scale.x = -1;
+						o.sprBody.tint = 0x9966ff;
 					});
 			},
 		},
