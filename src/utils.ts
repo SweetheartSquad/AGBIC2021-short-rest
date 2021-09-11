@@ -196,5 +196,5 @@ export function andList(...words: string[] | [string[]]) {
 	if (Array.isArray(words[0])) {
 		[words] = words;
 	}
-	return [words.slice(0, -1).join(', '), words.slice(-1)[0]].join(', and ');
+	return [words.slice(0, -1).join(', '), words.slice(-1)[0]].join(' and ');
 }
