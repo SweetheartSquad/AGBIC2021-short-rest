@@ -887,6 +887,11 @@ format:
 									await scene.delay(2000);
 								});
 								await scene.loot([reading[0]]);
+								await scene.delay(500);
+								if (!scene.front.health) {
+									scene.log('"I suppose not. Pity..."');
+									return;
+								}
 							}
 							scene.queue.push(async () => {
 								scene.log(
