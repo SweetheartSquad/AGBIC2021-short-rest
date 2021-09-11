@@ -589,14 +589,14 @@ scene.advance() // basic attack/interaction/movement
 		},
 	},
 	'Death from the Shadows': {
-		description: 'The Rogue kills an enemy',
+		description: 'The Rogue strikes for 5 damage',
 		canPlay(scene) {
 			return scene.enemy && scene.alive('Rogue');
 		},
 		effect(scene) {
 			scene.sfx('sfx3');
 			scene.kick(-50);
-			scene.enemy.damage(Infinity, true);
+			scene.enemy.damage(5);
 			scene.blackout();
 		},
 	},
