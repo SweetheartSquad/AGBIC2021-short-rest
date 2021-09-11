@@ -547,12 +547,15 @@ format:
 								if (Math.random() < 1.1 - scene.level * 0.1) {
 									const numCards =
 										scene.level >= 3 && Math.random() > 0.5 ? 2 : 3;
-									scene.loot(
-										new Array(numCards)
-											.fill()
-											.map(() => scene.shuffle(cardsAll)[0])
-									);
-									scene.killObstacle(o);
+									scene
+										.loot(
+											new Array(numCards)
+												.fill()
+												.map(() => scene.shuffle(cardsAll)[0])
+										)
+										.then(() => {
+											scene.killObstacle(o);
+										});
 								} else {
 									scene.killObstacle(o);
 									scene.log('The chest bursts to life and attacks!');
