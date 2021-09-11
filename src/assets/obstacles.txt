@@ -457,6 +457,7 @@ format:
 				if (slot >= 0) {
 					scene.log(`${scene.front.name} gets pushed back!`);
 					scene.party.splice(slot, 0, scene.party.pop());
+					scene.kick(50);
 				}
 				if (this.health) {
 					scene.delay(200).then(() => {
