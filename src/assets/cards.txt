@@ -128,6 +128,7 @@ scene.advance() // basic attack/interaction/movement
 				scene.addCard('Back');
 				scene.addCard('Filter');
 				scene.addCard('Scale');
+				scene.addCard('Full Screen');
 				scene.addCard('Audio');
 				scene.addCard('Card Throw');
 			},
@@ -161,6 +162,21 @@ scene.advance() // basic attack/interaction/movement
 				scene.hand.hand.splice(2, 0, scene.hand.hand.pop()); // keep cards in order
 			},
 		},
+		'Full Screen': {
+			sprite: 'Blessed Rain',
+			description: 'Enables/disables fullscreen',
+			async effect(scene) {
+				scene.sfx('sfx1');
+				scene.addCard('Full Screen');
+				scene.hand.hand.splice(3, 0, scene.hand.hand.pop()); // keep cards in order
+				try {
+					const fullscreen = await scene.toggleFullscreen();
+					scene.log(`Fullscreen ${fullscreen ? 'enabled' : 'disabled'}`);
+				} catch (err) {
+					scene.log(`Error: Could not toggle fullscreen`);
+				}
+			},
+		},
 		Audio: {
 			sprite: 'Toxic Vent',
 			description: 'Mute/unmute audio',
@@ -169,7 +185,7 @@ scene.advance() // basic attack/interaction/movement
 				window.Howler.mute(!window.Howler._muted);
 				scene.log(`Audio ${window.Howler._muted ? 'muted' : 'unmuted'}`);
 				scene.addCard('Audio');
-				scene.hand.hand.splice(3, 0, scene.hand.hand.pop()); // keep cards in order
+				scene.hand.hand.splice(4, 0, scene.hand.hand.pop()); // keep cards in order
 			},
 		},
 		'Card Throw': {

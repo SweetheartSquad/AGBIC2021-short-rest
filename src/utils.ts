@@ -200,3 +200,14 @@ export function andList(...words: string[] | [string[]]) {
 	if (words.length === 1) return words[0];
 	return [words.slice(0, -1).join(', '), words.slice(-1)[0]].join(' and ');
 }
+
+export async function toggleFullscreen(element?: HTMLElement) {
+	element = document.documentElement;
+
+	const isFullscreen = !!document.fullscreenElement || false;
+
+	await (isFullscreen
+		? document.exitFullscreen()
+		: element.requestFullscreen());
+	return !!document.fullscreenElement;
+}

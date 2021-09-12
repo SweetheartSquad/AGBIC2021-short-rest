@@ -37,6 +37,7 @@ import {
 	removeFromArray,
 	shuffle,
 	tex,
+	toggleFullscreen,
 	wrap,
 } from './utils';
 
@@ -48,6 +49,8 @@ export class GameScene extends GameObject {
 	andList = andList;
 
 	tween = TweenManager.tween;
+
+	toggleFullscreen = toggleFullscreen;
 
 	debug = process.env.NODE_ENV === 'development';
 
