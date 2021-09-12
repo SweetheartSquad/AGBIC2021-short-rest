@@ -486,7 +486,7 @@ format:
 					icon: 'icon_unknown',
 					obstacles: [
 						{
-							sprite: 'door',
+							sprite: 'stairs',
 							shadow: false,
 							offset: -80,
 							interact(scene) {
@@ -650,7 +650,7 @@ format:
 					icon: 'icon_unknown',
 					obstacles: [
 						{
-							sprite: 'door',
+							sprite: 'stairs',
 							shadow: false,
 							offset: -80,
 							interact(scene) {
