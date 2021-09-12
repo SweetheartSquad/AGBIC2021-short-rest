@@ -590,6 +590,17 @@ export class GameScene extends GameObject {
 			}
 		});
 
+		// make sure revived characters get put in front of dead ones
+		character.display.container.on('revive', () => {
+			if (character === this.front) return;
+			const idx = this.party.indexOf(character);
+			const slot = this.party.findIndex((i) => i !== character && i.health > 0);
+			if (slot - 1 > idx) {
+				removeFromArray(this.party, character);
+				this.party.splice(slot - 1, 0, character);
+			}
+		});
+
 		return character;
 	}
 
