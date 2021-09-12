@@ -531,9 +531,6 @@ format:
 			},
 		},
 		treasure: {
-			start() {
-				// play a sound?
-			},
 			interact(scene) {
 				scene.log('The party finds a chest!');
 				const o = this;
