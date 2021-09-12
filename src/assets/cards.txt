@@ -96,8 +96,8 @@ scene.advance() // basic attack/interaction/movement
 		// menus
 		init: {
 			effect(scene) {
-				scene.setBg('title');
-				scene.setFg('blank');
+				scene.setBg('camp_bg_lit');
+				scene.setFg('title');
 				scene.addCard('Start');
 				scene.addCard('Options');
 				scene.addCard('About');
