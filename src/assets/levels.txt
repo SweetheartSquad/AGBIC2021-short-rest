@@ -578,6 +578,7 @@ format:
 												scene.popHand();
 												scene.party
 													.filter((i) => !i.health)
+													.reverse()
 													.forEach((i) => {
 														i.heal(1);
 													});

@@ -597,6 +597,7 @@ scene.advance() // basic attack/interaction/movement
 				scene.sfx('sfx2');
 				scene.party
 					.filter((i) => !i.health)
+					.reverse()
 					.forEach((i) => {
 						i.heal(1);
 					});
