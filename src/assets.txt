@@ -114,6 +114,8 @@ textures/dragon_junior.png
 textures/mushroom.png
 textures/peach.png
 textures/dragonfruit.png
+textures/sprite_fire.png
+textures/sprite_dark.png
 textures/cards/Shuffle.png
 textures/cards/Slash.png
 textures/cards/Absolve Death.png

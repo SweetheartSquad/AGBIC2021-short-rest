@@ -837,19 +837,30 @@ scene.advance() // basic attack/interaction/movement
 		},
 		'Summon Sprite': {
 			sprite: 'Blessed Rain',
-			description:
-				'The Mage Summons a 1HP creature\nto fight alongside the party',
+			description: 'The Mage Summons a creature\nto fight alongside the party',
 			canPlay(scene) {
 				return scene.alive('Mage');
 			},
 			effect(scene) {
 				scene.sfx('sfx2');
-				scene.addParty({
-					name: 'Fire Sprite',
-					spr: 'icon_camp',
-					maxHealth: 1,
-					temporary: true,
-				});
+				scene.addParty(
+					scene.shuffle([
+						{
+							name: 'Fire Sprite',
+							spr: 'sprite_fire',
+							maxHealth: 2,
+							damage: 1,
+							temporary: true,
+						},
+						{
+							name: 'Dark Sprite',
+							spr: 'sprite_dark',
+							maxHealth: 1,
+							damage: 2,
+							temporary: true,
+						},
+					])[0]
+				);
 				scene.whiteout();
 			},
 		},
