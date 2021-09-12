@@ -76,7 +76,7 @@ format:
 	];
 	let minibossOrder = minibosses.slice();
 	let attempts = 0;
-	let wins = 0;
+	scene.wins = 0;
 	let start = Date.now();
 	return {
 		0: (scene) => {
@@ -720,7 +720,7 @@ format:
 										-2
 									)}:${('00' + seconds).substr(
 										-2
-									)}\nAttempts: ${attempts}\nWins: ${++wins}`,
+									)}\nAttempts: ${attempts}\nWins: ${++scene.wins}`,
 									canPlay() {
 										return false;
 									},
