@@ -700,7 +700,13 @@ scene.advance() // basic attack/interaction/movement
 			},
 			effect(scene) {
 				scene.sfx('sfx3');
-				const undead = ['Skelly', 'Zombie', 'Necromancer'];
+				const undead = [
+					'Skelly',
+					'Armoured Skelly',
+					'Zombie',
+					'The Necromancer',
+					'The Undead Necromancer',
+				];
 				scene.shake(5, 1000);
 				scene.whiteout(1000);
 				scene.obstacles
