@@ -218,31 +218,39 @@ scene.advance() // basic attack/interaction/movement
 				scene.sfx('sfx4');
 				scene.clearHand();
 				scene.addCard('Back');
-				scene.addCard({
+				const madeBy = {
 					name: 'Made\nBy',
 					description: 'Sean, Michael, and IAN of SweetHeart Squad',
 					sprite: 'Absolve Death',
 					effect() {
 						window.open('https://sweetheartsquad.itch.io');
+						scene.addCard(madeBy);
+						scene.hand.hand.splice(1, 0, scene.hand.hand.pop()); // keep cards in order
 					},
-				});
-				scene.addCard({
+				};
+				const basedOn = {
 					name: 'Based\nOn',
 					description:
 						'My Famicase Exhibition entry\n"Short Rest" by Daniel Gil',
 					sprite: 'Teleport',
 					effect() {
 						window.open('https://famicase.com/21/softs/027.html');
+						scene.addCard(basedOn);
+						scene.hand.hand.splice(2, 0, scene.hand.hand.pop()); // keep cards in order
 					},
-				});
-				scene.addCard({
+				};
+				const madeFor = {
 					name: 'Made\nFor',
 					description: 'A Game By Its Cover 2021',
 					sprite: 'Shuffle Cards',
 					effect() {
 						window.open('https://itch.io/jam/a-game-by-its-cover-2021');
+						scene.addCard(madeFor);
 					},
-				});
+				};
+				scene.addCard(madeBy);
+				scene.addCard(basedOn);
+				scene.addCard(madeFor);
 			},
 		},
 		Advance: {
