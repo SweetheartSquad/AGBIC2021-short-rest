@@ -519,7 +519,7 @@ scene.advance() // basic attack/interaction/movement
 			sprite: "Coward's Plan",
 			description: 'Retreat to previous campfire',
 			canPlay(scene) {
-				return scene.obstacle;
+				return scene.obstacle && scene.position < scene.areas.length - 1;
 			},
 			effect(scene) {
 				if (
