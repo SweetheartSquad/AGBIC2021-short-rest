@@ -308,7 +308,7 @@ format:
 			damage: 1,
 			async start(scene) {
 				scene.music('');
-				scene.log('"Hey king, I could use a spot check."');
+				scene.log('"Hey king, I could use a spotter."');
 				await scene.delay(2000);
 				scene.addObstacle('Rat King B');
 				scene.log('"Don\'t hurt yourself king."');
