@@ -96,8 +96,9 @@ scene.advance() // basic attack/interaction/movement
 		// menus
 		init: {
 			effect(scene) {
-				scene.setBg('camp_bg_lit');
-				scene.setFg('title');
+				scene.border.visible = false;
+				scene.setBg('title');
+				scene.setFg('blank');
 				scene.addCard('Start');
 				scene.addCard('Options');
 				scene.addCard('About');
@@ -111,6 +112,7 @@ scene.advance() // basic attack/interaction/movement
 			description: 'Start a new game',
 			async effect(scene) {
 				await scene.setLevel(0, () => {
+					scene.border.visible = true;
 					scene.clearHand();
 					scene.clearParty();
 					scene.deck.length = 0;

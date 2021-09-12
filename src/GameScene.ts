@@ -102,6 +102,8 @@ export class GameScene extends GameObject {
 
 	fg: TilingSprite;
 
+	border: NineSlicePlane;
+
 	animatorBg: Animator;
 
 	animatorFg: Animator;
@@ -168,17 +170,17 @@ export class GameScene extends GameObject {
 
 		const padding = 0;
 		const texBorder = resources.border.texture as Texture;
-		const border = new NineSlicePlane(
+		this.border = new NineSlicePlane(
 			texBorder,
 			texBorder.width / 2,
 			texBorder.height / 2,
 			texBorder.width / 2,
 			texBorder.height / 2
 		);
-		border.x = padding;
-		border.y = padding;
-		border.width = size.x - padding * 2;
-		border.height = size.y - padding * 2;
+		this.border.x = padding;
+		this.border.y = padding;
+		this.border.width = size.x - padding * 2;
+		this.border.height = size.y - padding * 2;
 
 		this.containerParty = new Container();
 		this.containerParty.sortableChildren = true;
@@ -228,7 +230,7 @@ export class GameScene extends GameObject {
 		this.containerUI.addChild(this.map.display.container);
 		this.containerUI.addChild(this.camp.display.container);
 		this.containerUI.addChild(this.hand.display.container);
-		this.containerUI.addChild(border);
+		this.containerUI.addChild(this.border);
 
 		this.container.addChild(this.bg);
 		this.container.addChild(this.containerObstacle);
