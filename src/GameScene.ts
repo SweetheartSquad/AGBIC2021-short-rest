@@ -580,7 +580,7 @@ export class GameScene extends GameObject {
 			}
 			const slot = this.party.findIndex((i) => i.health > 0);
 			this.party.splice(slot >= 0 ? slot : this.party.length, 0, character);
-			if (!this.front.health) {
+			if (this.party.every((i) => !i.health)) {
 				this.clearHand();
 				this.announce('YOU DIED', 3000);
 				this.music('', { fade: 100 });
