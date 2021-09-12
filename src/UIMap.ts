@@ -37,9 +37,13 @@ export class UIMap extends GameObject {
 
 	setPosition(pos: number) {
 		this.areas.forEach((i, idx) => {
-			this.sprAreas[idx].texture = (
+			const spr = this.sprAreas[idx];
+			const w = spr.width;
+			spr.texture = (
 				idx < pos ? resources.icon_cleared.texture : tex(i)
 			) as Texture;
+			const w2 = spr.width;
+			spr.x += (w - w2) / 2;
 		});
 		this.position = pos;
 	}
