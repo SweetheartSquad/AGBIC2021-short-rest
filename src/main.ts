@@ -34,8 +34,9 @@ export function getInput(): {
 		x: number;
 		y: number;
 	};
+	menu: boolean;
 	interact: boolean;
-	} {
+} {
 	const res = {
 		mouse: {
 			x: Math.floor(
@@ -63,6 +64,10 @@ export function getInput(): {
 				(gamepads.axisJustPast(Axes.LSTICK_V, -0.5, -1) && -1) ||
 				0,
 		},
+		menu:
+			gamepads.isJustDown(Buttons.START) ||
+			gamepads.isJustDown(Buttons.BACK) ||
+			keys.isJustDown(KEYS.ESCAPE),
 		interact:
 			gamepads.isJustDown(Buttons.A) ||
 			gamepads.isJustDown(Buttons.B) ||

@@ -19,6 +19,7 @@ import { filterTextOutline, fontAnnounce, fontLog } from './font';
 import { game, resources } from './Game';
 import { GameObject } from './GameObject';
 import { Hand } from './Hand';
+import { getInput } from './main';
 import { Level, LevelDef } from './Map';
 import { Obstacle } from './Obstacle';
 import { ScreenFilter } from './ScreenFilter';
@@ -261,6 +262,13 @@ export class GameScene extends GameObject {
 					focus: () => i.display.container.emit('mouseover'),
 				}))
 			);
+			const input = getInput();
+			if (
+				input.menu &&
+				!this.hand.hand.some((i) => ['Options', 'Back'].includes(i.def.name))
+			) {
+				Card.getCard('Options_ingame').effect(this);
+			}
 		}
 
 		const curTime = game.app.ticker.lastTime;

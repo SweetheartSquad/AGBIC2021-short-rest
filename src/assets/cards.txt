@@ -135,6 +135,21 @@ scene.advance() // basic attack/interaction/movement
 				scene.addCard('Card Throw');
 			},
 		},
+		Options_ingame: {
+			name: 'Options',
+			description: 'Edit game options',
+			effect(scene) {
+				scene.sfx('sfx4');
+				scene.pushHand();
+				scene.clearHand();
+				scene.addCard('Back_ingame');
+				scene.addCard('Filter');
+				scene.addCard('Scale');
+				scene.addCard('Full Screen');
+				scene.addCard('Audio');
+				scene.addCard('Card Throw');
+			},
+		},
 		Filter: {
 			sprite: 'Magic Blast',
 			description: 'Enables/disables post-processing filter',
@@ -209,6 +224,17 @@ scene.advance() // basic attack/interaction/movement
 				scene.addCard('Start');
 				scene.addCard('Options');
 				scene.addCard('About');
+			},
+		},
+		Back_ingame: {
+			name: 'Back',
+			sprite: "Coward's Plan",
+			variant: 'ui',
+			description: 'Back to game',
+			effect(scene) {
+				scene.sfx('sfx4');
+				scene.clearHand();
+				scene.popHand();
 			},
 		},
 		About: {
