@@ -192,7 +192,6 @@ format:
 										await scene.delay(2000);
 										scene.log('"Here, I brought this for emergencies:"');
 										await scene.delay(1000);
-										scene.clearHand();
 										scene.addCard({
 											name: 'Store-\nbought Revive',
 											description:
@@ -204,7 +203,6 @@ format:
 												scene.party[0].heal(2);
 											},
 										});
-										scene.addCard('Advance');
 										++this.interacted;
 									} else if (this.interacted === 1) {
 										scene.log(
