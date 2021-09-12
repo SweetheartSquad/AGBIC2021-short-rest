@@ -592,6 +592,7 @@ format:
 								offset: -20,
 								interact(scene) {
 									const o = this;
+									scene.sfx('sfx4');
 									scene.choice({
 										name: "Offer Dragon's Charm",
 										sprite: 'Kindle',
