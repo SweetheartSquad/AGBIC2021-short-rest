@@ -421,7 +421,7 @@ format:
 			health: 2,
 			bounce: 0,
 			shadow: false,
-			offset: -45,
+			offset: -35,
 			interact(scene) {
 				scene.log(
 					`${scene.front.name} takes damage alongside their reflection!`
