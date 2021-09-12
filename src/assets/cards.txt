@@ -226,7 +226,8 @@ scene.advance() // basic attack/interaction/movement
 				});
 				scene.addCard({
 					name: 'Based\nOn',
-					description: '"Short Rest" famicase, by Daniel Gil',
+					description:
+						'My Famicase Exhibition entry\n"Short Rest" by Daniel Gil',
 					sprite: 'Teleport',
 					effect() {
 						window.open('https://famicase.com/21/softs/027.html');
