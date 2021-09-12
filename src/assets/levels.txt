@@ -582,6 +582,55 @@ format:
 					{
 						icon: 'icon_unknown',
 						obstacles: ['dragon_fruit'],
+					},
+					{
+						icon: 'icon_unknown',
+						obstacles: [
+							{
+								sprite: 'shrine',
+								shadow: false,
+								offset: -20,
+								interact(scene) {
+									const o = this;
+									scene.choice({
+										name: "Offer Dragon's Charm",
+										sprite: 'Kindle',
+										effect() {
+											scene.queue.push(async () => {
+												scene.sfx('sfx14');
+												scene.shake(5);
+												scene.whiteout();
+												o.animator.setAnimation('shrine_card');
+												await scene.delay(1000);
+
+												scene.sfx('sfx14');
+												scene.shake(10);
+												scene.whiteout();
+												o.animator.setAnimation('shrine_blood');
+												await scene.delay(1000);
+
+												scene.sfx('sfx14');
+												scene.shake(20);
+												scene.whiteout();
+												o.animator.setAnimation('shrine_dragon');
+												await scene.delay(300);
+												scene.sfx('sfx14');
+												scene.overlay([1, 1, 1, 0.3]);
+												await scene.delay(300);
+												scene.sfx('sfx14');
+												scene.overlay([1, 1, 1, 0.3]);
+												await scene.delay(300);
+
+												scene.sfx('sfx14');
+												scene.shake(50);
+												scene.whiteout(3000);
+												scene.killObstacle(o);
+											});
+										},
+									});
+								},
+							},
+						],
 					}
 				);
 			}
