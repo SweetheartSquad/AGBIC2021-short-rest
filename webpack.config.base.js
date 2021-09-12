@@ -73,6 +73,7 @@ module.exports = (env, argv) => ({
 				'theme-color': '#000000',
 			},
 			minify: true,
+			hash: true,
 			favicon: './src/assets/icon.png',
 		}),
 	],
