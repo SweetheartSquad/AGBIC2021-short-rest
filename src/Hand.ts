@@ -30,6 +30,7 @@ export class Hand extends GameObject {
 		this.scripts.push((this.transform = new Transform(this)));
 		this.scripts.push((this.display = new Display(this)));
 		this.display.container.interactiveChildren = true;
+		this.display.container.sortableChildren = true;
 
 		BitmapFont.install(
 			resources.fontfnt.data,
@@ -80,14 +81,25 @@ export class Hand extends GameObject {
 		});
 	}
 
+	sortZ() {
+		const focal = this.inspecting
+			? this.hand.indexOf(this.inspecting)
+			: undefined;
+		this.hand.forEach((i, idx) => {
+			i.display.container.zIndex =
+				focal === undefined ? 0 : -Math.abs(focal - idx);
+		});
+	}
+
 	addCard(...options: ConstructorParameters<typeof Card>) {
 		const card = new Card(...options);
 		this.hand.push(card);
 		this.display.container.addChild(card.display.container);
+		this.sortZ();
 		card.display.container.on('mouseover', () => {
 			getActiveScene()?.sfx('sfx5');
 			this.inspecting = card;
-			this.display.container.addChild(card.display.container);
+			this.sortZ();
 
 			this.textDescription.text = wrap(card.def.description || ' ', 50);
 			if (this.tweenDescription) TweenManager.abort(this.tweenDescription);
@@ -104,10 +116,6 @@ export class Hand extends GameObject {
 			);
 		});
 		card.display.container.on('mouseout', () => {
-			this.display.container.addChildAt(
-				card.display.container,
-				this.hand.indexOf(card)
-			);
 			requestAnimationFrame(() => {
 				if (this.inspecting === card) {
 					this.stopInspecting();
@@ -132,6 +140,7 @@ export class Hand extends GameObject {
 
 	stopInspecting() {
 		this.inspecting = undefined;
+		this.sortZ();
 		if (this.tweenDescription) TweenManager.abort(this.tweenDescription);
 		this.tweenDescription = TweenManager.tween(
 			this.textDescription,
