@@ -518,6 +518,23 @@ scene.advance() // basic attack/interaction/movement
 			sprite: "Coward's Plan",
 			description: 'Retreat to previous campfire',
 			effect(scene) {
+				if (
+					scene.obstacles.some(
+						(i) =>
+							i.def.name &&
+							i.def.name.includes('Dragon') &&
+							!i.def.name.includes('Junior')
+					) ||
+					scene.level >= 5
+				) {
+					scene.sfx('sfx1');
+					scene.log("The party tries to escape, but can't get away!");
+					scene.overlay([1, 0, 0, 0.1]);
+					scene.delay(1500).then(() => {
+						scene.log('"FOOLS! You think you can run from ME!?"');
+					});
+					return;
+				}
 				scene.sfx('sfx0');
 				scene.kick(-5);
 				scene.log('Party escaped!');
