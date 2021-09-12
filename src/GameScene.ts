@@ -462,7 +462,15 @@ export class GameScene extends GameObject {
 	}
 
 	addCard(...options: Parameters<Hand['addCard']>) {
-		return this.hand.addCard(...options);
+		const c = this.hand.addCard(...options);
+		if (c.def.name !== 'Advance') {
+			// keep advance on right-hand side
+			const idx = this.hand.hand.findIndex((i) => i.def.name === 'Advance');
+			if (idx >= 0) {
+				this.hand.hand.push(this.hand.hand.splice(idx, 1)[0]);
+			}
+		}
+		return c;
 	}
 
 	pushHand() {
