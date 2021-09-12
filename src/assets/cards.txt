@@ -234,7 +234,7 @@ scene.advance() // basic attack/interaction/movement
 				});
 				scene.addCard({
 					name: 'Made\nFor',
-					description: "A Game By It's Cover 2021",
+					description: 'A Game By Its Cover 2021',
 					sprite: 'Shuffle Cards',
 					effect() {
 						window.open('https://itch.io/jam/a-game-by-its-cover-2021');
