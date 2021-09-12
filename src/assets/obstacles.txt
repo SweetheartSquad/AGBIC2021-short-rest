@@ -1054,15 +1054,39 @@ format:
 			damage: 1,
 			async start(scene) {
 				scene.music('');
-				scene.log('"TODO: some sort of intro taunt!"');
-				await scene.delay(2000);
-				await scene.addObstacle('dragon_hand');
+				if (scene.wins > 0) {
+					scene.log('"You truly are fools..."');
+					await scene.delay(2000);
+					scene.log('"But I won\'t let you win, I WON\'T!!"');
+					await scene.delay(2000);
+				} else if (scene.revealed) {
+					scene.log('"FOOLS! Do you not know the meaning of IMMORTAL!?"');
+					await scene.delay(2000);
+					scene.log('"You\'ll DIE just like the rest!!"');
+					await scene.delay(2000);
+				} else {
+					scene.log('"BWAHAHA!! Oh you FOOLS!"');
+					await scene.delay(2000);
+					scene.log(
+						'"You really came all the way here, just to let me devour you personally?"'
+					);
+					await scene.delay(2000);
+					scene.log('"Well, it will be my pleasure!"');
+					await scene.delay(2000);
+				}
 				scene.whiteout();
+				await scene.addObstacle('dragon_hand');
 				scene.announce('The Immortal Dragon');
 				scene.music('battle_boss');
 			},
 			end(scene) {
-				scene.log('"NOOO!!"');
+				if (scene.wins > 0) {
+					scene.log('"NOOO!! Not.. again..."');
+				} else if (scene.revealed) {
+					scene.log('"NOOO!!"');
+				} else {
+					scene.log('"NOOO!! You.. can\'t..."');
+				}
 				scene.whiteout();
 				scene.fanfare();
 			},
@@ -1079,6 +1103,10 @@ format:
 								'You DARE!?',
 								'Insolent!',
 								"I'll get you for that!",
+								'"I\'ll tear you apart myself!"',
+								'"FOOLS!"',
+								'"Get out of my sight!"',
+								'"I\'ll DESTROY you!"',
 							])[0],
 						]
 							.filter((i) => i)
@@ -1100,16 +1128,29 @@ format:
 			sprite: 'dragonfruit',
 			health: 5,
 			async start(scene) {
-				if (scene.revealed) {
+				if (scene.wins > 0) {
+					scene.log('"You heroes are never satisfied, are you..."');
+					await scene.delay(2000);
+					scene.log('"No matter..."');
+					await scene.delay(2000);
+				} else if (scene.revealed) {
 					scene.log('"You heroes just never give up, do you..."');
 					await scene.delay(2000);
+					scene.log('"No matter..."');
+					await scene.delay(2000);
 				} else {
-					scene.log('"TODO: intro taunt"');
+					scene.log('"I suppose you think you\'re clever."');
+					await scene.delay(2000);
+					scene.log('"That you defeated the immortal dragon?"');
+					await scene.delay(2000);
+					scene.log('"That you\'re noble, strong, and good?"');
+					await scene.delay(2000);
+					scene.log('"..."');
+					await scene.delay(1000);
+					scene.log('"You are NOTHING!!"');
 					await scene.delay(2000);
 					scene.revealed = true;
 				}
-				scene.log('"No matter..."');
-				await scene.delay(2000);
 				scene.announce('The Immortal Dragonfruit');
 				scene.music('battle_boss');
 				await scene.delay(2000);
@@ -1117,7 +1158,7 @@ format:
 			},
 			async interact() {
 				if (!this.health) {
-					scene.log('"NOOOO!"');
+					scene.log('"NO! NO!! NOOO!!!"');
 					return;
 				}
 				const summons = [
@@ -1138,7 +1179,10 @@ format:
 							'"How dare you!"',
 							'"You DARE!?"',
 							'"Insolent!"',
-							'"I\'ll get you for that!"',
+							'"I\'ll tear you apart myself!"',
+							'"FOOLS!"',
+							'"Get out of my sight!"',
+							'"I\'ll DESTROY you!"',
 						])[0],
 					],
 				];
@@ -1167,7 +1211,11 @@ format:
 				await Promise.all(summon[0].map((i) => scene.addObstacle(i)));
 			},
 			end(scene) {
-				scene.log('"I-impossible..."');
+				if (scene.wins > 0) {
+					scene.log('"I-immortal..."');
+				} else {
+					scene.log('"I-impossible..."');
+				}
 				scene.whiteout();
 				scene.fanfare();
 			},
