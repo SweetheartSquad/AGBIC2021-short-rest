@@ -16,15 +16,12 @@ audio/sfx4.mp3
 audio/sfx5.mp3
 audio/sfx6.mp3
 audio/sfx7.mp3
-audio/sfx8.mp3
 audio/sfx9.mp3
 audio/sfx10.mp3
 audio/sfx11.mp3
 audio/sfx12.mp3
 audio/sfx13.mp3
 audio/sfx14.mp3
-audio/sfx15.mp3
-audio/sfx16.mp3
 textures/blank.png
 textures/black.png
 textures/title1.png
