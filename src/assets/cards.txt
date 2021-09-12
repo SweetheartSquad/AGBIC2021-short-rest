@@ -506,7 +506,7 @@ scene.advance() // basic attack/interaction/movement
 							description: `Place ${i.name} in the lead`,
 							effect() {
 								scene.sfx('sfx7');
-								const p = scene.party.splice(idx, 1);
+								const p = scene.party.splice(scene.party.indexOf(i), 1);
 								scene.party.push(p[0]);
 								scene.drawCard();
 							},
