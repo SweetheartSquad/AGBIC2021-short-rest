@@ -84,7 +84,7 @@ export class Character extends GameObject {
 		this.hearts = [];
 		for (let i = 0; i < maxHealth; ++i) {
 			const sprHeart = new Sprite(resources.icon_heart.texture as Texture);
-			sprHeart.x += (sprHeart.width + 2) * i;
+			sprHeart.x += sprHeart.width * i;
 			this.containerHealth.addChild(sprHeart);
 			this.hearts.push(sprHeart);
 		}
@@ -133,7 +133,7 @@ export class Character extends GameObject {
 		const base = this.containerHealth.width;
 		this.armours = new Array(armour).fill(0).map((_, idx) => {
 			const sprArmour = new Sprite(resources.icon_shield.texture as Texture);
-			sprArmour.x = base + (sprArmour.width + 2) * idx;
+			sprArmour.x = base + sprArmour.width * idx;
 			this.containerHealth.addChild(sprArmour);
 			return sprArmour;
 		});
