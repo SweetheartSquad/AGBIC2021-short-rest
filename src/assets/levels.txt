@@ -75,8 +75,12 @@ format:
 		['dragon_junior'],
 	];
 	let minibossOrder = minibosses.slice();
+	let attempts = 0;
+	let wins = 0;
+	let start = Date.now();
 	return {
 		0: (scene) => {
+			++attempts;
 			minibossOrder = scene.shuffle(minibosses);
 			minibossOrder[minibossOrder.findIndex((i) => i[0] === 'necromancer2')] = [
 				'necromancer',
@@ -645,6 +649,22 @@ format:
 								await scene.delay(4000);
 								scene.addCard('Start');
 								scene.hand.hand[0].sprCard.children[1].text = 'Restart';
+								const time = Date.now() - start;
+								const hours = Math.floor(time / 1000 / 60 / 60);
+								const minutes = Math.floor(time / 1000 / 60 - hours * 60);
+								const seconds = Math.floor(time / 1000 - minutes * 60);
+								scene.addCard({
+									name: 'Stats',
+									sprite: 'Blessed Rain',
+									description: `Run time: ${hours}:${('00' + minutes).substr(
+										-2
+									)}:${('00' + seconds).substr(
+										-2
+									)}\nAttempts: ${attempts}\nWins: ${++wins}`,
+									canPlay() {
+										return false;
+									},
+								});
 							},
 						},
 					],
