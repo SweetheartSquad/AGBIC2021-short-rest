@@ -633,7 +633,9 @@ format:
 								// poison
 								scene.obstacle.animator.setAnimation('fountain_poison');
 								scene.party.forEach((i) => {
-									i.damage(1, true);
+									if (i.health > 0) {
+										i.damage(1, true);
+									}
 								});
 								scene.overlay([0.6, 0.8, 0, 0.6], 500);
 								scene.log('The party drinks, and retches moments later.');
