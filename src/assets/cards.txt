@@ -746,6 +746,13 @@ scene.advance() // basic attack/interaction/movement
 						scene.log('"It takes a king to befriend a king!"');
 					});
 					return;
+				} else if (o.def.name && o.def.name.includes('Dragonfruit')) {
+					scene.log('The charm spell fizzles off their glistening skin!');
+					scene.overlay([1, 0, 0, 0.1]);
+					scene.delay(1500).then(() => {
+						scene.log('"You think you can seduce ME!?"');
+					});
+					return;
 				} else if (o.def.name && o.def.name.includes('Dragon')) {
 					scene.log('The charm spell fizzles off their glistening scales!');
 					scene.overlay([1, 0, 0, 0.1]);
