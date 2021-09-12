@@ -626,6 +626,7 @@ format:
 					{
 						sprite: 'Yes',
 						name: 'Slake',
+						description: 'All living party members drink from the fountain',
 						effect() {
 							scene.sfx('sfx2');
 							if (Math.random() < 1 / 3) {
