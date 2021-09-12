@@ -26,7 +26,8 @@ audio/sfx15.mp3
 audio/sfx16.mp3
 textures/blank.png
 textures/black.png
-textures/title.png
+textures/title1.png
+textures/title2.png
 textures/camp_bg1.png
 textures/camp_bg2.png
 textures/camp_bg_lit1.png
