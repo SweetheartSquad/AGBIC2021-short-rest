@@ -197,6 +197,7 @@ export class Character extends GameObject {
 
 	heal(damage: number) {
 		if (damage === 0) return;
+		const old = this.health;
 		this.dmgLog(
 			Math.min(damage, this.maxHealth - this.health).toString(10),
 			0x00ff00
@@ -211,5 +212,8 @@ export class Character extends GameObject {
 			200,
 			1
 		);
+		if (old === 0 && this.health > 0) {
+			this.display.container.emit('revive');
+		}
 	}
 }
