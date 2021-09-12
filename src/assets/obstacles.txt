@@ -1106,6 +1106,7 @@ format:
 				} else {
 					scene.log('"TODO: intro taunt"');
 					await scene.delay(2000);
+					scene.revealed = true;
 				}
 				scene.log('"No matter..."');
 				await scene.delay(2000);

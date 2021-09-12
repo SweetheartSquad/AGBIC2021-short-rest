@@ -571,7 +571,6 @@ format:
 											variant: 'instant',
 											effect() {
 												scene.sfx('sfx1');
-												scene.revealed = true;
 												scene.whiteout();
 												scene.clearHand();
 												scene.popHand();
