@@ -488,7 +488,7 @@ format:
 						{
 							sprite: 'stairs',
 							shadow: false,
-							offset: -80,
+							offset: -50,
 							interact(scene) {
 								scene.sfx('sfx0');
 								scene.nextLevel();
@@ -652,7 +652,7 @@ format:
 						{
 							sprite: 'stairs',
 							shadow: false,
-							offset: -80,
+							offset: -50,
 							interact(scene) {
 								scene.sfx('sfx0');
 								scene.nextLevel();
