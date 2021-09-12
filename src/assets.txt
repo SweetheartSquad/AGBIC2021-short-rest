@@ -7,6 +7,7 @@ audio/battle.mp3
 audio/battle_boss.mp3
 audio/jingle.mp3
 audio/jingle_sad.mp3
+audio/fanfare.mp3
 audio/sfx0.mp3
 audio/sfx1.mp3
 audio/sfx2.mp3
