@@ -113,7 +113,7 @@ format:
 								sprite: scene.revealed ? 'dragonfruit' : 'peach',
 								bounce: 1,
 								start(scene) {
-									scene.log('"Heroes!"');
+									scene.log(scene.wins > 0 ? '"Heroes..."' : '"Heroes!"');
 								},
 								interact(scene) {
 									scene.loot([
@@ -122,11 +122,15 @@ format:
 											sprite: 'Blessed Rain',
 											variant: 'instant',
 											effect() {
-												scene.log(
-													scene.revealed
-														? '"Good luck slaying the immortal dragon! BWAHAHAHA!!"'
-														: '"Good luck slaying the immortal dragon!"'
-												);
+												if (scene.wins > 0) {
+													scene.log('"...You\'ve got all the luck you need."');
+												} else if (scene.revealed) {
+													scene.log(
+														'"Good luck slaying the immortal dragon! BWAHAHAHA!!"'
+													);
+												} else {
+													scene.log('"Good luck slaying the immortal dragon!"');
+												}
 												scene.whiteout();
 												scene.killObstacle();
 												initialDeck.forEach((i) => scene.addDeck(i));
