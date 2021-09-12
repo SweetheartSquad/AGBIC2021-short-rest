@@ -518,6 +518,9 @@ scene.advance() // basic attack/interaction/movement
 		Snooze: {
 			sprite: "Coward's Plan",
 			description: 'Retreat to previous campfire',
+			canPlay(scene) {
+				return scene.obstacle;
+			},
 			effect(scene) {
 				if (
 					scene.obstacles.some(
@@ -548,7 +551,11 @@ scene.advance() // basic attack/interaction/movement
 		Teleport: {
 			description: 'Mage teleports party to next area',
 			canPlay(scene) {
-				return scene.position < scene.areas.length - 1 && scene.alive('Mage');
+				return (
+					scene.obstacle &&
+					scene.position < scene.areas.length - 1 &&
+					scene.alive('Mage')
+				);
 			},
 			effect(scene) {
 				scene.sfx('sfx1');
