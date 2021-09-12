@@ -576,9 +576,11 @@ format:
 												scene.whiteout();
 												scene.clearHand();
 												scene.popHand();
-												scene.party.forEach((i) => {
-													if (!i.health) i.heal(1);
-												});
+												scene.party
+													.filter((i) => !i.health)
+													.forEach((i) => {
+														i.heal(1);
+													});
 											},
 										},
 									]);

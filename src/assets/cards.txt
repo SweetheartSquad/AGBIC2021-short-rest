@@ -595,9 +595,11 @@ scene.advance() // basic attack/interaction/movement
 			},
 			effect(scene) {
 				scene.sfx('sfx2');
-				scene.party.forEach((i) => {
-					if (!i.health) i.heal(1);
-				});
+				scene.party
+					.filter((i) => !i.health)
+					.forEach((i) => {
+						i.heal(1);
+					});
 				scene.overlay([0, 1, 0]);
 			},
 		},
