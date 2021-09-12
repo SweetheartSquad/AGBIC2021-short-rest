@@ -602,7 +602,7 @@ format:
 						{
 							sprite: 'shrine',
 							shadow: false,
-							offset: -20,
+							offset: -5,
 							interact(scene) {
 								const o = this;
 								scene.sfx('sfx4');
