@@ -586,6 +586,7 @@ format:
 			health: 5,
 			damage: 1,
 			async start(scene) {
+				scene.music('');
 				scene.log('"*blub blub*"');
 				await scene.delay(2000);
 				scene.announce('Big Slime');
@@ -1131,6 +1132,7 @@ format:
 			sprite: 'dragonfruit',
 			health: 5,
 			async start(scene) {
+				scene.music('');
 				if (scene.wins > 0) {
 					scene.log('"You heroes are never satisfied, are you..."');
 					await scene.delay(2000);
