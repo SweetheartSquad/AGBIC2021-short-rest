@@ -267,7 +267,11 @@ export class GameScene extends GameObject {
 				input.menu &&
 				!this.hand.hand.some((i) => ['Options', 'Back'].includes(i.def.name))
 			) {
-				Card.getCard('Options_ingame').effect(this);
+				try {
+					Card.getCard('Options_ingame').effect(this);
+				} catch (err) {
+					this.error(err);
+				}
 			}
 		}
 
@@ -356,6 +360,9 @@ export class GameScene extends GameObject {
 			const p = (next as NonNullable<typeof next>)();
 			if (p) {
 				p.then(() => {
+					this.busy = false;
+				}).catch((err) => {
+					this.error(err);
 					this.busy = false;
 				});
 			}
@@ -507,7 +514,11 @@ export class GameScene extends GameObject {
 				...i,
 				effect: () => {
 					this.popHand();
-					i.effect(this);
+					try {
+						i.effect(this);
+					} catch (err) {
+						this.error(err);
+					}
 				},
 			});
 		});
@@ -1036,6 +1047,13 @@ export class GameScene extends GameObject {
 		TweenManager.abort(t3);
 		this.logs.splice(this.logs.indexOf(containerLog), 1);
 		containerLog.destroy({ children: true });
+	}
+
+	async error(err: unknown) {
+		console.error(err);
+		this.log(
+			'Error: Something went wrong! If you see this, please contact us and let us know what you were doing when it happened.'
+		);
 	}
 
 	async announce(announcement: string, duration = 2000) {
