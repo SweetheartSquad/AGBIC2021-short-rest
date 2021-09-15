@@ -119,6 +119,9 @@ scene.advance() // basic attack/interaction/movement
 					scene.refreshDeck();
 					scene.handSize = 3;
 					scene.music('jingle_sad');
+					scene.containerParty.scale.x = 1;
+					scene.containerParty.scale.y = 1;
+					scene.containerParty.pivot.x = 0;
 				});
 			},
 		},
