@@ -729,7 +729,7 @@ scene.advance() // basic attack/interaction/movement
 			effect(scene) {
 				scene.sfx('sfx3');
 				scene.kick(-50);
-				scene.enemy.damage(5);
+				scene.obstacle.damage(5);
 				scene.blackout();
 			},
 		},
