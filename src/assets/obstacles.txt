@@ -1029,7 +1029,7 @@ format:
 					this.countdown = 3;
 				}
 				this.countdown -= 1;
-				if (this.countdown) {
+				if (this.countdown > 0) {
 					this.animator.setAnimation(
 						`bomb_${['a', 'b', 'c'][this.countdown - 1]}`
 					);
