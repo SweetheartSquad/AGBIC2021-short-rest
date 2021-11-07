@@ -1037,6 +1037,7 @@ format:
 					scene.log('The bomb goes off!');
 					this.animator.setAnimation('bomb');
 					scene.whiteout();
+					this.damage(Infinity);
 					scene.front.damage(Infinity);
 				}
 			},
