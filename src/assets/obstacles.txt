@@ -979,7 +979,7 @@ format:
 				scene.choice(
 					{
 						sprite: 'Yes',
-						name: 'Why not?',
+						name: 'Why\nnot?',
 						description: 'Risk a card for a chance to draw another',
 						canPlay() {
 							return h.length;
