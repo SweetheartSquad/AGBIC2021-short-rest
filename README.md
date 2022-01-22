@@ -14,6 +14,15 @@ npm run build:prod # make build
 npm run build # optimize image assets (slow) + make build
 ```
 
+## Release
+
+1. Bump the package version (`npm version patch/minor/major`)
+2. Push changes
+3. Go to [release action](https://github.com/SweetheartSquad/AGBIC2021-short-rest/actions/workflows/release.yml)
+4. Select "Run workflow", and confirm on `main` branch
+
+The workflow will automatically create a build and upload it to itch.io.
+
 ## Game files
 
 - [`./src/assets/cards.txt`](./src/assets/cards.txt): card definitions + scene cheat sheet
