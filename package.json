@@ -1,6 +1,6 @@
 {
 	"name": "agbic2021-short-rest",
-	"version": "1.0.0",
+	"version": "1.0.4",
 	"description": "Short Rest",
 	"main": "./src/index.js",
 	"author": "SweetHeart Squad <sweetheartsquad@gmail.com>",
