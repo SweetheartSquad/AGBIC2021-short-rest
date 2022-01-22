@@ -65,8 +65,6 @@ export class GameScene extends GameObject {
 
 	containerObstacle = new Container();
 
-	graphics = new Graphics();
-
 	camera = new Camera();
 
 	screenFilter: ScreenFilter;
