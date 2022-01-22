@@ -52,6 +52,7 @@ export class UIMap extends GameObject {
 		this.areas = areas;
 		this.sprAreas.forEach((i) => i.destroy());
 		this.sprAreas.length = 0;
+		this.graphics.cacheAsBitmap = false;
 		this.graphics.clear();
 		areas.forEach((i, idx) => {
 			const icon = new Sprite(tex(i));
@@ -78,5 +79,6 @@ export class UIMap extends GameObject {
 			this.graphics.drawRect(25 + 2, -2, b.width - 50 - 4, 4);
 			this.graphics.endFill();
 		}
+		this.graphics.cacheAsBitmap = true;
 	}
 }
