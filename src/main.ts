@@ -21,23 +21,23 @@ export function setScene(scene?: GameScene): void {
 	newScene = scene;
 }
 
-export function getInput(): {
-	mouse: {
-		x: number;
-		y: number;
-	};
-	move: {
-		x: number;
-		y: number;
-	};
-	justMoved: {
-		x: number;
-		y: number;
-	};
-	menu: boolean;
-	interact: boolean;
-} {
-	const res = {
+export function getInput() {
+	const res: {
+		mouse: {
+			x: number;
+			y: number;
+		};
+		move: {
+			x: number;
+			y: number;
+		};
+		justMoved: {
+			x: number;
+			y: number;
+		};
+		menu: boolean;
+		interact: boolean;
+	} = {
 		mouse: {
 			x: Math.floor(
 				((mouse.x - resizer.childElement.offsetLeft) /
