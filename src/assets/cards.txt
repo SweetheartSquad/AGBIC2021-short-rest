@@ -159,6 +159,8 @@ scene.advance() // basic attack/interaction/movement
 			effect(scene) {
 				scene.sfx('sfx1');
 				scene.screenFilter.enabled = !scene.screenFilter.enabled;
+				scene.hand.hand[0].display.container.filters[0].enabled =
+					scene.screenFilter.enabled;
 				scene.log(
 					`Filter ${scene.screenFilter.enabled ? 'enabled' : 'disabled'}`
 				);
