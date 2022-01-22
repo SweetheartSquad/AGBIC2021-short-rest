@@ -144,6 +144,8 @@ export function getInput() {
 	}
 	if (swipes.y < 0 && Math.abs(swipes.y) > Math.abs(swipes.x)) {
 		res.interact = true;
+	} else if (swipes.y > 0 && Math.abs(swipes.y) > Math.abs(swipes.x)) {
+		res.menu = true;
 	}
 
 	res.move.x = clamp(-1.0, res.move.x, 1.0);
