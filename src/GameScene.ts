@@ -974,16 +974,16 @@ export class GameScene extends GameObject {
 				const picked = await new Promise<number>((r) => {
 					let flipped = 0;
 					sprs.forEach((i, idx) => {
-						i.spr.on('mouseover', () => {
+						const onMouseOver = () => {
 							this.sfx('sfx5');
 							focused = i;
-						});
-						i.spr.on('mouseout', () => {
+						};
+						const onMouseOut = () => {
 							setTimeout(() => {
 								if (focused === i) focused = undefined;
 							});
-						});
-						i.spr.once('click', () => {
+						};
+						const onClick = () => {
 							if (flipped >= chances) return;
 							flipped++;
 							i.flip();
@@ -994,11 +994,17 @@ export class GameScene extends GameObject {
 									}
 								});
 							}
-							i.spr.once('click', () => {
+							const onClick2 = () => {
 								this.sfx('sfx4');
 								r(idx);
-							});
-						});
+							};
+							i.spr.once('click', onClick2);
+							i.spr.once('tap', onClick2);
+						};
+						i.spr.on('mouseover', onMouseOver);
+						i.spr.on('mouseout', onMouseOut);
+						i.spr.once('click', onClick);
+						i.spr.once('tap', onClick);
 					});
 				});
 				sprs.forEach((i, idx) => {

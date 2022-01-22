@@ -96,7 +96,7 @@ export class Hand extends GameObject {
 		this.hand.push(card);
 		this.display.container.addChild(card.display.container);
 		this.sortZ();
-		card.display.container.on('mouseover', () => {
+		const onMouseOver = () => {
 			getActiveScene()?.sfx('sfx5');
 			this.inspecting = card;
 			this.sortZ();
@@ -114,16 +114,26 @@ export class Hand extends GameObject {
 				undefined,
 				quick ? quadOut : (t) => quadOut(Math.max(0, t - 0.5) * 2)
 			);
-		});
-		card.display.container.on('mouseout', () => {
+		};
+		const onMouseOut = () => {
 			requestAnimationFrame(() => {
 				if (this.inspecting === card) {
 					this.stopInspecting();
 				}
 			});
-		});
-		card.display.container.on('click', () => {
+		};
+		const onClick = () => {
 			this.display.container.emit('play', card);
+		};
+		card.display.container.on('mouseover', onMouseOver);
+		card.display.container.on('mouseout', onMouseOut);
+		card.display.container.on('click', onClick);
+		card.display.container.on('tap', () => {
+			if (this.inspecting === card) {
+				onClick();
+			} else {
+				onMouseOver();
+			}
 		});
 		card.transform.x = size.x / 2;
 		card.transform.y = size.y * 2;
