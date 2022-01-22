@@ -959,7 +959,7 @@ export class GameScene extends GameObject {
 						inputMenu(
 							focused ? sprs.indexOf(focused) : -1,
 							sprs.map((i) => ({
-								select: () => i.spr.emit('click'),
+								select: () => i.spr.emit('pointerdown'),
 								focus: () => i.spr.emit('mouseover'),
 							}))
 						);
@@ -998,13 +998,11 @@ export class GameScene extends GameObject {
 								this.sfx('sfx4');
 								r(idx);
 							};
-							i.spr.once('click', onClick2);
-							i.spr.once('tap', onClick2);
+							i.spr.once('pointerdown', onClick2);
 						};
 						i.spr.on('mouseover', onMouseOver);
 						i.spr.on('mouseout', onMouseOut);
-						i.spr.once('click', onClick);
-						i.spr.once('tap', onClick);
+						i.spr.once('pointerdown', onClick);
 					});
 				});
 				sprs.forEach((i, idx) => {
