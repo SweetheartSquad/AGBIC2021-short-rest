@@ -1,5 +1,11 @@
 # Changelog
 
+## [v1.2.0](https://github.com/SweetheartSquad/AGBIC2021-short-rest/compare/v1.1.0...v1.2.0)
+
+- fix undefined damage causing soft-locks
+- clarify when confuse did zero damage
+- add `Version` card to `About` menu
+
 ## [v1.1.0](https://github.com/SweetheartSquad/AGBIC2021-short-rest/compare/v1.0.4...v1.1.0)
 
 - add mobile support
