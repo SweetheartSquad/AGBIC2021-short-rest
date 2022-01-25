@@ -172,7 +172,7 @@ export class Character extends GameObject {
 		textDmg.destroy();
 	}
 
-	damage(damage: number, ignoreArmour = false) {
+	damage(damage = 0, ignoreArmour = false) {
 		if (this.health <= 0 || damage === 0) return;
 		if (!ignoreArmour && this.armour > 0) {
 			this.addArmour(-1);
