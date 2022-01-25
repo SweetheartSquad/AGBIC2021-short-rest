@@ -1110,8 +1110,14 @@ scene.advance() // basic attack/interaction/movement
 			},
 			effect(scene) {
 				scene.sfx('sfx1');
-				scene.obstacle.damage(scene.obstacle.def.damage);
 				scene.kick(5);
+				if (scene.obstacle.def.damage > 0) {
+					scene.obstacle.damage(scene.obstacle.def.damage);
+				} else {
+					scene.log(
+						`${scene.obstacle.def.name} is too weak to hurt themselves!`
+					);
+				}
 			},
 		},
 		'Life Link Locket': {
