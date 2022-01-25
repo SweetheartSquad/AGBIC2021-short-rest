@@ -68,6 +68,9 @@ module.exports = (env, argv) => ({
 		new HtmlWebpackPlugin({
 			// creates index.html
 			title: pkg.description,
+			meta: {
+				version: pkg.version,
+			},
 			template: './src/index.html',
 			minify: true,
 			hash: true,

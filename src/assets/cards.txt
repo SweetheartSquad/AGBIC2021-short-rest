@@ -277,11 +277,33 @@ scene.advance() // basic attack/interaction/movement
 					effect() {
 						window.open('https://itch.io/jam/a-game-by-its-cover-2021');
 						scene.addCard(madeFor);
+						scene.hand.hand.splice(3, 0, scene.hand.hand.pop()); // keep cards in order
+					},
+				};
+				let versionNumber;
+				try {
+					versionNumber = `v${
+						window.document.head.querySelector('meta[name="version"]').content
+					}`;
+				} catch (err) {
+					console.error(err);
+					versionNumber = "Error: Couldn't find version";
+				}
+				const version = {
+					name: 'Version',
+					description: versionNumber,
+					sprite: 'Portable Mulligan',
+					effect() {
+						window.open(
+							'https://github.com/SweetheartSquad/AGBIC2021-short-rest/blob/main/CHANGELOG.md'
+						);
+						scene.addCard(version);
 					},
 				};
 				scene.addCard(madeBy);
 				scene.addCard(basedOn);
 				scene.addCard(madeFor);
+				scene.addCard(version);
 			},
 		},
 		Advance: {
