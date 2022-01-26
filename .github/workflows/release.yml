@@ -22,14 +22,6 @@ jobs:
           ITCH_USER: sweetheartsquad
           PACKAGE: dist
           VERSION: ${{ steps.package-version.outputs.current-version }}
-      - uses: josephbmanley/butler-publish-itchio-action@v1.0.2
-        env:
-          BUTLER_CREDENTIALS: ${{ secrets.ITCH_API_KEY }}
-          CHANNEL: win-linux-mac-stable
-          ITCH_GAME: short-rest
-          ITCH_USER: sweetheartsquad
-          PACKAGE: dist
-          VERSION: ${{ steps.package-version.outputs.current-version }}
       - uses: Ilshidur/action-discord@0.3.2
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
