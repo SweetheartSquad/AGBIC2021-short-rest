@@ -10,8 +10,8 @@
 ```sh
 npm i # setup
 npm start # dev server
-npm run build:prod # make build
-npm run build # optimize image assets (slow) + make build
+npm run build # make build
+npm run optimize-images # optimize image assets (slow)
 ```
 
 ## Release
