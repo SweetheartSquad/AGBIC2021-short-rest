@@ -80,6 +80,9 @@ format:
 	let start = Date.now();
 	return {
 		0: (scene) => {
+			// start with tutorial disabled in debug
+			if (scene.debug && scene.started === undefined) scene.started = true;
+
 			++attempts;
 			minibossOrder = scene.shuffle(minibosses);
 			minibossOrder[minibossOrder.findIndex((i) => i[0] === 'necromancer2')] = [
@@ -147,14 +150,14 @@ format:
 					},
 				];
 			}
-			scene.started = true;
 			scene.setFg('black');
 			scene.containerUI.visible = false;
 			scene.queue.push(async () => {
-				scene.log(
-					'Somewhere outside a small village, nestled deep in the wood...'
-				);
-				if (!scene.debug) {
+				if (!scene.started) {
+					scene.started = true;
+					scene.log(
+						'Somewhere outside a small village, nestled deep in the wood...'
+					);
 					await scene.delay(5000);
 					scene.log('An immortal dragon makes its den.');
 					await scene.delay(5000);
@@ -163,6 +166,8 @@ format:
 					scene.log('But they fall\nagain and again.');
 					scene.killObstacle();
 					await scene.delay(5000);
+				} else {
+					scene.log('But they fall\nagain and again.');
 				}
 				scene.containerUI.visible = true;
 				scene.blackout(2000);
