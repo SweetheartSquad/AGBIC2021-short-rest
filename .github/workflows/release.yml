@@ -17,7 +17,7 @@ jobs:
       - uses: josephbmanley/butler-publish-itchio-action@v1.0.2
         env:
           BUTLER_CREDENTIALS: ${{ secrets.ITCH_API_KEY }}
-          CHANNEL: web
+          CHANNEL: win-linux-mac-stable
           ITCH_GAME: short-rest
           ITCH_USER: sweetheartsquad
           PACKAGE: dist
