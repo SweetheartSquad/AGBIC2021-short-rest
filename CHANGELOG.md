@@ -1,5 +1,9 @@
 # Changelog
 
+## [v1.3.1](https://github.com/SweetheartSquad/AGBIC2021-short-rest/compare/v1.3.0...v1.3.1)
+
+- fix minicamp healing single party member multiple times
+
 ## [v1.3.0](https://github.com/SweetheartSquad/AGBIC2021-short-rest/compare/v1.2.0...v1.3.0)
 
 - add `Tutorial` to `Options` that allows skipping first-run intro
