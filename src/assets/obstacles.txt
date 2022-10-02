@@ -751,9 +751,12 @@ format:
 												)} revived by the fire with 1HP.`
 											);
 										}
-										scene.party.forEach((p) => {
-											p.heal(1);
-										});
+										scene.party
+											.slice()
+											.reverse()
+											.forEach((p) => {
+												p.heal(1);
+											});
 										scene.overlay([1, 0.5, 0, 0.5]);
 										scene.burnCard(i);
 										hand.splice(idx, 1);
