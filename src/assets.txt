@@ -38,6 +38,7 @@ textures/card_instant.png
 textures/card_back.png
 textures/ditherGrid.png
 textures/onion.png
+textures/onion-spooky.png
 textures/frog.png
 textures/cat.png
 textures/apple.png
