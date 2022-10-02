@@ -116,12 +116,26 @@ export function btn(spr: DisplayObject, title: string, hint?: string) {
 	spr.accessibleHint = hint;
 }
 
-export function tex(texture: string) {
-	let t = resources[texture]?.texture;
+const texVariant = new Date().getMonth() === 9 ? 'spooky' : '';
+
+/**
+ * @param texture texture name
+ * @returns the texture, or first frame of texture sequence, or error texture
+ */
+export function tex(texture: string): Texture {
+	/** @type {Texture} */
+	let t: Texture | undefined;
+	if (texVariant && !texture.endsWith(texVariant)) {
+		t = tex(`${texture}-${texVariant}`);
+		if (t !== resources.error.texture) return t;
+	}
+	t = resources[texture]?.texture;
 	if (t) return t;
 	t = resources[`${texture}1`]?.texture;
 	if (t) return t;
-	return resources.error.texture as Texture;
+	t = resources.error.texture;
+	if (!t) throw new Error('No error texture!');
+	return t;
 }
 
 /** get word-wrapped string (assuming monospace) */
