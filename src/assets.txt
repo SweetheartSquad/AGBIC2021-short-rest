@@ -40,6 +40,7 @@ textures/ditherGrid.png
 textures/onion.png
 textures/onion-spooky.png
 textures/frog.png
+textures/frog-spooky.png
 textures/cat.png
 textures/apple.png
 textures/apple-spooky.png
