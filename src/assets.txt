@@ -116,6 +116,7 @@ textures/jester2.png
 textures/dragon_junior.png
 textures/mushroom.png
 textures/peach.png
+textures/peach-spooky.png
 textures/dragonfruit.png
 textures/sprite_fire.png
 textures/sprite_dark.png
