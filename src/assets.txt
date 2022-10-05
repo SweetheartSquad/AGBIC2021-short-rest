@@ -42,6 +42,7 @@ textures/onion-spooky.png
 textures/frog.png
 textures/frog-spooky.png
 textures/cat.png
+textures/cat-spooky.png
 textures/apple.png
 textures/apple-spooky.png
 textures/bg1.png
