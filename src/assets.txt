@@ -32,6 +32,8 @@ textures/camp_bg_lit1.png
 textures/camp_bg_lit2.png
 textures/camp_bg_lit-spooky1.png
 textures/camp_bg_lit-spooky2.png
+textures/camp_bg-spooky1.png
+textures/camp_bg-spooky2.png
 textures/border.png
 textures/shadow.png
 textures/card.png
