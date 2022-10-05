@@ -1,5 +1,9 @@
 # Changelog
 
+## [v1.4.0](https://github.com/SweetheartSquad/AGBIC2021-short-rest/compare/v1.3.1...v1.4.0)
+
+- spooky
+
 ## [v1.3.1](https://github.com/SweetheartSquad/AGBIC2021-short-rest/compare/v1.3.0...v1.3.1)
 
 - fix minicamp healing single party member multiple times
